@@ -1,0 +1,5 @@
+steps:
+  - label: Build Docker Image
+    command: build.sh
+    artifact_paths:
+      - "docker.tar.gz"
