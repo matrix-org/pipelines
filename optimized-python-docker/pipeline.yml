@@ -1,5 +1,13 @@
 steps:
   - label: Build Docker Image
     command: build.sh
+    agents:
+      queue: "release"
     artifact_paths:
       - "docker.tar.gz"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
