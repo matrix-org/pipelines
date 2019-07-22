@@ -1,8 +1,27 @@
 steps:
-  - label: Build Docker Image
+  - label: Build Optimised Skylake AVX-512 Docker Image
     command: build.sh
     agents:
       queue: "release"
+    env:
+      MARCH: "skylake-avx512"
+      PYTHON_VERSION: "3.7.4"
+    artifact_paths:
+      - "docker.tar.gz"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+  - label: Build Optimised x86-64 Docker Image
+    command: build.sh
+    agents:
+      queue: "release"
+    env:
+      MARCH: "x86-64"
+      PYTHON_VERSION: "3.7.4"
     artifact_paths:
       - "docker.tar.gz"
     retry:
