@@ -13,7 +13,8 @@ steps:
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
-          entrypoint: '""'
+          entrypoint: '/bin/sh'
+          shell: "-x -c"
           init: false
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
@@ -45,7 +46,8 @@ steps:
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
-          entrypoint: '""'
+          entrypoint: '/bin/sh'
+          shell: "-x -c"
           init: false
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
@@ -80,7 +82,8 @@ steps:
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
-          entrypoint: '""'
+          entrypoint: '/bin/sh'
+          shell: "-x -c"
           init: false
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
@@ -112,7 +115,8 @@ steps:
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
-          entrypoint: '""'
+          entrypoint: '/bin/sh'
+          shell: "-x -c"
           init: false
           debug: true
           mount-buildkite-agent: false
