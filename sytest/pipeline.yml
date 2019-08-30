@@ -116,7 +116,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: '/bin/sh'
-          shell: "-x -c"
+          shell: ["-x", "-c"]
           init: false
           debug: true
           mount-buildkite-agent: false
