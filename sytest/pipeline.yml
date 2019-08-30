@@ -3,7 +3,7 @@ steps:
     agents:
       queue: "medium"
     command:
-      - "curl https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
+      - "wget -O - https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
       - "cd src/"
       - "bash .buildkite/merge_base_branch.sh"
       - "bash /synapse_sytest.sh"
@@ -34,7 +34,7 @@ steps:
     env:
       POSTGRES: "1"
     command:
-      - "curl https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
+      - "wget -O - https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
       - "cd src/"
       - "bash .buildkite/merge_base_branch.sh"
       - "bash /synapse_sytest.sh"
@@ -67,7 +67,7 @@ steps:
       WORKERS: "1"
       BLACKLIST: "synapse-blacklist-with-workers"
     command:
-      - "curl https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
+      - "wget -O - https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
       - "cd src/"
       - "bash .buildkite/merge_base_branch.sh"
       - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
