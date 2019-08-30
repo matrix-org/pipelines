@@ -100,7 +100,7 @@ steps:
       POSTGRES: "1"
     command:
       - "mkdir -p /src"
-      - "wget -O - https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
+      - "wget -O - https://github.com/matrix-org/dendrite/archive/master.tar.gz | tar -xz --strip-components=1 -C /src/"
       - "cd /src/"
       - "bash /bootstrap.sh dendrite"
     plugins:
