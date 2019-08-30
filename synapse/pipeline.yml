@@ -214,7 +214,7 @@ steps:
       queue: "medium"
     command:
       - "bash .buildkite/merge_base_branch.sh"
-      - "bash /synapse_sytest.sh"
+      - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-synapse:py35"
@@ -247,7 +247,7 @@ steps:
       POSTGRES: "1"
     command:
       - "bash .buildkite/merge_base_branch.sh"
-      - "bash /synapse_sytest.sh"
+      - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-synapse:py35"
@@ -283,7 +283,7 @@ steps:
     command:
       - "bash .buildkite/merge_base_branch.sh"
       - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
-      - "bash /synapse_sytest.sh"
+      - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-synapse:py35"
