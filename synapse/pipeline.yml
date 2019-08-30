@@ -6,6 +6,7 @@ steps:
       - "python -m pip install tox"
       - "tox -e check_codestyle"
     label: "\U0001F9F9 Check Style"
+    branches: "!dinsic !dinsic/*"
     plugins:
       - docker#v3.0.1:
           image: "python:3.6"
@@ -53,6 +54,7 @@ steps:
       - "python -m pip install tox"
       - "tox -e mypy"
     label: ":mypy: mypy"
+    branches: "!dinsic !dinsic/*"
     plugins:
       - docker#v3.0.1:
           image: "python:3.5"
