@@ -113,6 +113,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: false
+          debug: true
           shell: ["/bin/sh", "-e", "-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
