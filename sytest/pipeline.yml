@@ -14,7 +14,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: false
-          shell: ["/bin/sh", "-e", "-c", "-x"]
+          shell: ["/bin/sh", "-e", "-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
@@ -46,7 +46,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: false
-          shell: ["/bin/sh", "-e", "-c", "-x"]
+          shell: ["/bin/sh", "-e", "-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
@@ -81,7 +81,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: false
-          shell: ["/bin/sh", "-e", "-c", "-x"]
+          shell: ["/bin/sh", "-e", "-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
@@ -113,7 +113,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: false
-          shell: ["/bin/sh", "-e", "-c", "-x"]
+          shell: ["/bin/sh", "-e", "-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
