@@ -5,7 +5,7 @@ steps:
     command:
       - "mkdir -p /src"
       - "wget -O - https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
-      - "cd src/"
+      - "cd /src/"
       - "bash .buildkite/merge_base_branch.sh"
       - "bash /synapse_sytest.sh"
     plugins:
@@ -37,7 +37,7 @@ steps:
     command:
       - "mkdir -p /src"
       - "wget -O - https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
-      - "cd src/"
+      - "cd /src/"
       - "bash .buildkite/merge_base_branch.sh"
       - "bash /synapse_sytest.sh"
     plugins:
@@ -71,7 +71,7 @@ steps:
     command:
       - "mkdir -p /src"
       - "wget -O - https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
-      - "cd src/"
+      - "cd /src/"
       - "bash .buildkite/merge_base_branch.sh"
       - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
       - "bash /synapse_sytest.sh"
