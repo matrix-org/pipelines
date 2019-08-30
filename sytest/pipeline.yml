@@ -14,7 +14,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: '/bin/sh'
-          shell: "-x -c"
+          shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
@@ -47,7 +47,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: '/bin/sh'
-          shell: "-x -c"
+          shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
@@ -83,7 +83,7 @@ steps:
           always-pull: true
           workdir: "/sytest"
           entrypoint: '/bin/sh'
-          shell: "-x -c"
+          shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
