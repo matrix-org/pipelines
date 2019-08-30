@@ -1,0 +1,94 @@
+steps:
+  - label: "SyTest - :python: 3.5 / SQLite / Monolith"
+    agents:
+      queue: "medium"
+    command:
+      - "curl https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
+      - "cd src/"
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash /synapse_sytest.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-synapse:py35"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/sytest"
+          entrypoint: ["/bin/sh", "-e", "-c"]
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+  - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Monolith"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+    command:
+      - "curl https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
+      - "cd src/"
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash /synapse_sytest.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-synapse:py35"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/sytest"
+          entrypoint: ["/bin/sh", "-e", "-c"]
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+  - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Workers"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+      WORKERS: "1"
+      BLACKLIST: "synapse-blacklist-with-workers"
+    command:
+      - "curl https://https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
+      - "cd src/"
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
+      - "bash /synapse_sytest.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-synapse:py35"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/sytest"
+          entrypoint: ["/bin/sh", "-e", "-c"]
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
