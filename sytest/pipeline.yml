@@ -3,6 +3,7 @@ steps:
     agents:
       queue: "medium"
     command:
+      - "mkdir /src"
       - "wget -O - https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
       - "cd src/"
       - "bash .buildkite/merge_base_branch.sh"
@@ -34,6 +35,7 @@ steps:
     env:
       POSTGRES: "1"
     command:
+      - "mkdir /src"
       - "wget -O - https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
       - "cd src/"
       - "bash .buildkite/merge_base_branch.sh"
@@ -67,6 +69,7 @@ steps:
       WORKERS: "1"
       BLACKLIST: "synapse-blacklist-with-workers"
     command:
+      - "mkdir /src"
       - "wget -O - https://github.com/matrix-org/synapse/archive/develop.tar.gz | tar -xz --strip-components=1 -C /src/"
       - "cd src/"
       - "bash .buildkite/merge_base_branch.sh"
