@@ -57,3 +57,33 @@ steps:
       - docker#v3.0.1:
           image: "golang:1.12"
           mount-buildkite-agent: false
+
+  - label: "SyTest - :go: 1.11 / :postgres: 9.6"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+    command:
+      - "bash /bootstrap.sh dendrite"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-dendrite"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/sytest"
+          entrypoint: '/bin/sh'
+          shell: ["-x", "-c"]
+          init: false
+          debug: true
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+    soft_fail:
+      - exit_status: 1
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
