@@ -70,7 +70,7 @@ steps:
           image: "matrixdotorg/sytest-dendrite"
           propagate-environment: true
           always-pull: true
-          workdir: "/sytest"
+          workdir: "/src"
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
