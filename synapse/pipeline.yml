@@ -77,7 +77,7 @@ steps:
           mount-buildkite-agent: false
           propagate-environment: true
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -98,7 +98,7 @@ steps:
           mount-buildkite-agent: false
           propagate-environment: true
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -119,7 +119,7 @@ steps:
           mount-buildkite-agent: false
           propagate-environment: true
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -140,7 +140,7 @@ steps:
           mount-buildkite-agent: false
           propagate-environment: true
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -161,7 +161,7 @@ steps:
           config:
             - .buildkite/docker-compose.py35.pg95.yaml
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -182,7 +182,7 @@ steps:
           config:
             - .buildkite/docker-compose.py37.pg95.yaml
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -203,7 +203,7 @@ steps:
           config:
             - .buildkite/docker-compose.py37.pg11.yaml
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -234,7 +234,7 @@ steps:
           path: "logs/annotate.md"
           style: "error"
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -267,7 +267,7 @@ steps:
           path: "logs/annotate.md"
           style: "error"
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
@@ -303,16 +303,10 @@ steps:
           path: "logs/annotate.md"
           style: "error"
       - matrix-org/coveralls#v1.0:
-          parallel: "true"
+          parallel: "false"
     retry:
       automatic:
         - exit_status: -1
           limit: 2
         - exit_status: 2
           limit: 2
-
-  - wait: ~
-    continue_on_failure: true
-
-  - label: Trigger webhook
-    command: "curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d \"payload[build_num]=$BUILDKITE_BUILD_NUMBER&payload[status]=done\""
