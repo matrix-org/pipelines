@@ -9,7 +9,7 @@ steps:
       - "echo '--- Install dependencies'"
       - "pip install -e ."
       - "echo '--- Install matrix-is-tester'"
-      - "python -m pip install git+https://github.com/matrix-org/matrix-is-tester.git@dbkr/bind_denied_2"
+      - "python -m pip install git+https://github.com/matrix-org/matrix-is-tester.git"
       - "echo '+++ Run Tests'"
       - "PYTHONPATH=`pwd` trial matrix-is-tester"
     label: "matrix-is-tester"
