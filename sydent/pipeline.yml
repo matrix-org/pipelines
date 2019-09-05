@@ -9,9 +9,9 @@ steps:
       - "echo '--- Install dependencies'"
       - "pip install -e ."
       - "echo '--- Install matrix-is-tester'"
-      - "python -m pip install git+https://github.com/matrix-org/matrix-is-tester.git"
+      - "pip install git+https://github.com/matrix-org/matrix-is-tester.git"
       - "echo '+++ Run Tests'"
-      - "PYTHONPATH=`pwd` trial matrix-is-tester"
+      - "trial matrix-is-tester"
     label: "matrix-is-tester"
     timeout_in_minutes: 5
     plugins:
