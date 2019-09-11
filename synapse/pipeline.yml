@@ -2,38 +2,38 @@ env:
   COVERALLS_REPO_TOKEN: wsJWOby6j0uCYFiCes3r0XauxO27mx8lD
 
 steps:
-  - command:
+  - label: "\U0001F9F9 Check Style"
+    command:
       - "python -m pip install tox"
       - "tox -e check_codestyle"
-    label: "\U0001F9F9 Check Style"
     branches: "!dinsic !dinsic/*"
     plugins:
       - docker#v3.0.1:
           image: "python:3.6"
           mount-buildkite-agent: false
 
-  - command:
+  - label: "\U0001F9F9 packaging"
+    command:
       - "python -m pip install tox"
       - "tox -e packaging"
-    label: "\U0001F9F9 packaging"
     plugins:
       - docker#v3.0.1:
           image: "python:3.6"
           mount-buildkite-agent: false
 
-  - command:
+  - label: "\U0001F9F9 isort"
+    command:
       - "python -m pip install tox"
       - "tox -e check_isort"
-    label: "\U0001F9F9 isort"
     plugins:
       - docker#v3.0.1:
           image: "python:3.6"
           mount-buildkite-agent: false
 
-  - command:
+  - label: ":newspaper: Newsfile"
+    command:
       - "python -m pip install tox"
       - "scripts-dev/check-newsfragment"
-    label: ":newspaper: Newsfile"
     branches: "!master !develop !release-*"
     plugins:
       - docker#v3.0.1:
@@ -41,19 +41,19 @@ steps:
           propagate-environment: true
           mount-buildkite-agent: false
 
-  - command:
+  - label: "\U0001F9F9 check-sample-config"
+    command:
       - "python -m pip install tox"
       - "tox -e check-sampleconfig"
-    label: "\U0001F9F9 check-sample-config"
     plugins:
       - docker#v3.0.1:
           image: "python:3.6"
           mount-buildkite-agent: false
 
-  - command:
+  - label: ":mypy: mypy"
+    command:
       - "python -m pip install tox"
       - "tox -e mypy"
-    label: ":mypy: mypy"
     branches: "!dinsic !dinsic/*"
     plugins:
       - docker#v3.0.1:
@@ -62,11 +62,11 @@ steps:
 
   - wait
 
-  - command:
+  - label: ":python: 3.5 / SQLite / Old Deps"
+    command:
       - "apt-get update && apt-get install -y python3.5 python3.5-dev python3-pip libxml2-dev libxslt-dev zlib1g-dev"
       - "python3.5 -m pip install tox"
       - "tox -e py35-old,combine"
-    label: ":python: 3.5 / SQLite / Old Deps"
     env:
       TRIAL_FLAGS: "-j 2"
       LANG: "C.UTF-8"
@@ -85,10 +85,10 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - command:
+  - label: ":python: 3.5 / SQLite"
+    command:
       - "python -m pip install tox"
       - "tox -e py35,combine"
-    label: ":python: 3.5 / SQLite"
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
@@ -106,10 +106,10 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - command:
+  - label: ":python: 3.6 / SQLite"
+    command:
       - "python -m pip install tox"
       - "tox -e py36,combine"
-    label: ":python: 3.6 / SQLite"
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
@@ -127,10 +127,10 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - command:
+  - label: ":python: 3.7 / SQLite"
+    command:
       - "python -m pip install tox"
       - "tox -e py37,combine"
-    label: ":python: 3.7 / SQLite"
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
