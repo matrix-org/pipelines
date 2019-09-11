@@ -76,6 +76,8 @@ steps:
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
       - matrix-org/coveralls#v1.0:
           parallel: "true"
     retry:
@@ -97,6 +99,8 @@ steps:
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
       - matrix-org/coveralls#v1.0:
           parallel: "true"
     retry:
@@ -118,6 +122,8 @@ steps:
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
       - matrix-org/coveralls#v1.0:
           parallel: "true"
     retry:
@@ -139,6 +145,8 @@ steps:
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
       - matrix-org/coveralls#v1.0:
           parallel: "true"
     retry:
@@ -160,6 +168,8 @@ steps:
           run: testenv
           config:
             - .buildkite/docker-compose.py35.pg95.yaml
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
       - matrix-org/coveralls#v1.0:
           parallel: "true"
     retry:
@@ -181,6 +191,8 @@ steps:
           run: testenv
           config:
             - .buildkite/docker-compose.py37.pg95.yaml
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
       - matrix-org/coveralls#v1.0:
           parallel: "true"
     retry:
@@ -202,6 +214,8 @@ steps:
           run: testenv
           config:
             - .buildkite/docker-compose.py37.pg11.yaml
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
       - matrix-org/coveralls#v1.0:
           parallel: "true"
     retry:
