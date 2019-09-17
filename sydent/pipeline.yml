@@ -8,11 +8,11 @@ steps:
   - command:
       - "echo '--- Install dependencies'"
       - "pip install -e ."
-      - "echo '--- Install matrix-is-tester'"
+      - "echo '--- Install matrix_is_tester'"
       - "pip install git+https://github.com/matrix-org/matrix-is-tester.git"
       - "echo '+++ Run Tests'"
-      - "trial matrix-is-tester"
-    label: "matrix-is-tester"
+      - "trial matrix_is_tester"
+    label: "matrix_is_tester"
     timeout_in_minutes: 5
     plugins:
       - docker#v3.0.1:
