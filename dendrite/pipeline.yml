@@ -64,6 +64,7 @@ steps:
     env:
       POSTGRES: "1"
     command:
+      - "bash build.sh"
       - "cp /src/.ci/server.key /src/"
       - "cp /src/.ci/matrix_key.pem /src/"
       - "bash /bootstrap.sh dendrite"
