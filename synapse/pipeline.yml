@@ -78,8 +78,8 @@ steps:
           propagate-environment: true
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -101,8 +101,8 @@ steps:
           propagate-environment: true
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -124,8 +124,8 @@ steps:
           propagate-environment: true
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -147,8 +147,8 @@ steps:
           propagate-environment: true
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -170,8 +170,8 @@ steps:
             - .buildkite/docker-compose.py35.pg95.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -193,8 +193,8 @@ steps:
             - .buildkite/docker-compose.py37.pg95.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -216,8 +216,8 @@ steps:
             - .buildkite/docker-compose.py37.pg11.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -247,8 +247,8 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -280,8 +280,8 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -316,8 +316,8 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-      - matrix-org/coveralls#v1.0:
-          parallel: "true"
+ #     - matrix-org/coveralls#v1.0:
+ #         parallel: "true"
     retry:
       automatic:
         - exit_status: -1
@@ -325,8 +325,8 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - wait: ~
-    continue_on_failure: true
-
-  - label: Trigger webhook
-    command: "curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d \"payload[build_num]=$BUILDKITE_BUILD_NUMBER&payload[status]=done\""
+#  - wait: ~
+#    continue_on_failure: true
+#
+#  - label: Trigger webhook
+#    command: "curl -k https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN -d \"payload[build_num]=$BUILDKITE_BUILD_NUMBER&payload[status]=done\""
