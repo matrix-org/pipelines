@@ -80,6 +80,9 @@ steps:
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
     soft_fail:
       - exit_status: 1
     retry:
