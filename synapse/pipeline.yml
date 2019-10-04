@@ -325,6 +325,56 @@ steps:
         - exit_status: 2
           limit: 2
 
+  - label: "synapse_port_db / :python: 3.5 / :postgres: 9.5"
+    agents:
+      queue: "medium"
+    env:
+      TRIAL_FLAGS: "-j 8"
+    command:
+      - "python -m pip install tox"
+      - "tox -e synapse_port_db"
+    plugins:
+      - docker-compose#v2.1.0:
+          run: testenv
+          config:
+            - .buildkite/docker-compose.py35.pg95.yaml
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+
+  - label: "synapse_port_db / :python: 3.7 / :postgres: 11"
+    agents:
+      queue: "medium"
+    env:
+      TRIAL_FLAGS: "-j 8"
+    command:
+      - "python -m pip install tox"
+      - "tox -e synapse_port_db"
+    plugins:
+      - docker-compose#v2.1.0:
+          run: testenv
+          config:
+            - .buildkite/docker-compose.py37.pg11.yaml
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+
 #  - wait: ~
 #    continue_on_failure: true
 #
