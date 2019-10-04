@@ -80,8 +80,6 @@ steps:
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
-    soft_fail:
-      - exit_status: 1
     retry:
       automatic:
         - exit_status: -1
