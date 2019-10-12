@@ -50,6 +50,15 @@ steps:
           image: "python:3.6"
           mount-buildkite-agent: false
 
+  - label: "\U0001F9F9 config-lint"
+    command:
+      - "python -m pip install tox"
+      - "tox -e check_config"
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.6"
+          mount-buildkite-agent: false
+
   - label: ":mypy: mypy"
     command:
       - "python -m pip install tox"
