@@ -332,7 +332,7 @@ steps:
       TRIAL_FLAGS: "-j 8"
     command:
       - "python -m pip install tox"
-      - "tox -e synapse_port_db"
+      - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
       - docker-compose#v2.1.0:
           run: testenv
@@ -357,7 +357,7 @@ steps:
       TRIAL_FLAGS: "-j 8"
     command:
       - "python -m pip install tox"
-      - "tox -e synapse_port_db"
+      - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
       - docker-compose#v2.1.0:
           run: testenv
