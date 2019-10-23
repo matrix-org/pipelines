@@ -353,8 +353,6 @@ steps:
   - label: "synapse_port_db / :python: 3.7 / :postgres: 11"
     agents:
       queue: "medium"
-    env:
-      TRIAL_FLAGS: "-j 8"
     command:
       - "python -m pip install tox"
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
@@ -367,13 +365,6 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
-
 
 #  - wait: ~
 #    continue_on_failure: true
