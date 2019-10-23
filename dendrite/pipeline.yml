@@ -83,8 +83,6 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-    soft_fail:
-      - exit_status: 1
     retry:
       automatic:
         - exit_status: -1
