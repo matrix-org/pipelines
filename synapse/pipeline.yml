@@ -329,7 +329,6 @@ steps:
     agents:
       queue: "medium"
     command:
-      - "python -m pip install tox"
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
       - docker-compose#v2.1.0:
@@ -346,7 +345,6 @@ steps:
     agents:
       queue: "medium"
     command:
-      - "python -m pip install tox"
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
       - docker-compose#v2.1.0:
