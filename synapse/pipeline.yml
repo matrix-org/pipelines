@@ -340,7 +340,6 @@ steps:
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
 
-
   - label: "synapse_port_db / :python: 3.7 / :postgres: 11"
     agents:
       queue: "medium"
