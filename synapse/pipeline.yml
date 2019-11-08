@@ -60,7 +60,7 @@ steps:
           image: "python:3.5"
           mount-buildkite-agent: false
 
-#  - wait
+  - wait
 
   - label: ":python: 3.5 / SQLite / Old Deps"
     command:
@@ -166,8 +166,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose.py35.pg95.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py35.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
@@ -193,8 +193,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose.py37.pg95.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
@@ -220,8 +220,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose.py37.pg11.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg11.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
@@ -345,8 +345,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose.py35.pg95.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py35.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
@@ -364,8 +364,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose.py37.pg11.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg11.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
