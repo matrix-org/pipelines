@@ -60,7 +60,7 @@ steps:
           image: "python:3.5"
           mount-buildkite-agent: false
 
-  - wait
+#  - wait
 
   - label: ":python: 3.5 / SQLite / Old Deps"
     command:
