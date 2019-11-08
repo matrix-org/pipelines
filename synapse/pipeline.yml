@@ -164,10 +164,14 @@ steps:
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py35-postgres,combine'"
     plugins:
+      - matrix-org/download#v1.0.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose.py35.pg95.yaml
+          target-directory: /compose
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.py35.pg95.yaml
+            - /compose/docker-compose.py35.pg95.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -187,10 +191,14 @@ steps:
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py37-postgres,combine'"
     plugins:
+      - matrix-org/download#v1.0.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose.py37.pg95.yaml
+          target-directory: /compose
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.py37.pg95.yaml
+            - /compose/docker-compose.py37.pg95.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -210,10 +218,14 @@ steps:
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py37-postgres,combine'"
     plugins:
+      - matrix-org/download#v1.0.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/rav/docker_compose_out_of_tree/synapse/docker-compose.py37.pg11.yaml
+          target-directory: /compose
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.py37.pg11.yaml
+            - /compose/docker-compose.py37.pg11.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
