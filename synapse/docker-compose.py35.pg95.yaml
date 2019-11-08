@@ -19,4 +19,4 @@ services:
       SYNAPSE_POSTGRES_PASSWORD: postgres
     working_dir: /src
     volumes:
-      - ..:/src
+      - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/src
