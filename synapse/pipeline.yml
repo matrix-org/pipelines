@@ -164,10 +164,14 @@ steps:
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py35-postgres,combine'"
     plugins:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py35.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.py35.pg95.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py35.pg95.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -187,10 +191,14 @@ steps:
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py37-postgres,combine'"
     plugins:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.py37.pg95.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py37.pg95.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -210,10 +218,14 @@ steps:
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py37-postgres,combine'"
     plugins:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg11.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.py37.pg11.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py37.pg11.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -331,10 +343,14 @@ steps:
     command:
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py35.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.py35.pg95.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py35.pg95.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -346,10 +362,14 @@ steps:
     command:
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg11.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.py37.pg11.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py37.pg11.yaml
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
