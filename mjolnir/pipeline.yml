@@ -6,6 +6,14 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
+          
+  - label: ":mocha: Tests"
+    command:
+      - "yarn install"
+      - "yarn test"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:12"
 
   - label: ":nodejs: 12 Build"
     command:
