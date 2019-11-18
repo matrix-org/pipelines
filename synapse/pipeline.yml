@@ -337,6 +337,77 @@ steps:
         - exit_status: 2
           limit: 2
 
+
+  - label: "SyTest - :python: 3.7 / :postgres: 11 / Monolith"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+    command:
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash /bootstrap.sh synapse"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-synapse:py37"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: "/bin/sh"
+          init: false
+          shell: ["-x", "-c"]
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+  - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+      WORKERS: "1"
+      BLACKLIST: "synapse-blacklist-with-workers"
+    command:
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
+      - "bash /bootstrap.sh synapse"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-synapse:py37"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: "/bin/sh"
+          init: false
+          shell: ["-x", "-c"]
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+ #     - matrix-org/coveralls#v1.0:
+ #         parallel: "true"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+
   - label: "synapse_port_db / :python: 3.5 / :postgres: 9.5"
     agents:
       queue: "medium"
