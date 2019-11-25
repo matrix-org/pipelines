@@ -17,7 +17,12 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          # we mount the working copy read-only to make sure that it doesn't
+          # modify local files (cf https://github.com/matrix-org/sytest/pull/748)
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/workdir:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -50,7 +55,10 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/workdir:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -86,7 +94,10 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/workdir:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -119,7 +130,10 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/workdir:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -155,7 +169,10 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/workdir:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -189,7 +206,10 @@ steps:
           init: false
           debug: true
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/workdir:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
     soft_fail:
