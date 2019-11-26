@@ -9,6 +9,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
+          debug: true
           image: "matrixdotorg/sytest-synapse:py35"
           propagate-environment: true
           always-pull: true
