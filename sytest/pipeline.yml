@@ -22,7 +22,7 @@ steps:
           mount-checkout: false
           volumes:
             - "./logs:/logs"
-            - ".:/workdir:ro"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -58,7 +58,7 @@ steps:
           mount-checkout: false
           volumes:
             - "./logs:/logs"
-            - ".:/workdir:ro"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -97,7 +97,7 @@ steps:
           mount-checkout: false
           volumes:
             - "./logs:/logs"
-            - ".:/workdir:ro"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -133,7 +133,7 @@ steps:
           mount-checkout: false
           volumes:
             - "./logs:/logs"
-            - ".:/workdir:ro"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -172,7 +172,7 @@ steps:
           mount-checkout: false
           volumes:
             - "./logs:/logs"
-            - ".:/workdir:ro"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -209,7 +209,7 @@ steps:
           mount-checkout: false
           volumes:
             - "./logs:/logs"
-            - ".:/workdir:ro"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
     soft_fail:
