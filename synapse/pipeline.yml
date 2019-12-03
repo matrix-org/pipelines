@@ -311,7 +311,7 @@ steps:
     command:
       - "bash .buildkite/merge_base_branch.sh"
       - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
-      - "bash /bootstrap.sh synapse --torture-replication"
+      - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-synapse:py35"
@@ -381,7 +381,7 @@ steps:
     command:
       - "bash .buildkite/merge_base_branch.sh"
       - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
-      - "bash /bootstrap.sh synapse  --torture-replication"
+      - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-synapse:py37"
