@@ -6,6 +6,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:3.7"
+          mount-buildkite-agent: false
 
   - command:
       - "python -m pip install flake8"
@@ -14,6 +15,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:3.7"
+          mount-buildkite-agent: false
 
   - wait
 
@@ -24,4 +26,5 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:3.7"
+          mount-buildkite-agent: false
 
