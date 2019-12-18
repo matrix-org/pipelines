@@ -14,7 +14,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:10"
-          workdir: /app
+          propagate-uid-gid: true # So NPM won't complain about permission issues
 
   - label: ":jasmine: Tests Node 12"
     command:
@@ -23,7 +23,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
-          workdir: /app
+          propagate-uid-gid: true
 
   - label: ":nyc: Coverage"
     command:
@@ -32,4 +32,4 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
-          workdir: /app
+          propagate-uid-gid: true
