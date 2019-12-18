@@ -6,6 +6,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
+          mount-buildkite-agent: false
 
   - label: ":jasmine: Tests Node 10"
     command:
@@ -14,6 +15,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:10"
+          mount-buildkite-agent: false
 
   - label: ":jasmine: Tests Node 12"
     command:
@@ -22,6 +24,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
+          mount-buildkite-agent: false
 
   - label: ":nyc: Coverage"
     command:
@@ -30,3 +33,4 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
+          mount-buildkite-agent: false
