@@ -305,6 +305,7 @@ steps:
     agents:
       queue: "medium"
     env:
+      MULTI_POSTGRES: "1"  # Test with split out databases
       POSTGRES: "1"
       WORKERS: "1"
       BLACKLIST: "synapse-blacklist-with-workers"
@@ -375,6 +376,7 @@ steps:
     agents:
       queue: "medium"
     env:
+      MULTI_POSTGRES: "1"  # Test with split out databases
       POSTGRES: "1"
       WORKERS: "1"
       BLACKLIST: "synapse-blacklist-with-workers"
