@@ -6,6 +6,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
+          mount-buildkite-agent: false
 
   - label: ":jasmine: Tests Node 10"
     command:
@@ -15,7 +16,7 @@ steps:
       - docker#v3.0.1:
           image: "node:10"
           propagate-uid-gid: true # So NPM won't complain about permission issues
-
+          mount-buildkite-agent: false
   - label: ":jasmine: Tests Node 12"
     command:
       - "npm install"
@@ -24,6 +25,7 @@ steps:
       - docker#v3.0.1:
           image: "node:12"
           propagate-uid-gid: true
+          mount-buildkite-agent: false
 
   - label: ":nyc: Coverage"
     command:
@@ -33,3 +35,4 @@ steps:
       - docker#v3.0.1:
           image: "node:12"
           propagate-uid-gid: true
+          mount-buildkite-agent: false
