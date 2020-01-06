@@ -14,7 +14,7 @@ steps:
       - "yarn test"
     plugins:
       - docker#v3.0.1:
-          image: "node:10
+          image: "node:10"
           mount-buildkite-agent: false
 
   - label: ":jasmine: Tests Node 12"
