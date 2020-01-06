@@ -17,6 +17,7 @@ steps:
           image: "node:10"
           propagate-uid-gid: true # So NPM won't complain about permission issues
           mount-buildkite-agent: false
+          debug: true
   - label: ":jasmine: Tests Node 12"
     command:
       - "npm install"
@@ -26,6 +27,7 @@ steps:
           image: "node:12"
           propagate-uid-gid: true
           mount-buildkite-agent: false
+          debug: true
 
   - label: ":nyc: Coverage"
     command:
@@ -36,3 +38,4 @@ steps:
           image: "node:12"
           propagate-uid-gid: true
           mount-buildkite-agent: false
+          debug: true
