@@ -26,6 +26,16 @@ steps:
           image: "node:12"
           mount-buildkite-agent: false
 
+  - label: ":nodejs: 12 :postgres: 11 :jasmine: Postgres Test"
+    plugins:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/matrix-appservice-irc/docker-compose.postgres.yml
+      - docker-compose#v2.1.0:
+          run: testenv
+          config:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.postgres.yml
+
   - label: ":nyc: Coverage"
     command:
       - "yarn"
