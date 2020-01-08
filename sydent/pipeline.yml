@@ -1,10 +1,16 @@
 steps:
   - command:
-    - "/sydent-ci.sh"
-    label: "Check Sydent starts"
+      - "echo '--- Install dependencies'"
+      - "pip install -e ."
+      - "echo '--- Run unit tests'"
+      - "trial tests"
+    label: ":partyparrot: Unit tests"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sydent-build"
+    artifact_paths:
+      - "_trial_temp/test.log"
+
   - command:
       - "echo '--- Install dependencies'"
       - "pip install -e ."
@@ -12,7 +18,7 @@ steps:
       - "pip install git+https://github.com/matrix-org/matrix-is-tester.git"
       - "echo '+++ Run Tests'"
       - "trial matrix_is_tester"
-    label: "matrix_is_tester"
+    label: ":pytest: matrix_is_tester"
     timeout_in_minutes: 5
     plugins:
       - docker#v3.0.1:
