@@ -62,6 +62,12 @@ steps:
 
   - wait
 
+  ################################################################################
+  #
+  # `trial` tests
+  #
+  ################################################################################
+
   - label: ":python: 3.5 / SQLite / Old Deps"
     command:
       - "apt-get update && apt-get install -y python3.5 python3.5-dev python3-pip libxml2-dev libxslt-dev zlib1g-dev"
@@ -183,33 +189,6 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: ":python: 3.7 / :postgres: 9.5"
-    agents:
-      queue: "medium"
-    env:
-      TRIAL_FLAGS: "-j 8"
-    command:
-      - "bash -c 'python -m pip install tox && python -m tox -e py37-postgres,combine'"
-    plugins:
-      - matrix-org/download#v1.1.0:
-          urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg95.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v2.1.0:
-          run: testenv
-          config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py37.pg95.yaml
-      - artifacts#v1.2.0:
-          upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
-
   - label: ":python: 3.7 / :postgres: 11"
     agents:
       queue: "medium"
@@ -236,6 +215,39 @@ steps:
           limit: 2
         - exit_status: 2
           limit: 2
+
+  - label: ":python: 3.8 / :postgres: 12"
+    agents:
+      queue: "medium"
+    env:
+      TRIAL_FLAGS: "-j 8"
+    command:
+      - "bash -c 'python -m pip install tox && python -m tox -e py37-postgres,combine'"
+    plugins:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py38.pg12.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
+      - docker-compose#v2.1.0:
+          run: testenv
+          config:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py38.pg12.yaml
+      - artifacts#v1.2.0:
+          upload: [ "_trial_temp/*/*.log" ]
+#      - matrix-org/coveralls#v1.0:
+#          parallel: "true"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+  ################################################################################
+  #
+  # Sytest
+  #
+  ################################################################################
 
   - label: "SyTest - :python: 3.5 / SQLite / Monolith"
     agents:
@@ -339,7 +351,7 @@ steps:
           limit: 2
 
 
-  - label: "SyTest - :python: 3.7 / :postgres: 11 / Monolith"
+  - label: "SyTest - :python: 3.8 / :postgres: 12 / Monolith"
     agents:
       queue: "medium"
     env:
@@ -349,7 +361,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
-          image: "matrixdotorg/sytest-synapse:py37"
+          image: "matrixdotorg/sytest-synapse:py38"
           propagate-environment: true
           always-pull: true
           workdir: "/src"
@@ -409,6 +421,12 @@ steps:
         - exit_status: 2
           limit: 2
 
+
+  ################################################################################
+  #
+  # synapse_port_db
+  #
+  ################################################################################
 
   - label: "synapse_port_db / :python: 3.5 / :postgres: 9.5"
     agents:
