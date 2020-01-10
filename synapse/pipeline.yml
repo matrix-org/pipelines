@@ -222,7 +222,7 @@ steps:
     env:
       TRIAL_FLAGS: "-j 8"
     command:
-      - "bash -c 'python -m pip install tox && python -m tox -e py37-postgres,combine'"
+      - "bash -c 'python -m pip install tox && python -m tox -e py38-postgres,combine'"
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
