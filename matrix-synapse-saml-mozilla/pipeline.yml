@@ -11,7 +11,7 @@ steps:
   - label: "tests"
     command:
       - "python -m pip install tox"
-      - "tox -e test"
+      - "tox -e tests"
     plugins:
       - docker#v3.0.1:
           image: "python:3.6"
