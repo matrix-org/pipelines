@@ -7,7 +7,7 @@ steps:
     label: ":partyparrot: Unit tests"
     plugins:
       - docker#v3.0.1:
-          image: "matrixdotorg/sydent-build"
+          image: "python:2.7"
     artifact_paths:
       - "_trial_temp/test.log"
 
