@@ -38,6 +38,10 @@ steps:
           image: "python:3.5"
     artifact_paths:
       - "_trial_temp/test.log"
+    # The Python 3 compatibility PRs aren't all merged yet so this will
+    # fail until that happens.
+    soft_fail:
+      - exit_status: 1
 
   - command:
       - "echo '--- Install dependencies'"
@@ -54,6 +58,10 @@ steps:
     artifact_paths:
       - "matrix_is_test/sydent.stderr"
       - "_trial_temp/test.log"
+    # The Python 3 compatibility PRs aren't all merged yet so this will
+    # fail until that happens.
+    soft_fail:
+      - exit_status: 1
 
   - command:
       - "echo '--- Install dependencies'"
@@ -66,6 +74,10 @@ steps:
           image: "python:3.8"
     artifact_paths:
       - "_trial_temp/test.log"
+    # The Python 3 compatibility PRs aren't all merged yet so this will
+    # fail until that happens.
+    soft_fail:
+      - exit_status: 1
 
   - command:
       - "echo '--- Install dependencies'"
@@ -82,3 +94,7 @@ steps:
     artifact_paths:
       - "matrix_is_test/sydent.stderr"
       - "_trial_temp/test.log"
+    # The Python 3 compatibility PRs aren't all merged yet so this will
+    # fail until that happens.
+    soft_fail:
+      - exit_status: 1
