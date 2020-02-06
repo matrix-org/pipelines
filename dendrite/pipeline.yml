@@ -13,32 +13,6 @@ steps:
           mount-buildkite-agent: false
 
   - wait
-
-  - command:
-      - "env"
-      - "go build ./cmd/..."
-    label: "\U0001F528 Build / :go: 1.11"
-    plugins:
-      - docker#v3.0.1:
-          image: "golang:1.11"
-          mount-buildkite-agent: false
-    retry:
-      automatic:
-        - exit_status: 128
-          limit: 3
-
-  - command:
-      - "env"
-      - "go build ./cmd/..."
-    label: "\U0001F528 Build / :go: 1.12"
-    plugins:
-      - docker#v3.0.1:
-          image: "golang:1.12"
-          mount-buildkite-agent: false
-    retry:
-      automatic:
-        - exit_status: 128
-          limit: 3
           
   - command:
       - "env"
@@ -52,24 +26,6 @@ steps:
       automatic:
         - exit_status: 128
           limit: 3
-
-  - command:
-      - "env"
-      - "go test ./..."
-    label: "\U0001F9EA Unit tests / :go: 1.11"
-    plugins:
-      - docker#v3.0.1:
-          image: "golang:1.11"
-          mount-buildkite-agent: false
-
-  - command:
-      - "env"
-      - "go test ./..."
-    label: "\U0001F9EA Unit tests / :go: 1.12"
-    plugins:
-      - docker#v3.0.1:
-          image: "golang:1.12"
-          mount-buildkite-agent: false
           
   - command:
       - "env"
@@ -80,7 +36,7 @@ steps:
           image: "golang:1.13"
           mount-buildkite-agent: false
 
-  - label: "SyTest - :go: 1.11 / :postgres: 9.6"
+  - label: "SyTest - :go: 1.13 / :postgres: 9.6"
     agents:
       queue: "medium"
     env:
