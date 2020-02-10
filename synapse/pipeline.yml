@@ -70,12 +70,9 @@ steps:
 
   - label: ":python: 3.5 / SQLite / Old Deps"
     command:
-      - "apt-get update && apt-get install -y python3.5 python3.5-dev python3-pip libxml2-dev libxslt-dev zlib1g-dev"
-      - "python3.5 -m pip install tox"
-      - "tox -e py35-old,combine"
+      - ".buildkite/scripts/test_old_deps.sh"
     env:
       TRIAL_FLAGS: "-j 2"
-      LANG: "C.UTF-8"
     plugins:
       - docker#v3.0.1:
           image: "ubuntu:xenial"  # We use xenial to get an old sqlite and python
