@@ -1,21 +1,6 @@
 steps:
   - command:
       - "env"
-      # https://github.com/golangci/golangci-lint#memory-usage-of-golangci-lint
-      - "GOGC=20 ./scripts/find-lint.sh"
-    label: "\U0001F9F9 Lint / :go: 1.13"
-    agents:
-      # Use a larger instance as linting takes a looot of memory
-      queue: "medium"
-    plugins:
-      - docker#v3.0.1:
-          image: "golang:1.13"
-          mount-buildkite-agent: false
-
-  - wait
-          
-  - command:
-      - "env"
       - "go build ./cmd/..."
     label: "\U0001F528 Build / :go: 1.13"
     plugins:
@@ -36,6 +21,21 @@ steps:
           image: "golang:1.13"
           mount-buildkite-agent: false
 
+  - wait
+
+  - command:
+      - "env"
+      # https://github.com/golangci/golangci-lint#memory-usage-of-golangci-lint
+      - "GOGC=20 ./scripts/find-lint.sh"
+    label: "\U0001F9F9 Lint / :go: 1.13"
+    agents:
+      # Use a larger instance as linting takes a looot of memory
+      queue: "medium"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
+          
   - label: "SyTest - :go: 1.13 / :postgres: 9.6"
     agents:
       queue: "medium"
