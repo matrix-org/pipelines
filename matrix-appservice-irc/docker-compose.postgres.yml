@@ -17,5 +17,4 @@ services:
       IRCBRIDGE_TEST_ENABLEPG: "yes"
     working_dir: /app
     volumes:
-      - ..:/app
-    command: "bash -c 'yarn && yarn test'"
+      - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/app
