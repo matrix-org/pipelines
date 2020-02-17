@@ -5,6 +5,7 @@ services:
     image: postgres:11
     environment:
       POSTGRES_PASSWORD: postgres
+    command: -c fsync=off
 
   testenv:
     image: node:12
