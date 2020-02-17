@@ -36,7 +36,6 @@ steps:
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/matrix-appservice-irc/docker-compose.postgres.yml
       - docker-compose#v3.2.0:
           run: testenv
-          verbose: true
           config:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.postgres.yml
 
