@@ -28,8 +28,7 @@ steps:
 
   - label: ":nodejs: 12 :postgres: 11 :jasmine: Postgres Test"
     command:
-      - "yarn"
-      - "yarn test"
+      - "/bin/sh -c 'yarn && yarn ci-test'"
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
