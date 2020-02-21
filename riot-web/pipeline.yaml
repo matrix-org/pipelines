@@ -29,7 +29,7 @@ steps:
           image: "node:12"
           mount-buildkite-agent: false
 
-  - label: "🛠 Build"
+  - label: ":hammer_and_pick: Build"
     command:
       - "echo '--- Fetching Dependencies'"
       - "./scripts/fetch-develop.deps.sh --depth 1"
@@ -58,7 +58,7 @@ steps:
           image: "node:10"
           mount-buildkite-agent: false
 
-  - label: "🌐 i18n"
+  - label: ":globe_with_meridians: i18n"
     command:
       - "echo '--- Fetching Dependencies'"
       - "./scripts/fetch-develop.deps.sh --depth 1"
