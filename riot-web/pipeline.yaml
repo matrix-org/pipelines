@@ -76,7 +76,7 @@ steps:
   - label: ":package: Package"
     agents:
       # The tarballs this builds are deployed, so use the slow, burn-after-use queue
-      queue: "release-small"
+      queue: "ephemeral-small"
     command:
       - "echo '--- Fetching Dependencies'"
       - "./scripts/fetch-develop.deps.sh --depth 1"
