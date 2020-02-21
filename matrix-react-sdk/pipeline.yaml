@@ -84,6 +84,8 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/riotweb-ci-e2etests-env:latest"
+          # This allows the test script to see what branch it's testing and check
+	  # out the equivalent dependency branches, if they exist
           propagate-environment: true
           workdir: "/workdir/matrix-react-sdk"
           mount-buildkite-agent: false
@@ -103,6 +105,8 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:10"
+          # This allows the test script to see what branch it's testing and check
+	  # out the equivalent dependency branches, if they exist
           propagate-environment: true
           workdir: "/workdir/matrix-react-sdk"
           mount-buildkite-agent: false
