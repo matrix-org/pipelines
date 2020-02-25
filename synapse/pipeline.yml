@@ -57,7 +57,7 @@ steps:
     branches: "!dinsic !dinsic/*"
     plugins:
       - docker#v3.0.1:
-          image: "python:3.5"
+          image: "python:3.7"
           mount-buildkite-agent: false
 
   - wait
