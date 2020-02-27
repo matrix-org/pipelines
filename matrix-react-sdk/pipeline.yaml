@@ -9,6 +9,9 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
+          # This allows the test script to see what branch it's testing and check
+          # out the equivalent dependency branches, if they exist
+          propagate-environment: true
           mount-buildkite-agent: false
 
   - label: ":eslint: TS Lint"
@@ -60,6 +63,9 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
+          # This allows the test script to see what branch it's testing and check
+          # out the equivalent dependency branches, if they exist
+          propagate-environment: true
           mount-buildkite-agent: false
 
   - label: ":hammer_and_wrench: Build"
