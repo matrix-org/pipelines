@@ -35,7 +35,7 @@ steps:
       # We use a xlarge sized instance instead of the normal small ones because
       # gradle build can be memory hungry
       # build on the burn-after-use ephemeral queue
-      queue: "xlarge-ephemeral"
+      queue: "ephemeral-xlarge"
     commands:
       - "./gradlew clean lintGplayRelease assembleGplayDebug --stacktrace"
     artifact_paths:
@@ -52,7 +52,7 @@ steps:
       # We use a xlarge sized instance instead of the normal small ones because
       # gradle build can be memory hungry
       # build on the burn-after-use ephemeral queue
-      queue: "xlarge-ephemeral"
+      queue: "ephemeral-xlarge"
     commands:
       - "./gradlew clean lintFdroidRelease assembleFdroidDebug --stacktrace"
     artifact_paths:
