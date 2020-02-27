@@ -10,8 +10,6 @@ steps:
           image: "python:3.6"
     branches: "!master !release-*"
 
-  - wait
-
   - command:
       - "echo '--- Install dependencies'"
       - "pip install -e ."
