@@ -55,5 +55,5 @@ steps:
       - "./tools/check/check_code_quality.sh"
     plugins:
       - docker#v3.1.0:
-          image: "debian:jessie-slim"
+          image: "debian:buster-slim"
           mount-buildkite-agent: false
