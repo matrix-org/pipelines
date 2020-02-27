@@ -1,5 +1,16 @@
 steps:
   - command:
+      - "echo '--- Install towncrier'"
+      - "pip install towncrier"
+      - "echo '+++ Check newsfile"
+      - "python -m towncrier.check"
+    label: ":rolled_up_newspaper: Newsfile"
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.6"
+    branches: "!master !release-*"
+
+  - command:
       - "echo '--- Install dependencies'"
       - "pip install -e ."
       - "echo '+++ Run unit tests'"
