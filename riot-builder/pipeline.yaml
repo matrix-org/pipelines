@@ -2,7 +2,7 @@ steps:
   - label: ":eslint: JS Lint"
     command:
       - "yarn install"
-      - "yarn run lint"
+      - "yarn lint"
     plugins:
       - docker#v3.0.1:
           image: "node:12"
