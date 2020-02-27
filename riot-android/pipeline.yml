@@ -53,7 +53,7 @@ steps:
   - label: ":lint-roller: Code quality"
     commands:
       - apt-get update
-      - DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y wget perl-modules
+      - DEBIAN_FRONTEND=noninteractive apt-get install -y wget perl-modules
       - ./tools/check/check_code_quality.sh
     plugins:
       - docker#v3.1.0:
