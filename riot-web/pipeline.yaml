@@ -33,6 +33,10 @@ steps:
           mount-buildkite-agent: false
 
   - label: ":hammer_and_wrench: Build"
+    agents:
+      # We use a medium sized instance instead of the normal small ones because
+      # webpack loves to gorge itself on resources.
+      queue: "medium"
     command:
       - "echo '--- Fetching Dependencies'"
       - "./scripts/fetch-develop.deps.sh --depth 1"
