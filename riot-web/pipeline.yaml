@@ -25,7 +25,10 @@ steps:
 
   - label: ":eslint: Types Lint"
     command:
+      - "echo '--- Fetching Dependencies'"
+      - "./scripts/fetch-develop.deps.sh --depth 1"
       - "yarn install"
+      - "echo '+++ Checking types'"
       - "yarn lint:types"
     plugins:
       - docker#v3.0.1:
