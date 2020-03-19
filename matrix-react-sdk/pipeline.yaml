@@ -99,6 +99,9 @@ steps:
       automatic:
         - exit_status: 1 # retry end-to-end tests once as Puppeteer sometimes fails
           limit: 1
+    artifact_paths:
+      - "logs/**/*"
+      - "synapse/installations/consent/homeserver.log"
 
   - label: ":wrench: Riot Tests"
     agents:
