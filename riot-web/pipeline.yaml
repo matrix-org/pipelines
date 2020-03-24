@@ -45,7 +45,8 @@ steps:
       - "./scripts/fetch-develop.deps.sh --depth 1"
       - "yarn install"
       - "echo '+++ Building Project'"
-      - "yarn build"
+      - "yarn build-stats"
+    artifact_paths: "webpack-stats.json"
     plugins:
       - docker#v3.0.1:
           image: "node:12"
