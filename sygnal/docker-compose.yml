@@ -12,9 +12,9 @@ services:
     depends_on:
       - postgres
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "pass"
-      POSTGRES_HOST: "postgres"
+      TEST_POSTGRES_USER: "postgres"
+      TEST_POSTGRES_PASSWORD: "pass"
+      TEST_POSTGRES_HOST: "postgres"
     working_dir: /app
     volumes:
       - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/app
