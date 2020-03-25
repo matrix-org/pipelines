@@ -24,7 +24,11 @@ steps:
       - "trial tests"
     label: "Run unit tests"
     plugins:
-      - docker#v3.0.1:
-          image: "python:3.7"
-          mount-buildkite-agent: false
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/sygnal/docker-compose.yml
+      - docker-compose#v3.2.0:
+          run: testenv
+          config:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yml
 
