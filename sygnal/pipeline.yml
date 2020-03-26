@@ -22,7 +22,15 @@ steps:
   - command:
       - "python -m pip install -e ."
       - "trial tests"
-    label: "Run unit tests"
+    label: "Run unit tests (on SQLite)"
+      - docker#v3.0.1:
+          image: "python:3.7"
+          mount-buildkite-agent: false
+
+  - command:
+      - "python -m pip install -e ."
+      - "trial tests"
+    label: "Run unit tests (on :postgres:)"
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
