@@ -23,6 +23,7 @@ steps:
       - "python -m pip install -e ."
       - "trial tests"
     label: "Run unit tests (on SQLite)"
+    plugins:
       - docker#v3.0.1:
           image: "python:3.7"
           mount-buildkite-agent: false
