@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:11
+    environment:
+      POSTGRES_PASSWORD: postgres
+    command: -c fsync=off
+
+  testenv:
+    image: "python:3.7"
+    depends_on:
+      - postgres
+    environment:
+      TEST_USE_POSTGRES: "yes"
+      TEST_POSTGRES_USER: "postgres"
+      TEST_POSTGRES_PASSWORD: "pass"
+      TEST_POSTGRES_HOST: "postgres"
+    working_dir: /app
+    volumes:
+      - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/app
