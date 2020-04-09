@@ -30,7 +30,7 @@ steps:
     label: "\U0001F9F9 Lint / :go: 1.13"
     agents:
       # Use a larger instance as linting takes a looot of memory
-      queue: "medium"
+      queue: "xlarge"
     plugins:
       - docker#v3.0.1:
           image: "golang:1.13"
