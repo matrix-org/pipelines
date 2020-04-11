@@ -19,10 +19,9 @@ steps:
 
   - label: "Compile Android tests"
     agents:
-      # We use a xlarge sized instance instead of the normal small ones because
-      # gradle build can be memory hungry
-      # build on the burn-after-use ephemeral queue
-      queue: "ephemeral-xlarge"
+    # We use a xlarge sized instance instead of the normal small ones because
+    # gradle build can be memory hungry
+      queue: "xlarge"
     commands:
       - "./gradlew clean assembleAndroidTest --stacktrace"
     plugins:
