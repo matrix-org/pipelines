@@ -69,7 +69,7 @@ steps:
       - "yarn test"
     plugins:
       - docker#v3.0.1:
-          image: "node:10"
+          image: "node:12"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -84,7 +84,7 @@ steps:
       - "yarn diff-i18n"
     plugins:
       - docker#v3.0.1:
-          image: "node:10"
+          image: "node:12"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -107,5 +107,5 @@ steps:
     artifact_paths: "dist/riot-*.tar.gz"
     plugins:
       - docker#v3.0.1:
-          image: "node:10"
+          image: "node:12"
           mount-buildkite-agent: false
