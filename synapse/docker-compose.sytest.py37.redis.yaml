@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+
+  redis:
+    image: redis:5.0
+
+  sytest:
+    image: matrixdotorg/sytest-synapse:py37
+    depends_on:
+      - redis
+    env_file: docker-compose-env
+    environment:
+      POSTGRES: "1"
+      WORKERS: "1"
+      BLACKLIST: "synapse-blacklist-with-workers"
+      REDIS: "redis"
+    always-pull: true
+    workdir: "/src"
+    entrypoint: "/bin/sh"
+    init: false
+    shell: ["-x", "-c"]
+    mount-buildkite-agent: false
+    volumes:
+      - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/src
+      - "./logs:/logs"
+    command:
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
+      - "bash /bootstrap.sh synapse"
