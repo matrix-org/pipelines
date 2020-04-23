@@ -19,4 +19,4 @@ services:
     entrypoint: ""
     volumes:
       - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/src
-      - "./logs:/logs"
+      - "/tmp/logs:/logs"

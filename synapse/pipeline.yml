@@ -422,7 +422,7 @@ steps:
     agents:
       queue: "medium"
     command:
-      - bash -c "cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers && ./.buildkite/merge_base_branch.sh && /bootstrap.sh synapse; ls -lh logs"
+      - bash -c "cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers && ./.buildkite/merge_base_branch.sh && /bootstrap.sh synapse"
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
@@ -433,7 +433,7 @@ steps:
           config:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.sytest.py37.redis.yaml
       - artifacts#v1.2.0:
-          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap", "/tmp/download-${BUILDKITE_BUILD_ID}/*" ]
+          upload: [ "/tmp/logs/**/*.log", "/tmp/logs/**/*.log.*", "/tmp/logs/results.tap", "/tmp/download-${BUILDKITE_BUILD_ID}/*" ]
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
