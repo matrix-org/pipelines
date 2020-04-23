@@ -422,7 +422,7 @@ steps:
     agents:
       queue: "medium"
     command:
-      - bash -c "cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers && ./.buildkite/merge_base_branch.sh && /bootstrap.sh synapse"
+      - bash -c "cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers && ./.buildkite/merge_base_branch.sh && /bootstrap.sh synapse; ls -lh logs"
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
