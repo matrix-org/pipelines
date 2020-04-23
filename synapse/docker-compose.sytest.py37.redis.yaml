@@ -15,16 +15,8 @@ services:
       WORKERS: "1"
       BLACKLIST: "synapse-blacklist-with-workers"
       REDIS: "redis"
-    always-pull: true
-    workdir: "/src"
-    entrypoint: "/bin/sh"
-    init: false
-    shell: ["-x", "-c"]
-    mount-buildkite-agent: false
+    working_dir: "/src"
+    entrypoint: ""
     volumes:
       - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/src
       - "./logs:/logs"
-    command:
-      - "bash .buildkite/merge_base_branch.sh"
-      - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
-      - "bash /bootstrap.sh synapse"
