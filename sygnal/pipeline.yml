@@ -1,7 +1,7 @@
 steps:
   - command:
       - "python -m pip install black"
-      - "black --check ."
+      - "black --check --diff ."
     label: "Check Code Formatting"
     plugins:
       - docker#v3.0.1:
