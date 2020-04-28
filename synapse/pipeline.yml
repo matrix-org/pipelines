@@ -418,6 +418,33 @@ steps:
         - exit_status: 2
           limit: 2
 
+  - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers / :redis: Redis"
+    agents:
+      queue: "medium"
+    command:
+      - bash -c "cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers && ./.buildkite/merge_base_branch.sh && /bootstrap.sh synapse --redis-host redis"
+    plugins:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.sytest.py37.redis.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
+      - docker-compose#v2.1.0:
+          run: sytest
+          config:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.sytest.py37.redis.yaml
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+ #     - matrix-org/coveralls#v1.0:
+ #         parallel: "true"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
 
   ################################################################################
   #
