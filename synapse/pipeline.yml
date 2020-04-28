@@ -433,7 +433,7 @@ steps:
           config:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.sytest.py37.redis.yaml
       - artifacts#v1.2.0:
-          upload: [ "/tmp/logs/**/*.log", "/tmp/logs/**/*.log.*", "/tmp/logs/results.tap", "/tmp/download-${BUILDKITE_BUILD_ID}/*" ]
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
