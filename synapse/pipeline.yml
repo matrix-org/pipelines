@@ -426,8 +426,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/erikj/redis_test_synapse/synapse/docker-compose.sytest.py37.redis.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/erikj/redis_test_synapse/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.sytest.py37.redis.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: sytest
           config:
