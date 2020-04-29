@@ -1,5 +1,15 @@
 steps:
   - command:
+      - "python -m pip install towncrier"
+      - "python -m towncrier.check"
+    label: "Check Newsfile"
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.7"
+          mount-buildkite-agent: false
+    branches: "!master !release-*"
+
+  - command:
       - "python -m pip install black"
       - "black --check --diff ."
     label: "Check Code Formatting"
