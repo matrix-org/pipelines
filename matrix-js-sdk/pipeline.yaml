@@ -36,6 +36,10 @@ steps:
           mount-buildkite-agent: false
 
   - label: ":jest: Tests"
+    agents:
+      # We use a medium sized instance instead of the normal small ones because
+      # jest likes our browserified bundle so much it OOMs.
+      queue: "medium"
     command:
       - "yarn install"
       - "yarn test"
