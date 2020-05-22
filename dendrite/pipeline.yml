@@ -67,10 +67,76 @@ steps:
           limit: 2
         - exit_status: 2
           limit: 2
+  
+   - label: "SyTest - :go: 1.13 / :postgres: 9.6 / full HTTP APIs"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+      API: "1"
+    command:
+      - "bash build.sh"
+      - "bash /bootstrap.sh dendrite"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-dendrite"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: '/bin/sh'
+          shell: ["-x", "-c"]
+          init: false
+          debug: true
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
 
   - label: "SyTest - :go: 1.13 / :sqlite: 3"
     agents:
       queue: "medium"
+    command:
+      - "bash build.sh"
+      - "bash /bootstrap.sh dendrite"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-dendrite"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: '/bin/sh'
+          shell: ["-x", "-c"]
+          init: false
+          debug: true
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    soft_fail: true
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+  - label: "SyTest - :go: 1.13 / :sqlite: 3 / full HTTP APIs"
+    agents:
+      queue: "medium"
+    env:
+      API: "1"
     command:
       - "bash build.sh"
       - "bash /bootstrap.sh dendrite"
