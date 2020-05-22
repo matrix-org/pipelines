@@ -68,7 +68,7 @@ steps:
         - exit_status: 2
           limit: 2
   
-   - label: "SyTest - :go: 1.13 / :postgres: 9.6 / full HTTP APIs"
+  - label: "SyTest - :go: 1.13 / :postgres: 9.6 / full HTTP APIs"
     agents:
       queue: "medium"
     env:
