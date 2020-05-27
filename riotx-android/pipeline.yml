@@ -6,9 +6,9 @@
 steps:
   - label: "Compile and run Unit tests"
     agents:
-      # We use a medium sized instance instead of the normal small ones because
-      # gradle build can be memory hungry
-      queue: "medium"
+    # We use a xlarge sized instance instead of the normal small ones because
+    # gradle build can be memory hungry
+      queue: "xlarge"
     commands:
       - "./gradlew clean test --stacktrace"
     plugins:
