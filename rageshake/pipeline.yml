@@ -10,7 +10,7 @@ steps:
     command: ".buildkite/build-and-test.sh"
     plugins:
       - docker#v3.0.1:
-          image: "golang:1.1"
+          image: "golang:1.11"
           mount-buildkite-agent: false
           
   - label: ":hammer: Build / :go: 1.13"
