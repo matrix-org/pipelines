@@ -1,0 +1,21 @@
+steps:
+  - label: ":broom: Lint"
+    command: ".buildkite/lint.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
+          
+  - label: ":hammer: Build / :go: 1.11"
+    command: ".buildkite/build-and-test.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.1"
+          mount-buildkite-agent: false
+          
+  - label: ":hammer: Build / :go: 1.13"
+    command: ".buildkite/build-and-test.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
