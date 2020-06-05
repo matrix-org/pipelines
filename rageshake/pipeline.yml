@@ -1,4 +1,13 @@
 steps:
+  - label: ":rolled_up_newspaper: Check Newsfile"
+    command: ".buildkite/check_changelog.sh
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.7"
+          mount-buildkite-agent: false
+          propagate-environment: true
+    branches: "!master !release-*"
+
   - label: ":broom: Lint"
     command: ".buildkite/lint.sh"
     plugins:
