@@ -420,7 +420,8 @@ steps:
 
   - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers / :redis: Redis"
     agents:
-      queue: "medium"
+      # this one seems to need a lot of memory.
+      queue: "xlarge"
     command:
       - bash -c "cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers && ./.buildkite/merge_base_branch.sh && /bootstrap.sh synapse --redis-host redis"
     plugins:
