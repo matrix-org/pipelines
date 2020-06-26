@@ -5,16 +5,7 @@ steps:
       - "yarn lint"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
-          mount-buildkite-agent: false
-
-  - label: ":jasmine: Tests Node 10"
-    command:
-      - "yarn"
-      - "yarn test"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:10"
+          image: "node:14"
           mount-buildkite-agent: false
 
   - label: ":jasmine: Tests Node 12"
@@ -26,7 +17,16 @@ steps:
           image: "node:12"
           mount-buildkite-agent: false
 
-  - label: ":nodejs: 12 :postgres: 11 :jasmine: Postgres Test"
+  - label: ":jasmine: Tests Node 14"
+    command:
+      - "yarn"
+      - "yarn test"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:14"
+          mount-buildkite-agent: false
+
+  - label: ":nodejs: 14 :postgres: 11 :jasmine: Postgres Test"
     command:
       - yarn
       - yarn ci-test
@@ -45,7 +45,7 @@ steps:
       - "yarn ci-test"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
+          image: "node:14"
           mount-buildkite-agent: false
 
   - label: ":newspaper: Newsfile"

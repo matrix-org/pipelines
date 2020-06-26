@@ -8,7 +8,7 @@ services:
     command: -c fsync=off
 
   testenv:
-    image: node:12
+    image: node:14
     depends_on:
       - postgres
     environment:
