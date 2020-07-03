@@ -27,6 +27,16 @@ steps:
           image: "python:3.7"
           mount-buildkite-agent: false
 
+
+  - command:
+      - "python -m pip install isort"
+      - "isort --check-only --diff"
+    label: "\U0001F9F9 Check import sort"
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.7"
+          mount-buildkite-agent: false
+
   - command:
       - "python -m pip install mypy"
       - "mypy sygnal"
