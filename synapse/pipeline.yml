@@ -62,6 +62,19 @@ steps:
 
   - wait
 
+  - label ":package: build distributions"
+    branches: "release-*"
+    queue: ephemeral-small
+    command:
+      - python setup.py sdist bdist_wheel
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.7"
+          mount-buildkite-agent: false
+      - artifacts#v1.2.0:
+          upload:
+            - dist/matrix-synapse-*
+
   ################################################################################
   #
   # `trial` tests
