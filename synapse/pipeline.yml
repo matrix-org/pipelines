@@ -60,9 +60,7 @@ steps:
           image: "python:3.7"
           mount-buildkite-agent: false
 
-  - wait
-
-  - label ":package: build distributions"
+  - label ":package: build distribution files"
     branches: "release-*"
     queue: ephemeral-small
     command:
@@ -74,6 +72,8 @@ steps:
       - artifacts#v1.2.0:
           upload:
             - dist/matrix-synapse-*
+
+  - wait
 
   ################################################################################
   #
