@@ -60,7 +60,7 @@ steps:
           image: "python:3.7"
           mount-buildkite-agent: false
 
-  - label ":package: build distribution files"
+  - label: ":package: build distribution files"
     branches: "release-*"
     agents:
       queue: ephemeral-small
