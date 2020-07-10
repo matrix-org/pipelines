@@ -72,7 +72,7 @@ steps:
           mount-buildkite-agent: false
       - artifacts#v1.2.0:
           upload:
-            - dist/matrix-synapse-*
+            - dist/*
 
   - wait
 
