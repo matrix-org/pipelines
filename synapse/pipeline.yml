@@ -62,7 +62,8 @@ steps:
 
   - label ":package: build distribution files"
     branches: "release-*"
-    queue: ephemeral-small
+    agents:
+      queue: ephemeral-small
     command:
       - python setup.py sdist bdist_wheel
     plugins:
