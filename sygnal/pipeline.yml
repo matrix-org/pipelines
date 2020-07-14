@@ -29,8 +29,8 @@ steps:
 
 
   - command:
-      - "python -m pip install isort"
-      - "isort --check-only --diff"
+      - "python -m pip install 'isort~=5.0'"
+      - "isort --check-only --diff ."
     label: "\U0001F9F9 Check import sort"
     plugins:
       - docker#v3.0.1:
