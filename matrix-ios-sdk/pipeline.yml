@@ -5,7 +5,10 @@ steps:
   - label: "Setup Gems & Pods"
     # agents:
     #   queue: "medium"
-    command: "bundle install && bundle exec pod install"
+    command:
+      - gem install bundler
+      - bundle install
+      - bundle exec pod install
     plugins: &docker
       - docker#v3.5.0:
           image: "swift"
@@ -22,7 +25,15 @@ steps:
     plugins: *docker
 
   - label: "Dump CP env for debug"
-    command: "pod env"
+    command: "bundle exec pod env"
+    plugins: *docker
+
+  - label: "Fastlane Info"
+    command: "bundle exec fastlane lanes"
+    plugins: *docker
+
+  - label: "Xcode Info"
+    command: "xcodebuild -showBuildSettings"
     plugins: *docker
 
   - wait
