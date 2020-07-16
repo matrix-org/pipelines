@@ -1,0 +1,32 @@
+# Use Docker file from https://hub.docker.com/r/runmymind/docker-android-sdk
+
+steps:
+  # Install RubyGems and CocoaPods libs
+  - label: "Setup Gems & Pods"
+    # agents:
+    #   queue: "medium"
+    command: "bundle install && bundle exec pod install"
+    plugins: &docker
+      - docker#v3.5.0:
+          image: "swift"
+          mount-buildkite-agent: false
+
+  - label: "Hello Develop"
+    command: "echo Hello World from Develop or feature branch $BUILDKITE_BRANCH."
+    branches: "develop feature/*"
+    plugins: *docker
+
+  - label: "Hello Master"
+    command: "echo Hello World from Master branch."
+    branches: "master"
+    plugins: *docker
+
+  - label: "Dump CP env for debug"
+    command: "pod env"
+    plugins: *docker
+
+  - wait
+
+  - label: "Good Bye"
+    command: "echo All sync'd up."
+    plugins: *docker
