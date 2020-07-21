@@ -14,17 +14,6 @@ steps:
           propagate-environment: true
           mount-buildkite-agent: false
 
-  - label: ":eslint: TS Lint"
-    command:
-      - "echo '--- Install'"
-      - "yarn install --ignore-scripts"
-      - "echo '+++ Lint'"
-      - "yarn lint:ts"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:12"
-          mount-buildkite-agent: false
-
   - label: ":eslint: Types Lint"
     command:
       - "echo '--- Install'"
