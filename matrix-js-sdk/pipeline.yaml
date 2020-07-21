@@ -8,15 +8,6 @@ steps:
           image: "node:12"
           mount-buildkite-agent: false
 
-  - label: ":tslint: TS Lint"
-    command:
-      - "yarn install"
-      - "yarn lint:ts"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:12"
-          mount-buildkite-agent: false
-
   - label: ":typescript: Types Lint"
     command:
       - "yarn install"
