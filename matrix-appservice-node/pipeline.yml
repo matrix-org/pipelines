@@ -1,0 +1,18 @@
+steps:
+  - label: ":eslint: Lint"
+    command:
+      - "yarn"
+      - "yarn lint"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:14"
+          mount-buildkite-agent: false
+
+  - label: ":newspaper: Newsfile"
+    branches: "!master !release-*"
+    command:
+      - "./scripts/changelog-check.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.6"
+          mount-buildkite-agent: false
