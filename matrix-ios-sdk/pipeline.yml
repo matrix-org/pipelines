@@ -7,7 +7,7 @@ steps:
       queue: "macOS"
     command:
       - gem install bundler
-      - bundle install
+      - bundle install --path=./vendor/
       - bundle exec pod install
 
   - label: "Hello Develop"
