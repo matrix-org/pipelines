@@ -5,6 +5,7 @@ steps:
       - "npm run lint"
     plugins:
       - docker#v3.0.1:
+          mount-buildkite-agent: false
           image: "node:14"
 
   - label: ":nodejs: 12 :mocha: Unit/Integration Test"
