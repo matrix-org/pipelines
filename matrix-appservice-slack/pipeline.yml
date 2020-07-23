@@ -14,6 +14,7 @@ steps:
       - "npm run test"
     plugins:
       - docker#v3.0.1:
+          mount-buildkite-agent: false
           image: "node:12"
 
   - label: ":nodejs: 14 :mocha: Unit/Integration Test"
@@ -23,6 +24,7 @@ steps:
       - "npm run test"
     plugins:
       - docker#v3.0.1:
+          mount-buildkite-agent: false
           image: "node:14"
 
   - label: ":nodejs: 14 :postgres: 11 :mocha: Postgres Test"
@@ -31,10 +33,13 @@ steps:
       - "npm run build"
       - "npm run test:postgres"
     plugins:
-      - docker-compose#v2.1.0:
+      - matrix-org/download#v1.1.0:
+          urls:
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/matrix-appservice-slack/docker-compose.postgres.yml
+      - docker-compose#v3.2.0:
           run: testenv
           config:
-            - .buildkite/docker-compose.postgres.yml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.postgres.yml
 
   - label: ":newspaper: Newsfile"
     branches: "!master !develop !release-*"
@@ -45,3 +50,4 @@ steps:
       - docker#v3.0.1:
           image: "python:3.6"
           propagate-environment: true
+          mount-buildkite-agent: false
