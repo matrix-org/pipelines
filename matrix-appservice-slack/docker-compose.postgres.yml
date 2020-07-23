@@ -17,5 +17,4 @@ services:
       SLACKBRIDGE_TEST_PGURL: "postgresql://postgres:postgres@postgres"
     working_dir: /app
     volumes:
-      - ..:/app
-    command: "bash -c 'npm install && npm run build && npm run test:postgres'"
+      - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/app
