@@ -4,7 +4,8 @@ steps:
   # Install RubyGems and CocoaPods libs
   - label: "Setup Gems & Pods"
     agents: &macos
-      queue: "macOS"
+      queue: "macos"
+      git: "github"
     command:
       - gem install bundler
       - bundle install --path=./vendor/
