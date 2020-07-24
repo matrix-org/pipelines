@@ -7,7 +7,6 @@ steps:
       queue: "macos"
       git: "github"
     command:
-      - gem install bundler
       - bundle install --path=./vendor/
       - bundle exec pod install
 
