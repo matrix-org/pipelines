@@ -55,7 +55,7 @@ steps:
       # Run 'file' command on each file, checking for Windows-style line terminators.
       # grep returns exit code 1 when it doesn't find anything. We invert this as
       # finding entries are a bad thing
-      - "find . -type f -exec file '{}' ';' | (! grep 'CRLF line terminators')"
+      - "find . -type f -path './.git/*' -prune -o -exec file '{}' ';' | (! grep 'CRLF line terminators')"
     plugins:
       - docker#v3.0.1:
           image: "python:3.6"
