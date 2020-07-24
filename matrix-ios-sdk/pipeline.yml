@@ -6,7 +6,10 @@ steps:
       queue: "macos"
       git: "github"
     command:
-      - source $HOME/.zshrc
+      - env
+      - echo $HOME
+      - echo $USER
+      - source ~$USER/.zshrc
       - env
       - gem env
 
