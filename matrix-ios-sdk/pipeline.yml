@@ -1,11 +1,17 @@
 # Use Docker file from https://hub.docker.com/r/runmymind/docker-android-sdk
 
 steps:
-  # Install RubyGems and CocoaPods libs
-  - label: "Setup Gems & Pods"
+  - label: "Intro"
     agents: &macos
       queue: "macos"
       git: "github"
+    command:
+      - env
+      - gem env
+
+  # Install RubyGems and CocoaPods libs
+  - label: "Setup Gems & Pods"
+    agents: *macos
     command:
       - bundle install --path=./vendor/
       - bundle exec pod install
