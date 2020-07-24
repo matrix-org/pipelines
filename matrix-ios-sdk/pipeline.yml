@@ -5,10 +5,10 @@ steps:
     agents: &macos
       queue: "macos"
       git: "github"
-    command:
-      - export GEM_HOME=$(ruby -e 'puts Gem.user_dir')
-      - export GEM_PATH=$GEM_HOME
-      - export PATH=$PATH:$GEM_HOME/bin
+    command: |
+      export GEM_HOME=$(ruby -e 'puts Gem.user_dir')
+      export GEM_PATH=$GEM_HOME
+      export PATH=$PATH:$GEM_HOME/bin
 
   - label: "Debug Environment"
     agents: *macos
