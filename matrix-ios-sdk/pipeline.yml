@@ -1,14 +1,6 @@
 # Use Docker file from https://hub.docker.com/r/runmymind/docker-android-sdk
 
-steps:
-  - label: "Test"
-    agents: &macos
-      queue: "macos"
-      git: "github"
-    command:
-      - env
-      - gem env
-      
+steps:      
   - label: "Setup RubyGems Home"
     agents: &macos
       queue: "macos"
