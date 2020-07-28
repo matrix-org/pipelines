@@ -50,6 +50,14 @@ steps:
           image: "python:3.6"
           mount-buildkite-agent: false
 
+  - label: "\U0001F5A5 check unix line-endings"
+    command:
+      - "scripts-dev/check_line_terminators.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.6"
+          mount-buildkite-agent: false
+
   - label: ":mypy: mypy"
     command:
       - "python -m pip install tox"
