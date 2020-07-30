@@ -2,76 +2,56 @@ yaml_aliases:
   agent: &macos
     queue: "macos"
     git: "github"
-  save_cache_script: &save_pods_cache |
-    cat \>save_cache.sh <<SAVE_CACHE_SCRIPT
-      CACHE_MANIFEST_FILE=Podfile.lock
-      CACHE_PATH_TO_SAVE=Pods/
-
-      checksum=$(shasum ${CACHE_MANIFEST_FILE} | awk '{print $1}')
-      cachekey=v1-cache-$checksum
-      cachedir="/tmp/buildkite-agent-cache/${BUILDKITE_ORGANIZATION_SLUG}/\${BUILDKITE_PIPELINE_SLUG}"
-
-      echo "Saving cache with key ${cache_key}..."
-      mkdir -p "${cachedir}/${cachekey}"
-      rsync -a --delete "${CACHE_PATH_TO_SAVE}/" "${cachedir}/${cachekey}/${CACHE_PATH_TO_SAVE}/"
-      echo "Cache saved."
-    SAVE_CACHE_SCRIPT
-  restore_cache_script: &restore_pods_cache |
-    cat \>restore_cache.sh <<RESTORE_CACHE_SCRIPT
-      CACHE_MANIFEST_FILE=Podfile.lock
-
-      checksum=$(shasum ${CACHE_MANIFEST_FILE} | awk '{print $1}')
-      cachekey=v1-cache-$checksum
-      cachedir="/tmp/buildkite-agent-cache/${BUILDKITE_ORGANIZATION_SLUG}/${BUILDKITE_PIPELINE_SLUG}"
-      echo "Restoring cache with key ${cache_key}..."
-      mkdir -p "${cachedir}/${cachekey}"
-      rsync -a "${cache_prefix}/${cache_key}/" .
-      echo "Cache restored."
-    RESTORE_CACHE_SCRIPT
   
 steps:
-  # Install RubyGems and CocoaPods libs
-  - label: "Install Gems & Pods"
-    key: setup-pods
+  ### Steps for Release Branches
+
+  - label: "Release: Lint Pod"
+    key: release-lint
     agents: *macos
+    branches: "release/*/release"
     commands:
       - bundle install
-      - bundle exec pod install
-      - pwd
-      - ls
-      - ls Pods
-      - *save_pods_cache
-      - echo "== Script Content:"
-      - cat save_cache.sh
-      - echo "== Runing Script..."      
-      - sh save_cache.sh
+      - bundle exec fastlane lint_pods
 
-  - wait
-
-  - label: "Dump CP env for debug"
+  - label: "Release: Build iOS"
+    key: release-build-ios
     agents: *macos
-    depends_on: setup-pods
+    branches: "release/*/release"
     commands:
-      - *restore_pods_cache
-      - pwd
-      - ls
-      - echo "=== Gem Env"
-      - gem env
-      - echo "=== Pod Env"
-      - bundle exec pod env
+      - bundle install
+      - bundle exec fastlane build_ios
 
-  - label: "Fastlane Info"
+  - label: "Release: Build macOS"
+    key: release-build-macos
     agents: *macos
+    branches: "release/*/release"
     commands:
-      - bundle exec fastlane lanes
+      - bundle install
+      - bundle exec fastlane build_macos
 
-  - label: "Xcode Info"
+  ### Steps for Feature Branches
+
+  - label: "Feature: Lint Pod"
+    key: feature-lint
     agents: *macos
-    command: 
-      - xcodebuild -showBuildSettings
+    branches: "feature/*"
+    commands:
+      - bundle install
+      - bundle exec fastlane lint_pods
 
-  - wait
-
-  - label: "Good Bye"
+  - label: "Feature: Build iOS"
+    key: feature-build-ios
     agents: *macos
-    command: "echo All sync'd up."
+    branches: "feature/*"
+    commands:
+      - bundle install
+      - bundle exec fastlane build_ios
+
+  - label: "Feature: Build macOS"
+    key: feature-build-macos
+    agents: *macos
+    branches: "feature/*"
+    commands:
+      - bundle install
+      - bundle exec fastlane build_macos
