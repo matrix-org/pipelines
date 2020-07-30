@@ -33,7 +33,7 @@ steps:
   - label: ":newspaper: Newsfile"
     command:
       - "python -m pip install tox"
-      - "scripts-dev/check-newsfragment"
+      - "scripts-dev/check-newsfragment || echo 'Please see the contributing guide for help: https://github.com/matrix-org/synapse/blob/master/CONTRIBUTING.md#changelog'"
     branches: "!master !develop !release-*"
     plugins:
       - docker#v3.0.1:
