@@ -14,6 +14,11 @@ steps:
       - pwd
       - ls
       - ls Pods
+    plugins: # Save Cache
+      - gencer/cache#v2.0.7:
+          rsync_storage: '/tmp/buildkite-cache'
+          cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
+          paths: [ "Pods/" ]
 
   - wait
 
@@ -22,14 +27,10 @@ steps:
     depends_on: setup-pods
     env:
       BUILDKITE_AGENT_CACHE_PATH: "/tmp/buildkite-cache-dir/"
-    plugins:
-      "cache:v1.0.0":
-        paths:
-          - path: Pods
-            manifest: Podfile.lock
-            scopes: [manifest]
-            post-cache-miss:
-              - bundle exec pod install
+    plugins: # Restore Cache
+      - gencer/cache#v2.0.7:
+          rsync_storage: '/tmp/buildkite-cache'
+          cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
     commands:
       - pwd
       - ls
