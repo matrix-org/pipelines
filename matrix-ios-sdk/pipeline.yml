@@ -3,7 +3,7 @@ yaml_aliases:
     queue: "macos"
     git: "github"
   save_cache_script: &save_pods_cache |
-    sh <<SAVE_CACHE_SCRIPT
+    >save_cache.sh cat <<SAVE_CACHE_SCRIPT
       CACHE_MANIFEST_FILE=Podfile.lock
       CACHE_PATH_TO_SAVE=Pods/
 
@@ -17,7 +17,7 @@ yaml_aliases:
       echo "Cache saved."
     SAVE_CACHE_SCRIPT
   restore_cache_script: &restore_pods_cache |
-    sh <<RESTORE_CACHE_SCRIPT
+    >restore_cache.sh cat <<RESTORE_CACHE_SCRIPT
       CACHE_MANIFEST_FILE=Podfile.lock
 
       checksum=$(shasum ${CACHE_MANIFEST_FILE} | awk '{print $1}')
@@ -41,7 +41,10 @@ steps:
       - ls
       - ls Pods
       - *save_pods_cache
-
+      - echo "== Script Content:"
+      - cat save_cache.sh
+      - echo "== Runing Script..."      
+      - sh save_cache
 
   - wait
 
