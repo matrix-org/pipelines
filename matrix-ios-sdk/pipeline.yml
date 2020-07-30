@@ -12,6 +12,7 @@ steps:
     branches: "release/*/release"
     commands:
       - bundle install
+      - bundle exec pod install
       - bundle exec fastlane lint_pods
 
   - label: "Release: Build iOS"
@@ -20,6 +21,7 @@ steps:
     branches: "release/*/release"
     commands:
       - bundle install
+      - bundle exec pod install
       - bundle exec fastlane build_ios
 
   - label: "Release: Build macOS"
@@ -28,6 +30,7 @@ steps:
     branches: "release/*/release"
     commands:
       - bundle install
+      - bundle exec pod install
       - bundle exec fastlane build_macos
 
   ### Steps for Feature Branches
@@ -38,6 +41,7 @@ steps:
     branches: "feature/*"
     commands:
       - bundle install
+      - bundle exec pod install
       - bundle exec fastlane lint_pods
 
   - label: "Feature: Build iOS"
@@ -46,6 +50,7 @@ steps:
     branches: "feature/*"
     commands:
       - bundle install
+      - bundle exec pod install
       - bundle exec fastlane build_ios
 
   - label: "Feature: Build macOS"
@@ -54,4 +59,5 @@ steps:
     branches: "feature/*"
     commands:
       - bundle install
+      - bundle exec pod install
       - bundle exec fastlane build_macos
