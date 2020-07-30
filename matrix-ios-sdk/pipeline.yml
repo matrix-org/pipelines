@@ -2,6 +2,26 @@ yaml_aliases:
   agent: &macos
     queue: "macos"
     git: "github"
+  cache_scripts:
+    - &save_pods_cache sh <<SAVE_CACHE
+        CACHE_MANIFEST_FILE=Podfile.lock
+        CACHE_PATH_TO_SAVE=Pods/
+
+        checksum=$(shasum ${CACHE_MANIFEST_FILE} | awk '{print $1}')
+        cachekey=v1-cache-$checksum
+        cachedir="/tmp/buildkite-agent-cache/${BUILDKITE_ORGANIZATION_SLUG}/${BUILDKITE_PIPELINE_SLUG}"
+        mkdir -p "${cachedir}/${cachekey}"
+        rsync -a --delete "${CACHE_PATH_TO_SAVE}/" "${cachedir}/${cachekey}/${CACHE_PATH_TO_SAVE}/"
+      CACHE
+    - &restore_pods_cache sh <<RESTORE_CACHE
+        CACHE_MANIFEST_FILE=Podfile.lock
+
+        checksum=$(shasum ${CACHE_MANIFEST_FILE} | awk '{print $1}')
+        cachekey=v1-cache-$checksum
+        cachedir="/tmp/buildkite-agent-cache/${BUILDKITE_ORGANIZATION_SLUG}/${BUILDKITE_PIPELINE_SLUG}"
+        mkdir -p "${cachedir}/${cachekey}"
+        rsync -a "${cache_prefix}/${cache_key}/" .
+      CACHE
   
 steps:
   # Install RubyGems and CocoaPods libs
@@ -14,24 +34,16 @@ steps:
       - pwd
       - ls
       - ls Pods
-    plugins: # Save Cache
-      - gencer/cache#v2.0.7:
-          rsync_storage: '/tmp/buildkite-cache'
-          cache_key: "v1-cache-{{ checksum Podfile.lock }}"
-          paths: [ "Pods/" ]
+      - *save_pods_cache
+
 
   - wait
 
   - label: "Dump CP env for debug"
     agents: *macos
     depends_on: setup-pods
-    env:
-      BUILDKITE_AGENT_CACHE_PATH: "/tmp/buildkite-cache-dir/"
-    plugins: # Restore Cache
-      - gencer/cache#v2.0.7:
-          rsync_storage: '/tmp/buildkite-cache'
-          cache_key: "v1-cache-{{ checksum Podfile.lock }}"
     commands:
+      - *restore_pods_cache
       - pwd
       - ls
       - echo "=== Gem Env"
