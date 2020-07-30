@@ -1,18 +1,12 @@
-# Use Docker file from https://hub.docker.com/r/runmymind/docker-android-sdk
-
-steps:      
-  - label: "Debug env"
-    agents: &macos
-      queue: "macos"
-      git: "github"
-    commands:
-      - env
-      - echo $HOME
-      - echo $USER
-      - gem env
-
+yaml_aliases:
+  agent: &macos
+    queue: "macos"
+    git: "github"
+  
+steps:
   # Install RubyGems and CocoaPods libs
   - label: "Install Gems & Pods"
+    key: setup-pods
     agents: *macos
     commands:
       - bundle install
@@ -20,23 +14,22 @@ steps:
       - pwd
       - ls
       - ls Pods
+    artifact_paths:
+      - "Pods/**/*"
 
-  # - label: "Hello Develop"
-  #   agents: *macos
-  #   command: "echo Hello World from Develop or feature branch $BUILDKITE_BRANCH."
-  #   branches: "develop feature/*"
-
-  # - label: "Hello Master"
-  #   agents: *macos
-  #   command: "echo Hello World from Master branch."
-  #   branches: "master"
+  - wait
 
   - label: "Dump CP env for debug"
     agents: *macos
+    depends_on: setup-pods
     commands:
       - pwd
       - ls
-      - ls Pods
+      - echo "=== Download artefacts"
+      - buildkite-agent artifact download Pods . --step setup-pods
+      - echo "=== Post-artefact-download"
+      - ls
+      - echo "=== Gem Env"
       - gem env
       - bundle exec pod env
 
