@@ -7,21 +7,26 @@ yaml_aliases:
       CACHE_MANIFEST_FILE=Podfile.lock
       CACHE_PATH_TO_SAVE=Pods/
 
-      checksum=\$(shasum \${CACHE_MANIFEST_FILE} | awk '{print \$1}')
-      cachekey=v1-cache-\$checksum
-      cachedir="/tmp/buildkite-agent-cache/\${BUILDKITE_ORGANIZATION_SLUG}/\${BUILDKITE_PIPELINE_SLUG}"
-      mkdir -p "\${cachedir}/\${cachekey}"
-      rsync -a --delete "\${CACHE_PATH_TO_SAVE}/" "\${cachedir}/\${cachekey}/\${CACHE_PATH_TO_SAVE}/"
+      checksum=$(shasum ${CACHE_MANIFEST_FILE} | awk '{print $1}')
+      cachekey=v1-cache-$checksum
+      cachedir="/tmp/buildkite-agent-cache/${BUILDKITE_ORGANIZATION_SLUG}/\${BUILDKITE_PIPELINE_SLUG}"
+
+      echo "Saving cache with key ${cache_key}..."
+      mkdir -p "${cachedir}/${cachekey}"
+      rsync -a --delete "${CACHE_PATH_TO_SAVE}/" "${cachedir}/${cachekey}/${CACHE_PATH_TO_SAVE}/"
+      echo "Cache saved."
     SAVE_CACHE_SCRIPT
   restore_cache_script: &restore_pods_cache |
     sh <<RESTORE_CACHE_SCRIPT
       CACHE_MANIFEST_FILE=Podfile.lock
 
-      checksum=\$(shasum \${CACHE_MANIFEST_FILE} | awk '{print \$1}')
-      cachekey=v1-cache-\$checksum
-      cachedir="/tmp/buildkite-agent-cache/\${BUILDKITE_ORGANIZATION_SLUG}/\${BUILDKITE_PIPELINE_SLUG}"
-      mkdir -p "\${cachedir}/\${cachekey}"
-      rsync -a "\${cache_prefix}/\${cache_key}/" .
+      checksum=$(shasum ${CACHE_MANIFEST_FILE} | awk '{print $1}')
+      cachekey=v1-cache-$checksum
+      cachedir="/tmp/buildkite-agent-cache/${BUILDKITE_ORGANIZATION_SLUG}/${BUILDKITE_PIPELINE_SLUG}"
+      echo "Restoring cache with key ${cache_key}..."
+      mkdir -p "${cachedir}/${cachekey}"
+      rsync -a "${cache_prefix}/${cache_key}/" .
+      echo "Cache restored."
     RESTORE_CACHE_SCRIPT
   
 steps:
