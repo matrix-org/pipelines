@@ -1,7 +1,7 @@
 # Use Docker file from https://hub.docker.com/r/runmymind/docker-android-sdk
 
 steps:      
-  - label: "Setup RubyGems Home"
+  - label: "Debug env"
     agents: &macos
       queue: "macos"
       git: "github"
@@ -9,8 +9,6 @@ steps:
       - env
       - echo $HOME
       - echo $USER
-      - source ~$USER/.zshrc
-      - env
       - gem env
 
   # Install RubyGems and CocoaPods libs
@@ -19,7 +17,9 @@ steps:
     commands:
       - bundle install
       - bundle exec pod install
-      - ls .
+      - pwd
+      - ls
+      - ls Pods
 
   # - label: "Hello Develop"
   #   agents: *macos
@@ -34,7 +34,9 @@ steps:
   - label: "Dump CP env for debug"
     agents: *macos
     commands:
-      - ls .
+      - pwd
+      - ls
+      - ls Pods
       - gem env
       - bundle exec pod env
 
