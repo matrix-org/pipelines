@@ -3,16 +3,14 @@ yaml_aliases:
     queue: "macos"
     git: "github"
   cache:
-    - &save_pods_cache
-      danthorpe/cache#v1.0.0:
-        rsync_storage: '/tmp/buildkite-cache'
-        cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
-        paths: [ "Pods/" ]
-    - &restore_pods_cache
-      danthorpe/cache#v1.0.0:
-        rsync_storage: '/tmp/buildkite-cache'
-        cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
-
+    - &cached_pod_install
+      "cache:v1.0.0":
+        paths:
+          - path: Pods
+            manifest: Podfile.lock
+            scopes: [manifest]
+            post-cache-miss:
+              - bundle exec pod install
   
 steps:
   # Install RubyGems and CocoaPods libs
@@ -25,30 +23,19 @@ steps:
       - pwd
       - ls
       - ls Pods
-    plugins: # Save Cache
-      - danthorpe/cache#v1.0.0:
-          rsync_storage: '/tmp/buildkite-cache'
-          cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
-          paths: [ "Pods/" ]
 
   - wait
 
   - label: "Dump CP env for debug"
     agents: *macos
     depends_on: setup-pods
-    plugins: # Restore Cache
-      - danthorpe/cache#v1.0.0:
-          rsync_storage: '/tmp/buildkite-cache'
-          cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
+    plugins: *cached_pod_install
     commands:
       - pwd
       - ls
-      - echo "=== Download artefacts"
-      - buildkite-agent artifact download Pods . --step setup-pods
-      - echo "=== Post-artefact-download"
-      - ls
       - echo "=== Gem Env"
       - gem env
+      - echo "=== Pod Env"
       - bundle exec pod env
 
   - label: "Fastlane Info"
