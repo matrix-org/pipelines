@@ -2,15 +2,6 @@ yaml_aliases:
   agent: &macos
     queue: "macos"
     git: "github"
-  cache:
-    - &cached_pod_install
-      "cache:v1.0.0":
-        paths:
-          - path: Pods
-            manifest: Podfile.lock
-            scopes: [manifest]
-            post-cache-miss:
-              - bundle exec pod install
   
 steps:
   # Install RubyGems and CocoaPods libs
@@ -29,7 +20,16 @@ steps:
   - label: "Dump CP env for debug"
     agents: *macos
     depends_on: setup-pods
-    plugins: *cached_pod_install
+    env:
+      BUILDKITE_AGENT_CACHE_PATH: "/tmp/buildkite-cache-dir/"
+    plugins:
+      "cache:v1.0.0":
+        paths:
+          - path: Pods
+            manifest: Podfile.lock
+            scopes: [manifest]
+            post-cache-miss:
+              - bundle exec pod install
     commands:
       - pwd
       - ls
