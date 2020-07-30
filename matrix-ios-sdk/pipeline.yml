@@ -5,7 +5,7 @@ steps:
     agents: &macos
       queue: "macos"
       git: "github"
-    command:
+    commands:
       - env
       - echo $HOME
       - echo $USER
@@ -16,34 +16,40 @@ steps:
   # Install RubyGems and CocoaPods libs
   - label: "Install Gems & Pods"
     agents: *macos
-    command:
-      - bundle install --path=./vendor/
+    commands:
+      - bundle install
       - bundle exec pod install
+      - ls .
 
-  - label: "Hello Develop"
-    command: "echo Hello World from Develop or feature branch $BUILDKITE_BRANCH."
-    branches: "develop feature/*"
-    agents: *macos
+  # - label: "Hello Develop"
+  #   agents: *macos
+  #   command: "echo Hello World from Develop or feature branch $BUILDKITE_BRANCH."
+  #   branches: "develop feature/*"
 
-  - label: "Hello Master"
-    command: "echo Hello World from Master branch."
-    branches: "master"
-    agents: *macos
+  # - label: "Hello Master"
+  #   agents: *macos
+  #   command: "echo Hello World from Master branch."
+  #   branches: "master"
 
   - label: "Dump CP env for debug"
-    command: "bundle exec pod env"
     agents: *macos
+    commands:
+      - ls .
+      - gem env
+      - bundle exec pod env
 
   - label: "Fastlane Info"
-    command: "bundle exec fastlane lanes"
     agents: *macos
+    commands:
+      - bundle exec fastlane lanes
 
   - label: "Xcode Info"
-    command: "xcodebuild -showBuildSettings"
     agents: *macos
+    command: 
+      - xcodebuild -showBuildSettings
 
   - wait
 
   - label: "Good Bye"
-    command: "echo All sync'd up."
     agents: *macos
+    command: "echo All sync'd up."
