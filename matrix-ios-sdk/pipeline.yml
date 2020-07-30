@@ -2,6 +2,17 @@ yaml_aliases:
   agent: &macos
     queue: "macos"
     git: "github"
+  cache:
+    - &save_pods_cache
+      danthorpe/cache#v1.0.0:
+        rsync_storage: '/tmp/buildkite-cache'
+        cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
+        paths: [ "Pods/" ]
+    - &restore_pods_cache
+      danthorpe/cache#v1.0.0:
+        rsync_storage: '/tmp/buildkite-cache'
+        cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
+
   
 steps:
   # Install RubyGems and CocoaPods libs
@@ -14,14 +25,21 @@ steps:
       - pwd
       - ls
       - ls Pods
-    artifact_paths:
-      - "Pods"
+    plugins: # Save Cache
+      - danthorpe/cache#v1.0.0:
+          rsync_storage: '/tmp/buildkite-cache'
+          cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
+          paths: [ "Pods/" ]
 
   - wait
 
   - label: "Dump CP env for debug"
     agents: *macos
     depends_on: setup-pods
+    plugins: # Restore Cache
+      - danthorpe/cache#v1.0.0:
+          rsync_storage: '/tmp/buildkite-cache'
+          cache_key: "v1-cache-{{ checksum 'Podfile.lock' }}"
     commands:
       - pwd
       - ls
