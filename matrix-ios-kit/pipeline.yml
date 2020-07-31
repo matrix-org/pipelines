@@ -13,7 +13,7 @@ x-yaml-aliases:
     - &release_branch "release/*/release"
     - &feature_branch "!master !develop !realease/*"
   commands:
-    - &setup
+    - &setup |
       brew install cmake
       bundle install
       bundle exec pod install
