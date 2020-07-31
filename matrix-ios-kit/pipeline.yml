@@ -13,10 +13,11 @@ x-yaml-aliases:
     - &release_branch "release/*/release"
     - &feature_branch "!master !develop !realease/*"
   commands:
-    - &bundle_install
+    - &setup
+      brew install cmake
       bundle install
-    - &pod_install
       bundle exec pod install
+      printf %100s | tr ' ' '=' # separator line
     - &pod_lint
       bundle exec pod lib lint MatrixKit.podspec --verbose --allow-warnings
     - &build_sample_app
@@ -30,8 +31,7 @@ steps:
     branches: *release_branch
     env: *env
     commands:
-      - *bundle_install
-      - *pod_install
+      - *setup
       - *pod_lint
 
   - label: "Release: Build Sample App"
@@ -39,8 +39,7 @@ steps:
     branches: *release_branch
     env: *env
     commands:
-      - *bundle_install
-      - *pod_install
+      - *setup
       - *build_sample_app
 
   ### Steps for Feature Branches
@@ -50,8 +49,7 @@ steps:
     branches: *feature_branch
     env: *env
     commands:
-      - *bundle_install
-      - *pod_install
+      - *setup
       - *pod_lint
 
   - label: "Feature: Build Sample App"
@@ -59,6 +57,5 @@ steps:
     branches: *feature_branch
     env: *env
     commands:
-      - *bundle_install
-      - *pod_install
+      - *setup
       - *build_sample_app
