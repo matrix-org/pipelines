@@ -13,10 +13,9 @@ x-yaml-aliases:
     - &release_branch "release/*/release"
     - &feature_branch "!master !develop !realease/*"
   commands:
-    - &bundle_install
+    - &setup |
       bundle install
-    - &pod_install
-      bundle exec pod install
+      printf %100s | tr ' ' '=' # separator line
     - &build_adhoc
       bundle exec fastlane adhoc
   
@@ -28,8 +27,8 @@ steps:
     branches: *release_branch
     env: *env
     commands:
-      - *bundle_install
-      - *pod_install
+      - *setup
+      - bundle exec fastlane point_dependencies_to_pending_releases
       - *build_adhoc
 
   ### Steps for Feature Branches
@@ -39,6 +38,6 @@ steps:
     branches: *feature_branch
     env: *env
     commands:
-      - *bundle_install
-      - *pod_install
+      - *setup
+      - bundle exec fastlane point_dependencies_to_same_feature
       - *build_adhoc
