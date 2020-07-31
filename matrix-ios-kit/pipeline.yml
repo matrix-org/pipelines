@@ -26,13 +26,15 @@ x-yaml-aliases:
 steps:
   ### Steps for Release Branches
 
-  - label: "Release: Lint Pod"
-    agents: *macos
-    branches: *release_branch
-    env: *env
-    commands:
-      - *setup
-      - *pod_lint
+  #=== Disable this one for now until we have better CI machines than our MacMini ===
+  # - label: "Release: Lint Pod"
+  #   agents: *macos
+  #   branches: *release_branch
+  #   env: *env
+  #   commands:
+  #     - *setup
+  #     - bundle exec fastlane point_podspec_to_pending_releases
+  #     - *pod_lint
 
   - label: "Release: Build Sample App"
     agents: *macos
@@ -40,17 +42,20 @@ steps:
     env: *env
     commands:
       - *setup
+      - bundle exec fastlane point_sample_app_to_pending_releases
       - *build_sample_app
 
   ### Steps for Feature Branches
 
-  - label: "Feature: Lint Pod"
-    agents: *macos
-    branches: *feature_branch
-    env: *env
-    commands:
-      - *setup
-      - *pod_lint
+  #=== Disable this one for now until we have better CI machines than our MacMini ===
+  # - label: "Feature: Lint Pod"
+  #   agents: *macos
+  #   branches: *feature_branch
+  #   env: *env
+  #   commands:
+  #     - *setup
+  #     - bundle exec fastlane point_podspec_to_same_feature
+  #     - *pod_lint
 
   - label: "Feature: Build Sample App"
     agents: *macos
@@ -58,4 +63,5 @@ steps:
     env: *env
     commands:
       - *setup
+      - bundle exec fastlane point_sample_app_to_same_feature
       - *build_sample_app
