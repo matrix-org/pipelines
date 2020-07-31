@@ -1,13 +1,18 @@
-yaml_aliases:
+# This is just a dummy entry (the `x-yaml-aliases` key is not an official pipeline key, and will be ignored by BuildKite)
+#   that we use only to store YAML anchors (`&xxx`), that we plan to use and reference later in the YAML file (using `*xxx`)
+#   without having to copy/paste the same values over and over.
+#   Note: keys like `agent`, `env`, … used here are totally arbitrary; the only point is to define various separate `&xxx` anchors there.
+#
+x-yaml-aliases:
   agent: &macos
     queue: "macos"
     git: "github"
-  env_vars: &env
+  env: &env
     FASTLANE_SKIP_UPDATE_CHECK: 1
   branches:
     - &release_branch "release/*/release"
-    - &feature_branch "feature/*"
-  cmds:
+    - &feature_branch "!master !develop !realease/*"
+  commands:
     - &bundle_install
       bundle install
     - &pod_install
