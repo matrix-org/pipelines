@@ -1,0 +1,59 @@
+yaml_aliases:
+  agent: &macos
+    queue: "macos"
+    git: "github"
+  env_vars: &env
+    FASTLANE_SKIP_UPDATE_CHECK: 1
+  branches:
+    - &release_branch "release/*/release"
+    - &feature_branch "feature/*"
+  cmds:
+    - &bundle_install
+      bundle install
+    - &pod_install
+      bundle exec pod install
+    - &pod_lint
+      bundle exec pod lib lint MatrixKit.podspec --verbose --allow-warnings
+    - &build_sample_app
+      bundle exec fastlane build_sample_app
+  
+steps:
+  ### Steps for Release Branches
+
+  - label: "Release: Lint Pod"
+    agents: *macos
+    branches: *release_branch
+    env: *env
+    commands:
+      - *bundle_install
+      - *pod_install
+      - *pod_lint
+
+  - label: "Release: Build Sample App"
+    agents: *macos
+    branches: *release_branch
+    env: *env
+    commands:
+      - *bundle_install
+      - *pod_install
+      - *build_sample_app
+
+  ### Steps for Feature Branches
+
+  - label: "Feature: Lint Pod"
+    agents: *macos
+    branches: *feature_branch
+    env: *env
+    commands:
+      - *bundle_install
+      - *pod_install
+      - *pod_lint
+
+  - label: "Feature: Build Sample App"
+    agents: *macos
+    branches: *feature_branch
+    env: *env
+    commands:
+      - *bundle_install
+      - *pod_install
+      - *build_sample_app

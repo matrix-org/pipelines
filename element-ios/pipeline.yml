@@ -1,0 +1,39 @@
+yaml_aliases:
+  agent: &macos
+    queue: "macos"
+    git: "github"
+  env_vars: &env
+    FASTLANE_SKIP_UPDATE_CHECK: 1
+  branches:
+    - &release_branch "release/*/release"
+    - &feature_branch "feature/*"
+  cmds:
+    - &bundle_install
+      bundle install
+    - &pod_install
+      bundle exec pod install
+    - &build_adhoc
+      bundle exec fastlane adhoc
+  
+steps:
+  ### Steps for Release Branches
+
+  - label: "Release: Build App"
+    agents: *macos
+    branches: *release_branch
+    env: *env
+    commands:
+      - *bundle_install
+      - *pod_install
+      - *build_adhoc
+
+  ### Steps for Feature Branches
+
+  - label: "Feature: Build App"
+    agents: *macos
+    branches: *feature_branch
+    env: *env
+    commands:
+      - *bundle_install
+      - *pod_install
+      - *build_adhoc
