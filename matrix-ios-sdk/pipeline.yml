@@ -21,7 +21,7 @@ x-yaml-aliases:
 steps:
   ### Steps for Release Branches
 
-  #=== Disable this one for now until we have better CI machines that our MacMini ===
+  #=== Disable this one for now until we have better CI machines than our MacMini ===
   # - label: "Release: Lint Pod"
   #   agents: *macos
   #   branches: *release_branch
@@ -31,7 +31,7 @@ steps:
   #     - *pod_install
   #     - bundle exec fastlane lint_pods
 
-  #=== Disable this one for now until we have better CI machines that our MacMini ===
+  #=== Disable this one for now until we have better CI machines than our MacMini ===
   # - label: "Release: Build iOS"
   #   agents: *macos
   #   branches: *release_branch
@@ -52,7 +52,7 @@ steps:
 
   ### Steps for Feature Branches
 
-  #=== Disable this one for now until we have better CI machines that our MacMini ===
+  #=== Disable this one for now until we have better CI machines than our MacMini ===
   # - label: "Feature: Lint Pod"
   #   agents: *macos
   #   branches: *feature_branch
@@ -62,7 +62,7 @@ steps:
   #     - *pod_install
   #     - bundle exec fastlane lint_pods
 
-  #=== Disable this one for now until we have better CI machines that our MacMini ===
+  #=== Disable this one for now until we have better CI machines than our MacMini ===
   # - label: "Feature: Build iOS"
   #   agents: *macos
   #   branches: *feature_branch
