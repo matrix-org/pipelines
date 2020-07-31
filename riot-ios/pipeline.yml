@@ -16,8 +16,8 @@ x-yaml-aliases:
     - &setup |
       bundle install
       printf %100s | tr ' ' '=' # separator line
-    - &build_adhoc
-      bundle exec fastlane adhoc
+    - &build_app
+      bundle exec fastlane build
   
 steps:
   ### Steps for Release Branches
@@ -29,7 +29,7 @@ steps:
     commands:
       - *setup
       - bundle exec fastlane point_dependencies_to_pending_releases
-      - *build_adhoc
+      - *build_app
 
   ### Steps for Feature Branches
 
@@ -40,4 +40,4 @@ steps:
     commands:
       - *setup
       - bundle exec fastlane point_dependencies_to_same_feature
-      - *build_adhoc
+      - *build_app
