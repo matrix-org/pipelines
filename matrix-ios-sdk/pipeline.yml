@@ -13,23 +13,28 @@ x-yaml-aliases:
     - &release_branch "release/*/release"
     - &feature_branch "!master !develop !realease/*"
   commands:
-    - &bundle_install
+    - &setup |
       bundle install
-    - &pod_install
-      bundle exec pod install
+      for n ({1..100}); do printf "="; done; print
+    - &pod_lint
+      #=== Use '--quick' mode for now until we have better CI machines than our MacMini ===
+      bundle exec pod lib lint MatrixSDK.podspec --verbose --allow-warnings --quick
+      # bundle exec fastlane lint_pods
+    - &build_macos
+      bundle exec fastlane build_macos
+    - &build_ios
+      bundle exec fastlane build_ios
   
 steps:
   ### Steps for Release Branches
 
-  #=== Disable this one for now until we have better CI machines than our MacMini ===
-  # - label: "Release: Lint Pod"
-  #   agents: *macos
-  #   branches: *release_branch
-  #   env: *env
-  #   commands:
-  #     - *bundle_install
-  #     - *pod_install
-  #     - bundle exec fastlane lint_pods
+  - label: "Release: Lint Pod"
+    agents: *macos
+    branches: *release_branch
+    env: *env
+    commands:
+      - *setup
+      - *pod_lint
 
   #=== Disable this one for now until we have better CI machines than our MacMini ===
   # - label: "Release: Build iOS"
@@ -37,30 +42,26 @@ steps:
   #   branches: *release_branch
   #   env: *env
   #   commands:
-  #     - *bundle_install
-  #     - *pod_install
-  #     - bundle exec fastlane build_ios
+  #     - *setup
+  #     - *build_ios
 
   - label: "Release: Build macOS"
     agents: *macos
     branches: *release_branch
     env: *env
     commands:
-      - *bundle_install
-      - *pod_install
-      - bundle exec fastlane build_macos
+      - *setup
+      - *build_macos
 
   ### Steps for Feature Branches
 
-  #=== Disable this one for now until we have better CI machines than our MacMini ===
-  # - label: "Feature: Lint Pod"
-  #   agents: *macos
-  #   branches: *feature_branch
-  #   env: *env
-  #   commands:
-  #     - *bundle_install
-  #     - *pod_install
-  #     - bundle exec fastlane lint_pods
+  - label: "Feature: Lint Pod"
+    agents: *macos
+    branches: *feature_branch
+    env: *env
+    commands:
+      - *setup
+      - *pod_lint
 
   #=== Disable this one for now until we have better CI machines than our MacMini ===
   # - label: "Feature: Build iOS"
@@ -68,15 +69,13 @@ steps:
   #   branches: *feature_branch
   #   env: *env
   #   commands:
-  #     - *bundle_install
-  #     - *pod_install
-  #     - bundle exec fastlane build_ios
+  #     - *setup
+  #     - *build_ios
 
   - label: "Feature: Build macOS"
     agents: *macos
     branches: *feature_branch
     env: *env
     commands:
-      - *bundle_install
-      - *pod_install
-      - bundle exec fastlane build_macos
+      - *setup
+      - *build_macos

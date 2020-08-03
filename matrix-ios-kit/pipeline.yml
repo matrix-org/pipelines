@@ -16,25 +16,25 @@ x-yaml-aliases:
     - &setup |
       brew install cmake
       bundle install
-      bundle exec pod install
-      printf %100s | tr ' ' '=' # separator line
+      for n ({1..100}); do printf "="; done; print
     - &pod_lint
-      bundle exec pod lib lint MatrixKit.podspec --verbose --allow-warnings
+      #=== Use '--quick' mode for now until we have better CI machines than our MacMini ===
+      bundle exec pod lib lint MatrixKit.podspec --verbose --allow-warnings --quick
+      # bundle exec pod lib lint MatrixKit.podspec --verbose --allow-warnings
     - &build_sample_app
       bundle exec fastlane build_sample_app
   
 steps:
   ### Steps for Release Branches
 
-  #=== Disable this one for now until we have better CI machines than our MacMini ===
-  # - label: "Release: Lint Pod"
-  #   agents: *macos
-  #   branches: *release_branch
-  #   env: *env
-  #   commands:
-  #     - *setup
-  #     - bundle exec fastlane point_podspec_to_pending_releases
-  #     - *pod_lint
+  - label: "Release: Lint Pod"
+    agents: *macos
+    branches: *release_branch
+    env: *env
+    commands:
+      - *setup
+      - bundle exec fastlane point_podspec_to_pending_releases
+      - *pod_lint
 
   - label: "Release: Build Sample App"
     agents: *macos
@@ -47,15 +47,14 @@ steps:
 
   ### Steps for Feature Branches
 
-  #=== Disable this one for now until we have better CI machines than our MacMini ===
-  # - label: "Feature: Lint Pod"
-  #   agents: *macos
-  #   branches: *feature_branch
-  #   env: *env
-  #   commands:
-  #     - *setup
-  #     - bundle exec fastlane point_podspec_to_same_feature
-  #     - *pod_lint
+  - label: "Feature: Lint Pod"
+    agents: *macos
+    branches: *feature_branch
+    env: *env
+    commands:
+      - *setup
+      - bundle exec fastlane point_podspec_to_same_feature
+      - *pod_lint
 
   - label: "Feature: Build Sample App"
     agents: *macos

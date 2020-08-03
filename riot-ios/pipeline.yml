@@ -16,7 +16,7 @@ x-yaml-aliases:
     - &setup |
       brew install cmake
       bundle install
-      printf %100s | tr ' ' '=' # separator line
+      for n ({1..100}); do printf "="; done; print
     - &build_app
       bundle exec fastlane build
   
