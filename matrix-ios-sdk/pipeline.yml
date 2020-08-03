@@ -15,7 +15,7 @@ x-yaml-aliases:
   commands:
     - &setup |
       bundle install
-      for n ({1..100}); do printf "="; done; print
+      printf %100s\\n | tr ' ' '='
     - &pod_lint
       #=== Use '--quick' mode for now until we have better CI machines than our MacMini ===
       bundle exec pod lib lint MatrixSDK.podspec --verbose --allow-warnings --quick
