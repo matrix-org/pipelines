@@ -14,6 +14,7 @@ x-yaml-aliases:
     - &feature_branch "!master !develop !realease/*"
   commands:
     - &setup |
+      brew install cmake
       bundle install
       printf %100s | tr ' ' '=' # separator line
     - &build_app
