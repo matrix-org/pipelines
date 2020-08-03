@@ -18,9 +18,10 @@ x-yaml-aliases:
       bundle install
       printf %100s\\n | tr ' ' '='
     - &pod_lint
+      # MatrixKit-*.podspec and MatrixSDK-*.pospec are created by the `bundle exec fastlane point_podspec_to_…` lanes supposed to be run beforehand
       #=== Use '--quick' mode for now until we have better CI machines than our MacMini ===
-      bundle exec pod lib lint MatrixKit.podspec --verbose --allow-warnings --quick
-      # bundle exec pod lib lint MatrixKit.podspec --verbose --allow-warnings
+      bundle exec pod lib lint MatrixKit-*.podspec --verbose --allow-warnings --external-podspecs=MatrixSDK-*.podspec --quick
+      # bundle exec pod lib lint MatrixKit-*.podspec --verbose --allow-warnings --external-podspecs=MatrixSDK-*.podspec 
     - &build_sample_app
       bundle exec fastlane build_sample_app
   
