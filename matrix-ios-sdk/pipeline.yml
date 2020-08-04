@@ -1,7 +1,7 @@
 # This is just a dummy entry (the `x-yaml-aliases` key is not an official pipeline key, and will be ignored by BuildKite)
-#   that we use only to store YAML anchors (`&xxx`), that we plan to use and reference later in the YAML file (using `*xxx`)
-#   without having to copy/paste the same values over and over.
-#   Note: keys like `agent`, `env`, … used here are totally arbitrary; the only point is to define various separate `&xxx` anchors there.
+# that we use only to store YAML anchors (`&xxx`), that we plan to use and reference later in the YAML file (using `*xxx`)
+# without having to copy/paste the same values over and over.
+# Note: keys like `agent`, `env`, … used here are totally arbitrary; the only point is to define various separate `&xxx` anchors there.
 #
 x-yaml-aliases:
   agent: &macos
