@@ -36,7 +36,7 @@ x-yaml-aliases:
     - &build_ios
       bundle exec fastlane build_ios
     - &run_e2e_tests
-      echo We are now supposed to run 'bundle exec fastlane test'
+      bundle exec fastlane test
 
 ################################################################################
 
@@ -106,3 +106,8 @@ steps:
     commands:
       - *setup
       - *run_e2e_tests
+      - zip -r build/test/MatrixSDK-macOS.xcresult.zip build/test/MatrixSDK-macOS.xcresult
+    artifact_paths:
+      - "build/test/report.html"
+      - "build/test/report.junit"
+      - "build/test/MatrixSDK-macOS.xcresult.zip"
