@@ -55,7 +55,7 @@ steps:
   # # Disable this one for now until we have better CI machines than our MacMini
   # - label: "Release: Build iOS"
   #   agents: *macos
-  #   branches: *release_branch
+  #   if: *release_branch
   #   env: *env
   #   commands:
   #     - *setup
@@ -83,7 +83,7 @@ steps:
   # # Disable this one for now until we have better CI machines than our MacMini
   # - label: "Feature: Build iOS"
   #   agents: *macos
-  #   branches: *feature_branch
+  #   if: *feature_branch
   #   env: *env
   #   commands:
   #     - *setup

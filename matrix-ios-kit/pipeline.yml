@@ -9,9 +9,20 @@ x-yaml-aliases:
     git: "github"
   env: &env
     FASTLANE_SKIP_UPDATE_CHECK: 1
-  branches:
-    - &release_branch "release/*/release"
-    - &feature_branch "!master !develop !realease/*"
+  conditions:
+    - &release_branch |
+      // Only on PR builds, and for branches starting with 'release/'
+      build.branch =~ /^release\// &&
+        build.env("NIGHTLY_BUILD") == null
+    - &feature_branch |
+      // Only on PR builds, and for branches other than 'develop', 'master', and 'release/*'
+      build.branch != 'master' &&
+        build.branch != 'develop' &&
+        build.branch !~ /^release\// &&
+        build.env("NIGHTLY_BUILD") == null
+    - &nightly |
+      // Only for nightly builds
+      build.env("NIGHTLY_BUILD") != null
   commands:
     - &setup |
       brew install cmake
@@ -24,13 +35,16 @@ x-yaml-aliases:
       # bundle exec pod lib lint local-podspecs/MatrixKit.podspec --verbose --allow-warnings --external-podspecs=local-podspecs/MatrixSDK.podspec
     - &build_sample_app
       bundle exec fastlane build_sample_app
-  
+
+################################################################################
+
 steps:
-  ### Steps for Release Branches
+
+  ###### Steps for Release Branches ######
 
   - label: "Release: Lint Pod"
     agents: *macos
-    branches: *release_branch
+    if: *release_branch
     env: *env
     commands:
       - *setup
@@ -39,18 +53,18 @@ steps:
 
   - label: "Release: Build Sample App"
     agents: *macos
-    branches: *release_branch
+    if: *release_branch
     env: *env
     commands:
       - *setup
       - bundle exec fastlane point_sample_app_to_pending_releases
       - *build_sample_app
 
-  ### Steps for Feature Branches
+  ###### Steps for Feature Branches ######
 
   - label: "Feature: Lint Pod"
     agents: *macos
-    branches: *feature_branch
+    if: *feature_branch
     env: *env
     commands:
       - *setup
@@ -59,7 +73,7 @@ steps:
 
   - label: "Feature: Build Sample App"
     agents: *macos
-    branches: *feature_branch
+    if: *feature_branch
     env: *env
     commands:
       - *setup
