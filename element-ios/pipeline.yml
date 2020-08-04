@@ -44,6 +44,7 @@ steps:
     env: *env
     commands:
       - *setup
+      - echo --- Point dependencies to pending releases
       - bundle exec fastlane point_dependencies_to_pending_releases
       - *build_app
 
@@ -55,5 +56,6 @@ steps:
     env: *env
     commands:
       - *setup
+      - echo --- Point dependencies to same feature branch
       - bundle exec fastlane point_dependencies_to_same_feature
       - *build_app

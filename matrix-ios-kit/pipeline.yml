@@ -51,6 +51,7 @@ steps:
     env: *env
     commands:
       - *setup
+      - echo --- Point podspec to pending release
       - bundle exec fastlane point_podspec_to_pending_releases
       - *pod_lint
 
@@ -60,6 +61,7 @@ steps:
     env: *env
     commands:
       - *setup
+      - echo --- Point sample app to pending release
       - bundle exec fastlane point_sample_app_to_pending_releases
       - *build_sample_app
 
@@ -71,6 +73,7 @@ steps:
     env: *env
     commands:
       - *setup
+      - echo --- Point podspec to same feature branch
       - bundle exec fastlane point_podspec_to_same_feature
       - *pod_lint
 
@@ -80,5 +83,6 @@ steps:
     env: *env
     commands:
       - *setup
+      - echo --- Point sample app to same feature branch
       - bundle exec fastlane point_sample_app_to_same_feature
       - *build_sample_app
