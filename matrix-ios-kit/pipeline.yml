@@ -28,7 +28,6 @@ x-yaml-aliases:
       echo --- Setup
       brew install cmake
       bundle install
-      printf %100s\\n | tr ' ' '='
     - &pod_lint |
       echo --- pod lib lint
       # MatrixKit-*.podspec and MatrixSDK-*.pospec are created by the `bundle exec fastlane point_podspec_to_…` lanes supposed to be run beforehand
