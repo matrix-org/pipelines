@@ -9,9 +9,20 @@ x-yaml-aliases:
     git: "github"
   env: &env
     FASTLANE_SKIP_UPDATE_CHECK: 1
-  branches:
-    - &release_branch "release/*/release"
-    - &feature_branch "!master !develop !realease/*"
+  conditions:
+    - &release_branch |
+      // Only on PR builds, and for branches starting with 'release/'
+      build.branch =~ /^release\// &&
+        build.env("NIGHTLY_BUILD") == null
+    - &feature_branch |
+      // Only on PR builds, and for branches other than 'develop', 'master', and 'release/*'
+      build.branch != 'master' &&
+        build.branch != 'develop' &&
+        build.branch !~ /^release\// &&
+        build.env("NIGHTLY_BUILD") == null
+    - &nightly |
+      // Only for nightly builds
+      build.env("NIGHTLY_BUILD") != null
   commands:
     - &setup |
       bundle install
@@ -24,19 +35,24 @@ x-yaml-aliases:
       bundle exec fastlane build_macos
     - &build_ios
       bundle exec fastlane build_ios
-  
+    - &run_e2e_tests
+      echo We are now supposed to run 'bundle exec fastlane test'
+
+################################################################################
+
 steps:
-  ### Steps for Release Branches
+
+  ###### Steps for Release Branches ###### 
 
   - label: "Release: Lint Pod"
     agents: *macos
-    branches: *release_branch
+    if: *release_branch
     env: *env
     commands:
       - *setup
       - *pod_lint
 
-  #=== Disable this one for now until we have better CI machines than our MacMini ===
+  # # Disable this one for now until we have better CI machines than our MacMini
   # - label: "Release: Build iOS"
   #   agents: *macos
   #   branches: *release_branch
@@ -47,23 +63,24 @@ steps:
 
   - label: "Release: Build macOS"
     agents: *macos
-    branches: *release_branch
+    if: *release_branch
     env: *env
     commands:
       - *setup
       - *build_macos
 
-  ### Steps for Feature Branches
+
+  ###### Steps for Feature Branches ###### 
 
   - label: "Feature: Lint Pod"
     agents: *macos
-    branches: *feature_branch
+    if: *feature_branch
     env: *env
     commands:
       - *setup
       - *pod_lint
 
-  #=== Disable this one for now until we have better CI machines than our MacMini ===
+  # # Disable this one for now until we have better CI machines than our MacMini
   # - label: "Feature: Build iOS"
   #   agents: *macos
   #   branches: *feature_branch
@@ -74,8 +91,18 @@ steps:
 
   - label: "Feature: Build macOS"
     agents: *macos
-    branches: *feature_branch
+    if: *feature_branch
     env: *env
     commands:
       - *setup
       - *build_macos
+
+  ###### Steps for Nightly Builds ###### 
+
+  - label: "Nightly: Run e2e Tests"
+    agents: *macos
+    if: *nightly
+    env: *env
+    commands:
+      - *setup
+      - *run_e2e_tests
