@@ -25,10 +25,11 @@ x-yaml-aliases:
       build.env("NIGHTLY_BUILD") != null
   commands:
     - &setup |
+      echo --- Setup
       brew install cmake
       bundle install
-      printf %100s\\n | tr ' ' '='
-    - &build_app
+    - &build_app |
+      echo --- fastlane build
       bundle exec fastlane build
 
 ################################################################################
