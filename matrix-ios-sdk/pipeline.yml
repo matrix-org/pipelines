@@ -110,8 +110,6 @@ steps:
     commands:
       - *setup
       - *run_e2e_tests
-      - echo --- zip xcresult bundle
-      - zip -r build/test/MatrixSDK-macOS.xcresult.zip build/test/MatrixSDK-macOS.xcresult
     artifact_paths:
       - "build/test/report.html"
       - "build/test/report.junit"
