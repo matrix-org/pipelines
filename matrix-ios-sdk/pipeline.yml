@@ -1,0 +1,116 @@
+# This is just a dummy entry (the `x-yaml-aliases` key is not an official pipeline key, and will be ignored by BuildKite)
+# that we use only to store YAML anchors (`&xxx`), that we plan to use and reference later in the YAML file (using `*xxx`)
+# without having to copy/paste the same values over and over.
+# Note: keys like `agent`, `env`, … used here are totally arbitrary; the only point is to define various separate `&xxx` anchors there.
+#
+x-yaml-aliases:
+  agent: &macos
+    queue: "macos"
+    git: "github"
+  env: &env
+    FASTLANE_SKIP_UPDATE_CHECK: 1
+  conditions:
+    - &release_branch |
+      // Only on PR builds, and for branches starting with 'release/'
+      build.branch =~ /^release\// &&
+        build.env("NIGHTLY_BUILD") == null
+    - &feature_branch |
+      // Only on PR builds, and for branches other than 'develop', 'master', and 'release/*'
+      build.branch != 'master' &&
+        build.branch != 'develop' &&
+        build.branch !~ /^release\// &&
+        build.env("NIGHTLY_BUILD") == null
+    - &nightly |
+      // Only for nightly builds
+      build.env("NIGHTLY_BUILD") != null
+  commands:
+    - &setup |
+      echo --- Setup
+      bundle install
+    - &pod_lint |
+      echo --- pod lib lint
+      #=== Use '--quick' mode for now until we have better CI machines than our MacMini ===
+      bundle exec pod lib lint MatrixSDK.podspec --verbose --allow-warnings --quick
+      # bundle exec fastlane lint_pods
+    - &build_macos |
+      echo --- fastlane build_macos
+      bundle exec fastlane build_macos
+    - &build_ios |
+      echo --- fastlane build_ios
+      bundle exec fastlane build_ios
+    - &run_e2e_tests |
+      echo --- fastlane test
+      bundle exec fastlane test
+
+################################################################################
+
+steps:
+
+  ###### Steps for Release Branches ###### 
+
+  - label: "Release: Lint Pod"
+    agents: *macos
+    if: *release_branch
+    env: *env
+    commands:
+      - *setup
+      - *pod_lint
+
+  # # Disable this one for now until we have better CI machines than our MacMini
+  # - label: "Release: Build iOS"
+  #   agents: *macos
+  #   if: *release_branch
+  #   env: *env
+  #   commands:
+  #     - *setup
+  #     - *build_ios
+
+  - label: "Release: Build macOS"
+    agents: *macos
+    if: *release_branch
+    env: *env
+    commands:
+      - *setup
+      - *build_macos
+
+
+  ###### Steps for Feature Branches ###### 
+
+  - label: "Feature: Lint Pod"
+    agents: *macos
+    if: *feature_branch
+    env: *env
+    commands:
+      - *setup
+      - *pod_lint
+
+  # # Disable this one for now until we have better CI machines than our MacMini
+  # - label: "Feature: Build iOS"
+  #   agents: *macos
+  #   if: *feature_branch
+  #   env: *env
+  #   commands:
+  #     - *setup
+  #     - *build_ios
+
+  - label: "Feature: Build macOS"
+    agents: *macos
+    if: *feature_branch
+    env: *env
+    commands:
+      - *setup
+      - *build_macos
+
+  ###### Steps for Nightly Builds ###### 
+
+  - label: "Nightly: Run e2e Tests"
+    agents: *macos
+    if: *nightly
+    env: *env
+    commands:
+      - *setup
+      - *run_e2e_tests
+    artifact_paths:
+      - "build/test/report.html"
+      - "build/test/report.junit"
+      - "build/test/MatrixSDK-macOS.xcresult.zip"
