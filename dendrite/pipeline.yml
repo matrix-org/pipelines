@@ -1,7 +1,7 @@
 steps:
   - command:
       - "env"
-      - "go build ./cmd/..."
+      - "bash build.sh"
     label: "\U0001F528 Build / :go: 1.13"
     plugins:
       - docker#v3.0.1:
