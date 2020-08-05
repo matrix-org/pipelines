@@ -42,7 +42,6 @@ steps:
     env:
       POSTGRES: "1"
     command:
-      - "bash build.sh"
       - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
@@ -75,7 +74,6 @@ steps:
       POSTGRES: "1"
       API: "1"
     command:
-      - "bash build.sh"
       - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
@@ -105,7 +103,6 @@ steps:
     agents:
       queue: "medium"
     command:
-      - "bash build.sh"
       - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
@@ -138,7 +135,6 @@ steps:
     env:
       API: "1"
     command:
-      - "bash build.sh"
       - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
