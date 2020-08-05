@@ -12,13 +12,13 @@ x-yaml-aliases:
   conditions:
     - &release_branch |
       // Only on PR builds, and for branches starting with 'release/'
-      build.branch =~ /^release\// &&
+      build.branch =~ /^release\/.*\/release/ &&
         build.env("NIGHTLY_BUILD") == null
     - &feature_branch |
       // Only on PR builds, and for branches other than 'develop', 'master', and 'release/*'
       build.branch != 'master' &&
         build.branch != 'develop' &&
-        build.branch !~ /^release\// &&
+        build.branch !~ /^release\/.*\/release/ &&
         build.env("NIGHTLY_BUILD") == null
     - &nightly |
       // Only for nightly builds
