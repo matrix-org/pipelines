@@ -11,8 +11,8 @@ x-yaml-aliases:
     FASTLANE_SKIP_UPDATE_CHECK: 1
   conditions:
     - &release_branch |
-      // Only on PR builds, and for branches starting with 'release/'
-      build.branch =~ /^release\// &&
+      // Only on PR builds, and only for 'release/*/release' branches
+      build.branch =~ /^release\/.*\/release/ &&
         build.env("NIGHTLY_BUILD") == null
     - &feature_branch |
       // Only on PR builds, and for branches other than 'develop', 'master', and 'release/*'
