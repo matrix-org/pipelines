@@ -73,8 +73,9 @@ steps:
       queue: "xlarge"
     commands:
       - "./gradlew clean assembleGplayRelease --stacktrace"
+      - "mv vector/build/outputs/apk/gplay/release/*.apk ."
     artifact_paths:
-      - "vector/build/outputs/apk/gplay/release/*.apk"
+      - "*.apk"
     branches: "master"
     plugins:
       - docker#v3.1.0:
@@ -116,7 +117,7 @@ steps:
     plugins:
       - artifacts#v1.3.0:
           download:
-            - from: "vector-gplay-universal-debug.apk"
+            - from: "vector-gplay-universal-*.apk"
               to: "app.apk"
           upload:
             - "exodus.json"
