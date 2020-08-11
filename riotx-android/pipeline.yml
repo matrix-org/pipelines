@@ -117,11 +117,10 @@ steps:
     plugins:
       - artifacts#v1.3.0:
           download:
-            - from: "vector-gplay-universal-*.apk"
-              to: "app.apk"
+            - "vector-gplay-universal-*.apk"
           upload:
             - "exodus.json"
 
     commands:
-      - "docker run -v $(pwd)/app.apk:/app.apk --rm -i exodusprivacy/exodus-standalone -j > exodus.json"
+      - "docker run -v $(pwd)/vector-gplay-universal-*.apk:/app.apk --rm -i exodusprivacy/exodus-standalone -j > exodus.json"
       - "jq -e '.trackers == []' exodus.json > /dev/null || { echo 'static analysis identified user tracking library' ; false; }"
