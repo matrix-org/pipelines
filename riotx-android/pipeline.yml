@@ -106,3 +106,20 @@ steps:
   - label: "Indonesian"
     command:
       - "diff ./vector/src/main/res/values-id/strings.xml ./vector/src/main/res/values-in/strings.xml"
+
+  - wait
+    
+  # run the εxodus static analyser
+  - label: "exodus"
+    plugins:
+      - artifacts#v1.3.0:
+          download:
+            - from: "**/vector-gplay-universal-debug.apk"
+              to: "app.apk"
+          upload:
+            - "exodus.json"
+
+    commands:
+      - "docker run -v $(pwd)/app.apk:/app.apk --rm -i exodusprivacy/exodus-standalone -j > exodus.json"
+      - "jq -e '.trackers == []' exodus.json > /dev/null || { echo 'static analysis identified user tracking library' ; false; }"
+        
