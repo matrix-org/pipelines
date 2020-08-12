@@ -116,7 +116,6 @@ steps:
   - label: "εxodus"
     plugins:
       - artifacts#v1.3.0:
-          debug: true
           download:
             - "vector-gplay-universal-*.apk"
           upload:
