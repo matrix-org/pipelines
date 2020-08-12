@@ -113,14 +113,16 @@ steps:
   - wait
     
   # run the εxodus static analyser
-  - label: "exodus"
+  - label: "εxodus"
     plugins:
       - artifacts#v1.3.0:
+          debug: true
           download:
             - "vector-gplay-universal-*.apk"
           upload:
             - "exodus.json"
 
     commands:
-      - "docker run -v $(pwd)/vector-gplay-universal-*.apk:/app.apk --rm -i exodusprivacy/exodus-standalone -j > exodus.json"
+      - "mv vector-gplay-universal-*.apk app.apk"
+      - "docker run -v $(pwd)/app.apk:/app.apk --rm -i exodusprivacy/exodus-standalone -j > exodus.json"
       - "jq -e '.trackers == []' exodus.json > /dev/null || { echo 'static analysis identified user tracking library' ; false; }"
