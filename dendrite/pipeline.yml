@@ -35,6 +35,22 @@ steps:
       - docker#v3.0.1:
           image: "golang:1.13"
           mount-buildkite-agent: false
+
+  - command:
+      - "curl -fsSL https://get.docker.com -o get-docker.sh"
+      - "sh get-docker.sh"
+      - "bash build/scripts/complement.sh"
+    label: "\U0001F9EA Complement"
+    agents:
+      queue: "medium"
+    plugins:
+      - docker#v3.5.0:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
+          propagate-environment: true
+          publish: [ "8448:8448" ]
+          volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
           
   - label: "SyTest - :go: 1.13 / :postgres: 9.6"
     agents:
