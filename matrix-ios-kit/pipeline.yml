@@ -26,7 +26,8 @@ x-yaml-aliases:
   commands:
     - &setup |
       echo --- Setup
-      brew install cmake
+      # This will modify files in /usr/local and it can easily break Homebrew => to do manually via SSH instead
+      # brew install cmake
       bundle install
     - &pod_lint |
       echo --- pod lib lint
