@@ -39,7 +39,9 @@ steps:
   - command:
       - "curl -fsSL https://get.docker.com -o get-docker.sh"
       - "sh get-docker.sh"
-      - "bash build/scripts/complement.sh"
+      - "docker build -t complement-dendrite -f build/scripts/Complement.Dockerfile ."
+      - "wget https://github.com/matrix-org/complement/archive/master.tar.gz && tar -xzf master.tar.gz"
+      - "cd complement-master && COMPLEMENT_BASE_IMAGE=complement-dendrite:latest go test -v ./tests"
     label: "\U0001F9EA Complement"
     agents:
       queue: "medium"
