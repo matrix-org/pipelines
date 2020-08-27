@@ -49,8 +49,12 @@ steps:
       - docker#v3.5.0:
           image: "golang:1.13"
           mount-buildkite-agent: false
-          propagate-environment: true
+          # Complement needs to know if it is running under CI
+          environment:
+           - "CI=true"
           publish: [ "8448:8448" ]
+          # Complement uses Docker so pass through the docker socket. This means Complement shares
+          # the hosts Docker.
           volumes:
             - "/var/run/docker.sock:/var/run/docker.sock"
           
