@@ -44,7 +44,7 @@ steps:
       queue: "medium"
     plugins:
       - docker#v3.5.0:
-          image: "kegsay/complement:latest"
+          image: "matrixdotorg/complement:latest"
           mount-buildkite-agent: false
           # Complement needs to know if it is running under CI
           environment:
