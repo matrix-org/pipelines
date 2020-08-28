@@ -35,6 +35,26 @@ steps:
       - docker#v3.0.1:
           image: "golang:1.13"
           mount-buildkite-agent: false
+
+  - command:
+      - "wget -N https://github.com/matrix-org/complement/archive/master.tar.gz && tar -xzf master.tar.gz"
+      - "cd complement-master && COMPLEMENT_BASE_IMAGE=complement-dendrite:latest go test -v ./tests"
+    label: "\U0001F9EA Complement"
+    agents:
+      queue: "medium"
+    plugins:
+      - docker#v3.5.0:
+          # The dockerfile for this image is at https://github.com/matrix-org/complement/blob/master/dockerfiles/ComplementCIBuildkite.Dockerfile.
+          image: "matrixdotorg/complement:latest"
+          mount-buildkite-agent: false
+          # Complement needs to know if it is running under CI
+          environment:
+           - "CI=true"
+          publish: [ "8448:8448" ]
+          # Complement uses Docker so pass through the docker socket. This means Complement shares
+          # the hosts Docker.
+          volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
           
   - label: "SyTest - :go: 1.13 / :postgres: 9.6"
     agents:
