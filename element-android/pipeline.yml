@@ -41,6 +41,7 @@ steps:
       - "mv vector/build/outputs/apk/gplay/debug/*.apk ."
     artifact_paths:
       - "*.apk"
+      - "vector/build/reports/*.*"
     branches: "!master"
     plugins:
       - docker#v3.1.0:
@@ -59,6 +60,7 @@ steps:
       - "mv vector/build/outputs/apk/fdroid/debug/*.apk ."
     artifact_paths:
       - "*.apk"
+      - "vector/build/reports/*.*"
     branches: "!master"
     plugins:
       - docker#v3.1.0:
