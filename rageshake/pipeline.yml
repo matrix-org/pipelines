@@ -1,0 +1,30 @@
+steps:
+  - label: ":rolled_up_newspaper: Check Newsfile"
+    command: ".buildkite/check_changelog.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.7"
+          mount-buildkite-agent: false
+          propagate-environment: true
+    branches: "!master !release-*"
+
+  - label: ":broom: Lint"
+    command: ".buildkite/lint.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
+          
+  - label: ":hammer: Build / :go: 1.11"
+    command: ".buildkite/build-and-test.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.11"
+          mount-buildkite-agent: false
+          
+  - label: ":hammer: Build / :go: 1.13"
+    command: ".buildkite/build-and-test.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.13"
+          mount-buildkite-agent: false

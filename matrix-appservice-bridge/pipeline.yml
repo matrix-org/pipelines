@@ -26,28 +26,6 @@ steps:
           image: "node:14"
           mount-buildkite-agent: false
 
-  - label: ":nodejs: 14 :postgres: 11 :jasmine: Postgres Test"
-    command:
-      - yarn
-      - yarn ci-test
-    plugins:
-      - matrix-org/download#v1.1.0:
-          urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/matrix-appservice-irc/docker-compose.postgres.yml
-      - docker-compose#v3.2.0:
-          run: testenv
-          config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.postgres.yml
-
-  - label: ":nyc: Coverage"
-    command:
-      - "yarn"
-      - "yarn ci-test"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:14"
-          mount-buildkite-agent: false
-
   - label: ":newspaper: Newsfile"
     branches: "!master !develop !release-*"
     command:

@@ -6,9 +6,9 @@
 steps:
   - label: "Compile and run Unit tests"
     agents:
-      # We use a medium sized instance instead of the normal small ones because
-      # gradle build can be memory hungry
-      queue: "medium"
+    # We use a xlarge sized instance instead of the normal small ones because
+    # gradle build can be memory hungry
+      queue: "xlarge"
     commands:
       - "./gradlew clean test --stacktrace"
     plugins:
@@ -38,8 +38,10 @@ steps:
       queue: "ephemeral-xlarge"
     commands:
       - "./gradlew clean lintGplayRelease assembleGplayDebug --stacktrace"
+      - "mv vector/build/outputs/apk/gplay/debug/*.apk ."
     artifact_paths:
-      - "vector/build/outputs/apk/gplay/debug/*.apk"
+      - "*.apk"
+      - "vector/build/reports/*.*"
     branches: "!master"
     plugins:
       - docker#v3.1.0:
@@ -55,8 +57,10 @@ steps:
       queue: "ephemeral-xlarge"
     commands:
       - "./gradlew clean lintFdroidRelease assembleFdroidDebug --stacktrace"
+      - "mv vector/build/outputs/apk/fdroid/debug/*.apk ."
     artifact_paths:
-      - "vector/build/outputs/apk/fdroid/debug/*.apk"
+      - "*.apk"
+      - "vector/build/reports/*.*"
     branches: "!master"
     plugins:
       - docker#v3.1.0:
@@ -71,8 +75,9 @@ steps:
       queue: "xlarge"
     commands:
       - "./gradlew clean assembleGplayRelease --stacktrace"
+      - "mv vector/build/outputs/apk/gplay/release/*.apk ."
     artifact_paths:
-      - "vector/build/outputs/apk/gplay/release/*.apk"
+      - "*.apk"
     branches: "master"
     plugins:
       - docker#v3.1.0:
@@ -106,3 +111,19 @@ steps:
   - label: "Indonesian"
     command:
       - "diff ./vector/src/main/res/values-id/strings.xml ./vector/src/main/res/values-in/strings.xml"
+
+  - wait
+    
+  # run the εxodus static analyser
+  - label: "εxodus"
+    plugins:
+      - artifacts#v1.3.0:
+          download:
+            - "vector-gplay-universal-*.apk"
+          upload:
+            - "exodus.json"
+
+    commands:
+      - "mv vector-gplay-universal-*.apk app.apk"
+      - "docker run -v $(pwd)/app.apk:/app.apk --rm -i exodusprivacy/exodus-standalone -j > exodus.json"
+      - "jq -e '.trackers == []' exodus.json > /dev/null || { echo 'static analysis identified user tracking library' ; false; }"

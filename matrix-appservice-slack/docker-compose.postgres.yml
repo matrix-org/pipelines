@@ -1,3 +1,4 @@
+
 version: '3.1'
 
 services:
@@ -12,9 +13,8 @@ services:
     depends_on:
       - postgres
     environment:
-      IRCBRIDGE_TEST_PGDB: "ircbridge_integtest"
-      IRCBRIDGE_TEST_PGURL: "postgresql://postgres:postgres@postgres"
-      IRCBRIDGE_TEST_ENABLEPG: "yes"
+      SLACKBRIDGE_TEST_PGDB: "slackintegtest"
+      SLACKBRIDGE_TEST_PGURL: "postgresql://postgres:postgres@postgres"
     working_dir: /app
     volumes:
       - ${BUILDKITE_BUILD_CHECKOUT_PATH}:/app

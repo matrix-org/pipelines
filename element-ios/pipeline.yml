@@ -1,0 +1,62 @@
+# This is just a dummy entry (the `x-yaml-aliases` key is not an official pipeline key, and will be ignored by BuildKite)
+# that we use only to store YAML anchors (`&xxx`), that we plan to use and reference later in the YAML file (using `*xxx`)
+# without having to copy/paste the same values over and over.
+# Note: keys like `agent`, `env`, … used here are totally arbitrary; the only point is to define various separate `&xxx` anchors there.
+#
+x-yaml-aliases:
+  agent: &macos
+    queue: "macos"
+    git: "github"
+  env: &env
+    FASTLANE_SKIP_UPDATE_CHECK: 1
+  conditions:
+    - &release_branch |
+      // Only on PR builds, and only for 'release/*/release' branches
+      build.branch =~ /^release\/.*\/release/ &&
+        build.env("NIGHTLY_BUILD") == null
+    - &feature_branch |
+      // Only on PR builds, and for branches other than 'develop', 'master', and 'release/*'
+      build.branch != 'master' &&
+        build.branch != 'develop' &&
+        build.branch !~ /^release\// &&
+        build.env("NIGHTLY_BUILD") == null
+    - &nightly |
+      // Only for nightly builds
+      build.env("NIGHTLY_BUILD") != null
+  commands:
+    - &setup |
+      echo --- Setup
+      # This will modify files in /usr/local and it can easily break Homebrew => to do manually via SSH instead
+      # brew install cmake
+      bundle install
+    - &build_app |
+      echo --- fastlane build
+      bundle exec fastlane build
+
+################################################################################
+
+steps:
+
+  ###### Steps for Release Branches ######
+
+  - label: "Release: Build App"
+    agents: *macos
+    if: *release_branch
+    env: *env
+    commands:
+      - *setup
+      - echo --- Point dependencies to pending releases
+      - bundle exec fastlane point_dependencies_to_pending_releases
+      - *build_app
+
+  ###### Steps for Feature Branches ######
+
+  - label: "Feature: Build App"
+    agents: *macos
+    if: *feature_branch
+    env: *env
+    commands:
+      - *setup
+      - echo --- Point dependencies to same feature branch
+      - bundle exec fastlane point_dependencies_to_same_feature
+      - *build_app

@@ -2,12 +2,13 @@ steps:
   - command:
       - "echo '--- Install towncrier'"
       - "pip install towncrier"
-      - "echo '+++ Check newsfile"
+      - "echo '+++ Check newsfile'"
       - "python -m towncrier.check"
     label: ":rolled_up_newspaper: Newsfile"
     plugins:
       - docker#v3.0.1:
           image: "python:3.6"
+          mount-buildkite-agent: false
     branches: "!master !release-*"
 
   - command:
@@ -19,6 +20,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:2.7"
+          mount-buildkite-agent: false
     artifact_paths:
       - "_trial_temp/test.log"
 
@@ -34,6 +36,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:2.7"
+          mount-buildkite-agent: false
     artifact_paths:
       - "matrix_is_test/sydent.stderr"
       - "_trial_temp/test.log"
@@ -47,6 +50,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:3.5"
+          mount-buildkite-agent: false
     artifact_paths:
       - "_trial_temp/test.log"
 
@@ -62,6 +66,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:3.5"
+          mount-buildkite-agent: false
     artifact_paths:
       - "matrix_is_test/sydent.stderr"
       - "_trial_temp/test.log"
@@ -75,6 +80,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:3.8"
+          mount-buildkite-agent: false
     artifact_paths:
       - "_trial_temp/test.log"
 
@@ -90,6 +96,7 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "python:3.8"
+          mount-buildkite-agent: false
     artifact_paths:
       - "matrix_is_test/sydent.stderr"
       - "_trial_temp/test.log"

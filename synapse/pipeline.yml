@@ -50,6 +50,14 @@ steps:
           image: "python:3.6"
           mount-buildkite-agent: false
 
+  - label: "\U0001F5A5 check unix line-endings"
+    command:
+      - "scripts-dev/check_line_terminators.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.6"
+          mount-buildkite-agent: false
+
   - label: ":mypy: mypy"
     command:
       - "python -m pip install tox"
@@ -59,6 +67,20 @@ steps:
       - docker#v3.0.1:
           image: "python:3.7"
           mount-buildkite-agent: false
+
+  - label: ":package: build distribution files"
+    branches: "release-*"
+    agents:
+      queue: ephemeral-small
+    command:
+      - python setup.py sdist bdist_wheel
+    plugins:
+      - docker#v3.0.1:
+          image: "python:3.7"
+          mount-buildkite-agent: false
+      - artifacts#v1.2.0:
+          upload:
+            - dist/*
 
   - wait
 
@@ -420,18 +442,28 @@ steps:
 
   - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers / :redis: Redis"
     agents:
-      queue: "medium"
+      # this one seems to need a lot of memory.
+      queue: "xlarge"
+    env:
+      POSTGRES: "1"
+      WORKERS: "1"
+      REDIS: "1"
+      BLACKLIST: "synapse-blacklist-with-workers"
     command:
-      - bash -c "cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers && ./.buildkite/merge_base_branch.sh && /bootstrap.sh synapse --redis-host redis"
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
+      - "bash /bootstrap.sh synapse"
     plugins:
-      - matrix-org/download#v1.1.0:
-          urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.sytest.py37.redis.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v2.1.0:
-          run: sytest
-          config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.sytest.py37.redis.yaml
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-synapse:py37"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: "/bin/sh"
+          init: false
+          shell: ["-x", "-c"]
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:

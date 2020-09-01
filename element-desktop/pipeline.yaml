@@ -1,9 +1,14 @@
 steps:
   - label: ":eslint: Lint"
     command:
-      - "yarn install"
+      # We fetch the develop js-sdk to get our latest eslint rules
+      - "echo '--- Install js-sdk'"
+      - "./scripts/ci/install-deps.sh --ignore-scripts"
       - "yarn lint"
     plugins:
       - docker#v3.0.1:
           image: "node:12"
+          # This allows the test script to see what branch it's testing and check
+          # out the equivalent dependency branches, if they exist
+          propagate-environment: true
           mount-buildkite-agent: false

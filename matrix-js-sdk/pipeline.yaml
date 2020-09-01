@@ -8,15 +8,6 @@ steps:
           image: "node:12"
           mount-buildkite-agent: false
 
-  - label: ":tslint: TS Lint"
-    command:
-      - "yarn install"
-      - "yarn lint:ts"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:12"
-          mount-buildkite-agent: false
-
   - label: ":typescript: Types Lint"
     command:
       - "yarn install"
@@ -36,6 +27,10 @@ steps:
           mount-buildkite-agent: false
 
   - label: ":jest: Tests"
+    agents:
+      # We use a medium sized instance instead of the normal small ones because
+      # jest likes our browserified bundle so much it OOMs.
+      queue: "medium"
     command:
       - "yarn install"
       - "yarn test"

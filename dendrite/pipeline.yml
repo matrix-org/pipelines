@@ -1,7 +1,7 @@
 steps:
   - command:
       - "env"
-      - "go build ./cmd/..."
+      - "bash build.sh"
     label: "\U0001F528 Build / :go: 1.13"
     plugins:
       - docker#v3.0.1:
@@ -26,7 +26,7 @@ steps:
   - command:
       - "env"
       # https://github.com/golangci/golangci-lint#memory-usage-of-golangci-lint
-      - "./scripts/find-lint.sh"
+      - "./build/scripts/find-lint.sh"
     label: "\U0001F9F9 Lint / :go: 1.13"
     agents:
       # Use a larger instance as linting takes a looot of memory
@@ -35,6 +35,27 @@ steps:
       - docker#v3.0.1:
           image: "golang:1.13"
           mount-buildkite-agent: false
+
+  - command:
+      - docker build -t complement-dendrite -f build/scripts/Complement.Dockerfile .
+      - "wget -N https://github.com/matrix-org/complement/archive/master.tar.gz && tar -xzf master.tar.gz"
+      - "cd complement-master && COMPLEMENT_BASE_IMAGE=complement-dendrite:latest go test -v ./tests"
+    label: "\U0001F9EA Complement"
+    agents:
+      queue: "medium"
+    plugins:
+      - docker#v3.5.0:
+          # The dockerfile for this image is at https://github.com/matrix-org/complement/blob/master/dockerfiles/ComplementCIBuildkite.Dockerfile.
+          image: "matrixdotorg/complement:latest"
+          mount-buildkite-agent: false
+          # Complement needs to know if it is running under CI
+          environment:
+           - "CI=true"
+          publish: [ "8448:8448" ]
+          # Complement uses Docker so pass through the docker socket. This means Complement shares
+          # the hosts Docker.
+          volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
           
   - label: "SyTest - :go: 1.13 / :postgres: 9.6"
     agents:
@@ -42,7 +63,38 @@ steps:
     env:
       POSTGRES: "1"
     command:
-      - "bash build.sh"
+      - "bash /bootstrap.sh dendrite"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-dendrite"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: '/bin/sh'
+          shell: ["-x", "-c"]
+          init: false
+          debug: true
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+  
+  - label: "SyTest - :go: 1.13 / :postgres: 9.6 / full HTTP APIs"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+      API: "1"
+    command:
       - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
@@ -72,7 +124,6 @@ steps:
     agents:
       queue: "medium"
     command:
-      - "bash build.sh"
       - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
@@ -91,7 +142,37 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-    soft_fail: true
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+
+  - label: "SyTest - :go: 1.13 / :sqlite: 3 / full HTTP APIs"
+    agents:
+      queue: "medium"
+    env:
+      API: "1"
+    command:
+      - "bash /bootstrap.sh dendrite"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-dendrite"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: '/bin/sh'
+          shell: ["-x", "-c"]
+          init: false
+          debug: true
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
     retry:
       automatic:
         - exit_status: -1
