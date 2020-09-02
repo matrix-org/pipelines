@@ -92,7 +92,7 @@ steps:
       - "test/end-to-end-tests/logs/**/*"
       - "test/end-to-end-tests/synapse/installations/consent/homeserver.log"
 
-  - label: ":wrench: Riot Tests"
+  - label: ":wrench: Element Tests"
     agents:
       # We use a medium sized instance instead of the normal small ones because
       # webpack loves to gorge itself on resources.
@@ -122,8 +122,8 @@ steps:
 
   - wait
 
-  - label: ":horse: Trigger riot-web"
-    trigger: "riot-web"
+  - label: ":horse: Trigger element-web"
+    trigger: "element-web"
     branches: "develop"
     build:
         branch: "develop"
