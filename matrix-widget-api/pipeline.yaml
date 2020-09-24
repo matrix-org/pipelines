@@ -1,0 +1,27 @@
+steps:
+  - label: ":eslint: TS Lint"
+    command:
+      - "yarn install"
+      - "yarn lint:ts"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:12"
+          mount-buildkite-agent: false
+
+  - label: ":eslint: Types Lint"
+    command:
+      - "yarn install"
+      - "yarn lint:types"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:12"
+          mount-buildkite-agent: false
+
+  - label: ":hammer_and_wrench: Build"
+    command:
+      - "yarn install"
+      - "yarn build"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:12"
+          mount-buildkite-agent: false
