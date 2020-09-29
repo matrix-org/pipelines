@@ -535,9 +535,14 @@ steps:
   ################################################################################
 
   - command:
+      # Build a docker image from the checked out Synapse source
       - "docker build -t matrixdotorg/synapse:latest -f docker/Dockerfile ."
+      # Download Complement's source code
       - "wget -N https://github.com/matrix-org/complement/archive/master.tar.gz && tar -xzf master.tar.gz"
+      # Build a second docker image on top of the above image. This one sets up Synapse with a generated config file,
+      # signing and SSL keys so Synapse can run and federate
       - "docker build -t complement-synapse -f complement-master/dockerfiles/Synapse.Dockerfile complement-master/dockerfiles"
+      # Finally, run the tests. Complement has already been built in the matrixdotorg/complement:latest" image which we're running in
       - "cd complement-master && COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v ./tests"
     label: "\U0001F9EA Complement"
     agents:
