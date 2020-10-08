@@ -10,7 +10,7 @@ steps:
     # gradle build can be memory hungry
       queue: "xlarge"
     commands:
-      - "./gradlew clean test --stacktrace"
+      - "./gradlew clean test --stacktrace -PallWarningsAsErrors=false"
     plugins:
       - docker#v3.1.0:
           image: "runmymind/docker-android-sdk"
@@ -23,7 +23,7 @@ steps:
     # gradle build can be memory hungry
       queue: "xlarge"
     commands:
-      - "./gradlew clean assembleAndroidTest --stacktrace"
+      - "./gradlew clean assembleAndroidTest --stacktrace -PallWarningsAsErrors=false"
     plugins:
       - docker#v3.1.0:
           image: "runmymind/docker-android-sdk"
