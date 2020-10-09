@@ -73,7 +73,7 @@ steps:
 
   - label: "Synapse - :python: 3.5 / :postgres: 9.6 / Workers"
     agents:
-      queue: "medium"
+      queue: "xlarge"
     env:
       POSTGRES: "1"
       WORKERS: "1"
@@ -148,7 +148,7 @@ steps:
 
   - label: "Synapse - :python: 3.7 / :postgres: 11 / Workers"
     agents:
-      queue: "medium"
+      queue: "xlarge"
     env:
       POSTGRES: "1"
       WORKERS: "1"
@@ -184,7 +184,7 @@ steps:
           limit: 2
         - exit_status: 2
           limit: 2
-          
+
   - label: "Dendrite - :go: 1.11 / :postgres: 9.6"
     agents:
       queue: "medium"
