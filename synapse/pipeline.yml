@@ -334,7 +334,7 @@ steps:
 
   - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Workers"
     agents:
-      queue: "medium"
+      queue: "xlarge"
     env:
       MULTI_POSTGRES: "1"  # Test with split out databases
       POSTGRES: "1"
@@ -405,7 +405,7 @@ steps:
 
   - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers"
     agents:
-      queue: "medium"
+      queue: "xlarge"
     env:
       MULTI_POSTGRES: "1"  # Test with split out databases
       POSTGRES: "1"
