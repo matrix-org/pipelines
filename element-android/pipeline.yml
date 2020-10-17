@@ -68,6 +68,23 @@ steps:
           propagate-environment: true
           mount-buildkite-agent: false
 
+  - label: ":android: Lint analysis of the SDK"
+    agents:
+      # We use a xlarge sized instance instead of the normal small ones because
+      # gradle build can be memory hungry
+      # build on the burn-after-use ephemeral queue
+      queue: "ephemeral-xlarge"
+    commands:
+      - "./gradlew clean :matrix-sdk-android:lintRelease --stacktrace"
+    artifact_paths:
+      - "matrix-sdk-android/build/reports/*.*"
+    branches: "!master"
+    plugins:
+      - docker#v3.1.0:
+          image: "runmymind/docker-android-sdk"
+          propagate-environment: true
+          mount-buildkite-agent: false
+
   - label: ":android: Build Google Play unsigned release APK"
     agents:
       # We use a xlarge sized instance instead of the normal small ones because
