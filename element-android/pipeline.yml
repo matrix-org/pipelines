@@ -39,7 +39,7 @@ steps:
     commands:
       - "./gradlew clean lintGplayRelease assembleGplayDebug --stacktrace"
       - "mv vector/build/outputs/apk/gplay/debug/*.apk ."
-      key: "elementApp"
+    key: "elementApp"
     artifact_paths:
       - "*.apk"
       - "vector/build/reports/*.*"
@@ -77,7 +77,7 @@ steps:
     commands:
       - "./gradlew clean assembleGplayRelease --stacktrace"
       - "mv vector/build/outputs/apk/gplay/release/*.apk ."
-      key: "elementApp"
+    key: "elementApp"
     artifact_paths:
       - "*.apk"
     branches: "master"
