@@ -6,8 +6,8 @@
 steps:
   - label: "Compile and run Unit tests"
     agents:
-    # We use a xlarge sized instance instead of the normal small ones because
-    # gradle build can be memory hungry
+      # We use a xlarge sized instance instead of the normal small ones because
+      # gradle build can be memory hungry
       queue: "xlarge"
     commands:
       - "./gradlew clean test --stacktrace -PallWarningsAsErrors=false"
@@ -19,8 +19,8 @@ steps:
 
   - label: "Compile Android tests"
     agents:
-    # We use a xlarge sized instance instead of the normal small ones because
-    # gradle build can be memory hungry
+      # We use a xlarge sized instance instead of the normal small ones because
+      # gradle build can be memory hungry
       queue: "xlarge"
     commands:
       - "./gradlew clean assembleAndroidTest --stacktrace -PallWarningsAsErrors=false"
@@ -72,8 +72,7 @@ steps:
     agents:
       # We use a xlarge sized instance instead of the normal small ones because
       # gradle build can be memory hungry
-      # build on the burn-after-use ephemeral queue
-      queue: "ephemeral-xlarge"
+      queue: "xlarge"
     commands:
       - "./gradlew clean :matrix-sdk-android:lintRelease --stacktrace"
     artifact_paths:
@@ -130,7 +129,7 @@ steps:
       - "diff ./vector/src/main/res/values-id/strings.xml ./vector/src/main/res/values-in/strings.xml"
 
   - wait
-    
+
   # run the εxodus static analyser
   - label: "εxodus"
     plugins:
