@@ -39,6 +39,7 @@ steps:
     commands:
       - "./gradlew clean lintGplayRelease assembleGplayDebug --stacktrace"
       - "mv vector/build/outputs/apk/gplay/debug/*.apk ."
+      key: "elementApp"
     artifact_paths:
       - "*.apk"
       - "vector/build/reports/*.*"
@@ -76,6 +77,7 @@ steps:
     commands:
       - "./gradlew clean assembleGplayRelease --stacktrace"
       - "mv vector/build/outputs/apk/gplay/release/*.apk ."
+      key: "elementApp"
     artifact_paths:
       - "*.apk"
     branches: "master"
@@ -112,8 +114,6 @@ steps:
     command:
       - "diff ./vector/src/main/res/values-id/strings.xml ./vector/src/main/res/values-in/strings.xml"
 
-  - wait
-    
   # run the εxodus static analyser
   - label: "εxodus"
     plugins:
@@ -127,3 +127,4 @@ steps:
       - "mv vector-gplay-universal-*.apk app.apk"
       - "docker run -v $(pwd)/app.apk:/app.apk --rm -i exodusprivacy/exodus-standalone -j > exodus.json"
       - "jq -e '.trackers == []' exodus.json > /dev/null || { echo 'static analysis identified user tracking library' ; false; }"
+      depends_on: "elementApp"
