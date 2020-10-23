@@ -6,8 +6,8 @@
 steps:
   - label: "Compile and run Unit tests"
     agents:
-    # We use a xlarge sized instance instead of the normal small ones because
-    # gradle build can be memory hungry
+      # We use a xlarge sized instance instead of the normal small ones because
+      # gradle build can be memory hungry
       queue: "xlarge"
     commands:
       - "./gradlew clean test --stacktrace -PallWarningsAsErrors=false"
@@ -19,8 +19,8 @@ steps:
 
   - label: "Compile Android tests"
     agents:
-    # We use a xlarge sized instance instead of the normal small ones because
-    # gradle build can be memory hungry
+      # We use a xlarge sized instance instead of the normal small ones because
+      # gradle build can be memory hungry
       queue: "xlarge"
     commands:
       - "./gradlew clean assembleAndroidTest --stacktrace -PallWarningsAsErrors=false"
@@ -62,6 +62,22 @@ steps:
     artifact_paths:
       - "*.apk"
       - "vector/build/reports/*.*"
+    branches: "!master"
+    plugins:
+      - docker#v3.1.0:
+          image: "runmymind/docker-android-sdk"
+          propagate-environment: true
+          mount-buildkite-agent: false
+
+  - label: ":android: Lint analysis of the SDK"
+    agents:
+      # We use a xlarge sized instance instead of the normal small ones because
+      # gradle build can be memory hungry
+      queue: "xlarge"
+    commands:
+      - "./gradlew clean :matrix-sdk-android:lintRelease --stacktrace"
+    artifact_paths:
+      - "matrix-sdk-android/build/reports/*.*"
     branches: "!master"
     plugins:
       - docker#v3.1.0:
