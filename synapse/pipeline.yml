@@ -191,12 +191,15 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py35.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py35.pg95.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.5
+            - POSTGRES_VERSION=9.5
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -218,12 +221,15 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg11.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py37.pg11.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.7
+            - POSTGRES_VERSION=11
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -245,12 +251,15 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py38.pg12.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py38.pg12.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.8
+            - POSTGRES_VERSION=12
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -492,12 +501,15 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py35.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py35.pg95.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.5
+            - POSTGRES_VERSION=9.5
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -511,12 +523,15 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg11.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
       - docker-compose#v2.1.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py37.pg11.yaml
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.7
+            - POSTGRES_VERSION=11
       - artifacts#v1.2.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:

@@ -3,14 +3,14 @@ version: '3.1'
 services:
 
   postgres:
-    image: postgres:11
+    image: postgres:${POSTGRES_VERSION?}
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_INITDB_ARGS: "--lc-collate C --lc-ctype C --encoding UTF8"
     command: -c fsync=off
 
   testenv:
-    image: python:3.7
+    image: python:${PYTHON_VERSION?}
     depends_on:
       - postgres
     env_file: docker-compose-env
