@@ -7,7 +7,14 @@ steps:
       - docker#v3.0.1:
           image: "node:14"
           mount-buildkite-agent: false
-
+  - label: ":mocha: Test"
+    command:
+      - "yarn"
+      - "yarn test"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:14"
+          mount-buildkite-agent: false
   - label: ":newspaper: Newsfile"
     branches: "!master !release-*"
     command:
