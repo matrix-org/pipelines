@@ -8,7 +8,7 @@ steps:
       - "tox -e check_codestyle"
     branches: "!dinsic !dinsic/*"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.6"
           mount-buildkite-agent: false
 
@@ -17,7 +17,7 @@ steps:
       - "python -m pip install tox"
       - "tox -e packaging"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.6"
           mount-buildkite-agent: false
 
@@ -26,7 +26,7 @@ steps:
       - "python -m pip install tox"
       - "tox -e check_isort"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.6"
           mount-buildkite-agent: false
 
@@ -36,7 +36,7 @@ steps:
       - "scripts-dev/check-newsfragment"
     branches: "!master !develop !release-*"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.6"
           propagate-environment: true
           mount-buildkite-agent: false
@@ -46,7 +46,7 @@ steps:
       - "python -m pip install tox"
       - "tox -e check-sampleconfig"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.6"
           mount-buildkite-agent: false
 
@@ -54,7 +54,7 @@ steps:
     command:
       - "scripts-dev/check_line_terminators.sh"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.6"
           mount-buildkite-agent: false
 
@@ -64,7 +64,7 @@ steps:
       - "tox -e mypy"
     branches: "!dinsic !dinsic/*"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.7"
           mount-buildkite-agent: false
 
@@ -75,10 +75,10 @@ steps:
     command:
       - python setup.py sdist bdist_wheel
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.7"
           mount-buildkite-agent: false
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload:
             - dist/*
 
@@ -96,12 +96,12 @@ steps:
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "ubuntu:xenial"  # We use xenial to get an old sqlite and python
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -119,12 +119,12 @@ steps:
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.5"
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -142,12 +142,12 @@ steps:
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.6"
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -165,12 +165,12 @@ steps:
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "python:3.7"
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -191,13 +191,16 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py35.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v2.1.0:
+      - docker-compose#v3.7.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py35.pg95.yaml
-      - artifacts#v1.2.0:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.5
+            - POSTGRES_VERSION=9.5
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -218,13 +221,16 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg11.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v2.1.0:
+      - docker-compose#v3.7.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py37.pg11.yaml
-      - artifacts#v1.2.0:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.7
+            - POSTGRES_VERSION=11
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -245,13 +251,16 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py38.pg12.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v2.1.0:
+      - docker-compose#v3.7.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py38.pg12.yaml
-      - artifacts#v1.2.0:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.8
+            - POSTGRES_VERSION=12
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -275,7 +284,7 @@ steps:
       - "bash .buildkite/merge_base_branch.sh"
       - "bash /bootstrap.sh synapse"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "matrixdotorg/sytest-synapse:py35"
           propagate-environment: true
           always-pull: true
@@ -285,7 +294,7 @@ steps:
           shell: ["-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
           path: "logs/annotate.md"
@@ -308,7 +317,7 @@ steps:
       - "bash .buildkite/merge_base_branch.sh"
       - "bash /bootstrap.sh synapse"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "matrixdotorg/sytest-synapse:py35"
           propagate-environment: true
           always-pull: true
@@ -318,7 +327,7 @@ steps:
           shell: ["-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
           path: "logs/annotate.md"
@@ -345,7 +354,7 @@ steps:
       - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
       - "bash /bootstrap.sh synapse"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "matrixdotorg/sytest-synapse:py35"
           propagate-environment: true
           always-pull: true
@@ -355,7 +364,7 @@ steps:
           shell: ["-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
           path: "logs/annotate.md"
@@ -379,7 +388,7 @@ steps:
       - "bash .buildkite/merge_base_branch.sh"
       - "bash /bootstrap.sh synapse"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "matrixdotorg/sytest-synapse:py38"
           propagate-environment: true
           always-pull: true
@@ -389,7 +398,7 @@ steps:
           shell: ["-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
           path: "logs/annotate.md"
@@ -416,7 +425,7 @@ steps:
       - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
       - "bash /bootstrap.sh synapse"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "matrixdotorg/sytest-synapse:py37"
           propagate-environment: true
           always-pull: true
@@ -426,7 +435,7 @@ steps:
           shell: ["-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
           path: "logs/annotate.md"
@@ -454,7 +463,7 @@ steps:
       - "bash -c 'cat /src/sytest-blacklist /src/.buildkite/worker-blacklist > /src/synapse-blacklist-with-workers'"
       - "bash /bootstrap.sh synapse"
     plugins:
-      - docker#v3.0.1:
+      - docker#v3.7.0:
           image: "matrixdotorg/sytest-synapse:py37"
           propagate-environment: true
           always-pull: true
@@ -464,7 +473,7 @@ steps:
           shell: ["-x", "-c"]
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
-      - artifacts#v1.2.0:
+      - artifacts#v1.3.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
           path: "logs/annotate.md"
@@ -492,13 +501,16 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py35.pg95.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v2.1.0:
+      - docker-compose#v3.7.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py35.pg95.yaml
-      - artifacts#v1.2.0:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.5
+            - POSTGRES_VERSION=9.5
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -511,13 +523,16 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.py37.pg11.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
             - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v2.1.0:
+      - docker-compose#v3.7.0:
           run: testenv
           config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.py37.pg11.yaml
-      - artifacts#v1.2.0:
+            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+          env:
+            - PYTHON_VERSION=3.7
+            - POSTGRES_VERSION=11
+      - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
@@ -554,7 +569,7 @@ steps:
     soft_fail:
       - exit_status: 1
     plugins:
-      - docker#v3.5.0:
+      - docker#v3.7.0:
           # The dockerfile for this image is at https://github.com/matrix-org/complement/blob/master/dockerfiles/ComplementCIBuildkite.Dockerfile.
           image: "matrixdotorg/complement:latest"
           mount-buildkite-agent: false
