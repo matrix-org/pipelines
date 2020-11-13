@@ -186,6 +186,8 @@ steps:
       queue: "medium"
     env:
       TRIAL_FLAGS: "-j 8"
+      PYTHON_VERSION: "3.5"
+      POSTGRES_VERSION: "9.5"
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py35-postgres,combine'"
     plugins:
@@ -197,9 +199,6 @@ steps:
           run: testenv
           config:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
-          env:
-            - PYTHON_VERSION=3.5
-            - POSTGRES_VERSION=9.5
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -216,6 +215,8 @@ steps:
       queue: "medium"
     env:
       TRIAL_FLAGS: "-j 8"
+      PYTHON_VERSION: "3.7"
+      POSTGRES_VERSION: "11"
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py37-postgres,combine'"
     plugins:
@@ -227,9 +228,6 @@ steps:
           run: testenv
           config:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
-          env:
-            - PYTHON_VERSION=3.7
-            - POSTGRES_VERSION=11
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -246,6 +244,8 @@ steps:
       queue: "medium"
     env:
       TRIAL_FLAGS: "-j 8"
+      PYTHON_VERSION: "3.8"
+      POSTGRES_VERSION: "12"
     command:
       - "bash -c 'python -m pip install tox && python -m tox -e py38-postgres,combine'"
     plugins:
@@ -257,9 +257,6 @@ steps:
           run: testenv
           config:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
-          env:
-            - PYTHON_VERSION=3.8
-            - POSTGRES_VERSION=12
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -496,6 +493,9 @@ steps:
   - label: "synapse_port_db / :python: 3.5 / :postgres: 9.5"
     agents:
       queue: "medium"
+    env:
+      PYTHON_VERSION: "3.5"
+      POSTGRES_VERSION: "9.5"
     command:
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
@@ -507,9 +507,6 @@ steps:
           run: testenv
           config:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
-          env:
-            - PYTHON_VERSION=3.5
-            - POSTGRES_VERSION=9.5
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
@@ -518,6 +515,9 @@ steps:
   - label: "synapse_port_db / :python: 3.7 / :postgres: 11"
     agents:
       queue: "medium"
+    env:
+      PYTHON_VERSION: "3.7"
+      POSTGRES_VERSION: "11"
     command:
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
@@ -529,9 +529,6 @@ steps:
           run: testenv
           config:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
-          env:
-            - PYTHON_VERSION=3.7
-            - POSTGRES_VERSION=11
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
