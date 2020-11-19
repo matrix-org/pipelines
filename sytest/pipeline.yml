@@ -217,11 +217,11 @@ steps:
     soft_fail:
       - exit_status: 1
     retry:
-    automatic:
-      - exit_status: -1
-        limit: 2
-      - exit_status: 2
-        limit: 2
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
     
   - label: "Dendrite - :go: 1.13 / :postgres: 9.6 / full HTTP APIs"
     agents:
@@ -256,11 +256,11 @@ steps:
     soft_fail:
       - exit_status: 1
     retry:
-    automatic:
-      - exit_status: -1
-        limit: 2
-      - exit_status: 2
-        limit: 2
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
     
   - label: "Dendrite - :go: 1.13 / :sqlite: 3"
     agents:
@@ -292,11 +292,11 @@ steps:
     soft_fail:
         - exit_status: 1
     retry:
-    automatic:
-      - exit_status: -1
-        limit: 2
-      - exit_status: 2
-        limit: 2
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
     
   - label: "Dendrite - :go: 1.13 / :sqlite: 3 / full HTTP APIs"
     agents:
@@ -330,8 +330,8 @@ steps:
     soft_fail:
       - exit_status: 1
     retry:
-    automatic:
-      - exit_status: -1
-        limit: 2
-      - exit_status: 2
-        limit: 2
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
