@@ -204,7 +204,6 @@ steps:
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
-          debug: true
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
@@ -241,7 +240,6 @@ steps:
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
-          debug: true
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
@@ -275,7 +273,6 @@ steps:
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
-          debug: true
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
@@ -311,7 +308,6 @@ steps:
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
-          debug: true
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
