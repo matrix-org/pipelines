@@ -185,7 +185,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "Dendrite - :go: 1.11 / :postgres: 9.6"
+  - label: "Dendrite - :go: 1.13 / :postgres: 9.6"
     agents:
       queue: "medium"
     env:
@@ -211,6 +211,122 @@ steps:
             - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    soft_fail:
+      - exit_status: 1
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+    
+  - label: "Dendrite - :go: 1.13 / :postgres: 9.6 / full HTTP APIs"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+      API: "1"
+    command:
+      - "mkdir -p /src"
+      - "(wget -O - https://github.com/matrix-org/dendrite/archive/$BUILDKITE_BRANCH.tar.gz || wget -O - https://github.com/matrix-org/dendrite/archive/master.tar.gz) | tar -xz --strip-components=1 -C /src/"
+      - "cd /src/"
+      - "bash /bootstrap.sh dendrite"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-dendrite"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/sytest"
+          entrypoint: '/bin/sh'
+          shell: ["-x", "-c"]
+          init: false
+          mount-buildkite-agent: false
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/sytest:ro"
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    soft_fail:
+      - exit_status: 1
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+    
+  - label: "Dendrite - :go: 1.13 / :sqlite: 3"
+    agents:
+      queue: "medium"
+    command:
+      - "mkdir -p /src"
+      - "(wget -O - https://github.com/matrix-org/dendrite/archive/$BUILDKITE_BRANCH.tar.gz || wget -O - https://github.com/matrix-org/dendrite/archive/master.tar.gz) | tar -xz --strip-components=1 -C /src/"
+      - "cd /src/"
+      - "bash /bootstrap.sh dendrite"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-dendrite"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/sytest"
+          entrypoint: '/bin/sh'
+          shell: ["-x", "-c"]
+          init: false
+          mount-buildkite-agent: false
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/sytest:ro"
+      - artifacts#v1.2.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    soft_fail:
+        - exit_status: 1
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 2
+          limit: 2
+    
+  - label: "Dendrite - :go: 1.13 / :sqlite: 3 / full HTTP APIs"
+    agents:
+      queue: "medium"
+    env:
+      API: "1"
+    command:
+      - "mkdir -p /src"
+      - "(wget -O - https://github.com/matrix-org/dendrite/archive/$BUILDKITE_BRANCH.tar.gz || wget -O - https://github.com/matrix-org/dendrite/archive/master.tar.gz) | tar -xz --strip-components=1 -C /src/"
+      - "cd /src/"
+      - "bash /bootstrap.sh dendrite"
+    plugins:
+      - docker#v3.0.1:
+          image: "matrixdotorg/sytest-dendrite"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/sytest"
+          entrypoint: '/bin/sh'
+          shell: ["-x", "-c"]
+          init: false
+          mount-buildkite-agent: false
+          mount-checkout: false
+          volumes:
+            - "./logs:/logs"
+            - ".:/sytest:ro"
+      - artifacts#v1.2.0:
+           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+         path: "logs/annotate.md"
+         style: "error"
     soft_fail:
       - exit_status: 1
     retry:
