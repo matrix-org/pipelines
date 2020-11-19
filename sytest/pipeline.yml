@@ -200,7 +200,7 @@ steps:
           image: "matrixdotorg/sytest-dendrite"
           propagate-environment: true
           always-pull: true
-          workdir: "/src"
+          workdir: "/sytest"
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
@@ -237,7 +237,7 @@ steps:
           image: "matrixdotorg/sytest-dendrite"
           propagate-environment: true
           always-pull: true
-          workdir: "/src"
+          workdir: "/sytest"
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
@@ -271,7 +271,7 @@ steps:
           image: "matrixdotorg/sytest-dendrite"
           propagate-environment: true
           always-pull: true
-          workdir: "/src"
+          workdir: "/sytest"
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
@@ -307,7 +307,7 @@ steps:
           image: "matrixdotorg/sytest-dendrite"
           propagate-environment: true
           always-pull: true
-          workdir: "/src"
+          workdir: "/sytest"
           entrypoint: '/bin/sh'
           shell: ["-x", "-c"]
           init: false
