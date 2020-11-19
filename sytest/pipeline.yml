@@ -205,7 +205,9 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          volumes:
+            - "./logs:/logs"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -241,7 +243,9 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          volumes:
+            - "./logs:/logs"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -274,7 +278,9 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          volumes:
+            - "./logs:/logs"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
           upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
@@ -309,7 +315,9 @@ steps:
           shell: ["-x", "-c"]
           init: false
           mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
+          volumes:
+            - "./logs:/logs"
+            - ".:/sytest:ro"
       - artifacts#v1.2.0:
            upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
       - matrix-org/annotate:
