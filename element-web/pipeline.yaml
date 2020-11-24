@@ -104,7 +104,7 @@ steps:
       - "echo '+++ Packaging'"
       - "./scripts/ci_package.sh"
     branches: "develop"
-    artifact_paths: "dist/riot-*.tar.gz"
+    artifact_paths: "dist/*.tar.gz"
     plugins:
       - docker#v3.0.1:
           image: "node:12"
