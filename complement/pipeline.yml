@@ -1,0 +1,38 @@
+steps:
+  - command:
+      - "env"
+      - "go build -tags *"
+    label: "\U0001F528 Build / :go: 1.13"
+    plugins:
+      - docker#v3.7.0:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
+
+  - command:
+      - "env"
+      - "go build -tags *"
+    label: "\U0001F528 Build / :go: 1.15"
+    plugins:
+      - docker#v3.7.0:
+          image: "golang1.15"
+          mount-buildkite-agent: false
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
+          
+  - command:
+      - "env"
+      # gofmt does not change its exit status depending on whether there are
+      # files in need of formatting. We have to use a slightly hacky way of
+      # checking and then printing the diff instead.
+      - "if [ -n "$(gofmt -l .)" ]; then gofmt -d && exit 1; fi"
+    label: "\U0001F9F9 Linting / :go: 1.15"
+    plugins:
+      - docker#v3.7.0:
+          image: "golang:1.15"
+          mount-buildkite-agent: false
