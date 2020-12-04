@@ -33,6 +33,7 @@ steps:
       queue: "medium"
     command:
       - "yarn install"
+      - "yarn build"
       - "yarn test"
     plugins:
       - docker#v3.0.1:
