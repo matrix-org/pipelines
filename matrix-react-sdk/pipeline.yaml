@@ -88,7 +88,7 @@ steps:
       - "./scripts/ci/end-to-end-tests.sh"
     plugins:
       - docker#v3.0.1:
-          image: "matrixdotorg/riotweb-ci-e2etests-env:latest"
+          image: "vectorim/element-web-ci-e2etests-env:latest"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -109,7 +109,7 @@ steps:
       queue: "medium"
     command:
       - "echo '+++ Running Tests'"
-      - "./scripts/ci/riot-unit-tests.sh"
+      - "./scripts/ci/app-tests.sh"
     plugins:
       - docker#v3.0.1:
           image: "node:10"
