@@ -1,7 +1,7 @@
 steps:
   - command:
-      - "env"
-      - "go build -tags *"
+      - env
+      - go build -tags="*"
     label: "\U0001F528 Build / :go: 1.13"
     plugins:
       - docker#v3.7.0:
@@ -13,8 +13,8 @@ steps:
           limit: 3
 
   - command:
-      - "env"
-      - "go build -tags *"
+      - env
+      - go build -tags="*"
     label: "\U0001F528 Build / :go: 1.15"
     plugins:
       - docker#v3.7.0:
