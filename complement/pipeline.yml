@@ -24,14 +24,14 @@ steps:
       automatic:
         - exit_status: 128
           limit: 3
-          
+
   - command:
-      - "env"
-      # gofmt does not change its exit status depending on whether there are
-      # files in need of formatting. We have to use a slightly hacky way of
-      # checking and then printing the diff instead.
-      - "if [ -n "$(gofmt -l .)" ]; then gofmt -d && exit 1; fi"
-    label: "\U0001F9F9 Linting / :go: 1.15"
+      - env
+      - ./build/scripts/find-lint.sh
+    label: "\U0001F9F9 Lint / :go: 1.15"
+    agents:
+      # Use a larger instance as linting takes a lot of memory
+      queue: "xlarge"
     plugins:
       - docker#v3.7.0:
           image: "golang:1.15"
