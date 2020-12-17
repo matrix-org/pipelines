@@ -78,8 +78,6 @@ steps:
       # e2e tests otherwise take +-8min
       queue: "xlarge"
     command:
-      - "echo '--- Install js-sdk'"
-      - "./scripts/ci/install-deps.sh --ignore-scripts"
       - "echo '+++ Test'"
       - "./scripts/ci/end-to-end-tests.sh"
     plugins:
