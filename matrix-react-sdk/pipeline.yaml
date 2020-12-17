@@ -62,8 +62,7 @@ steps:
       # We fetch the develop js-sdk to get matching types etc.
       - "echo '--- Install js-sdk'"
       - "./scripts/ci/install-deps.sh --ignore-scripts"
-      - "echo '+++ Install & Build'"
-      - "yarn install"
+      - "echo '+++ Build'"
       - "yarn build"
     plugins:
       - docker#v3.0.1:
