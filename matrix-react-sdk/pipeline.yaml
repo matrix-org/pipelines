@@ -64,6 +64,7 @@ steps:
       - "./scripts/ci/install-deps.sh --ignore-scripts"
       - "echo '+++ Install & Build'"
       - "yarn install"
+      - "yarn build"
     plugins:
       - docker#v3.0.1:
           image: "node:12"
