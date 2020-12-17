@@ -47,7 +47,7 @@ steps:
       # the 'build' job.
       - "./scripts/ci/install-deps.sh --ignore-scripts"
       - "yarn run reskindex"
-      - "echo '+++ Running Tests'"
+      - "echo '+++ Test'"
       - "yarn test"
     plugins:
       - docker#v3.0.1:
@@ -80,7 +80,7 @@ steps:
     command:
       - "echo '--- Install js-sdk'"
       - "./scripts/ci/install-deps.sh --ignore-scripts"
-      - "echo '+++ Running Tests'"
+      - "echo '+++ Test'"
       - "./scripts/ci/end-to-end-tests.sh"
     plugins:
       - docker#v3.0.1:
@@ -104,7 +104,7 @@ steps:
       # webpack loves to gorge itself on resources.
       queue: "medium"
     command:
-      - "echo '+++ Running Tests'"
+      - "echo '+++ Test'"
       - "./scripts/ci/app-tests.sh"
     plugins:
       - docker#v3.0.1:
@@ -117,9 +117,9 @@ steps:
 
   - label: ":globe_with_meridians: i18n"
     command:
-      - "echo '--- Fetching Dependencies'"
+      - "echo '--- Install'"
       - "yarn install --ignore-scripts"
-      - "echo '+++ Testing i18n output'"
+      - "echo '+++ Test'"
       - "yarn diff-i18n"
     plugins:
       - docker#v3.0.1:
