@@ -1,6 +1,5 @@
 steps:
   - command:
-      - env
       - go build -tags="*" ./internal/...
     label: "\U0001F528 Build Complement / :go: 1.13"
     plugins:
@@ -13,7 +12,6 @@ steps:
           limit: 3
 
   - command:
-      - env
       - go build -tags="*" ./internal/...
     label: "\U0001F528 Build Complement / :go: 1.15"
     plugins:
@@ -26,7 +24,6 @@ steps:
           limit: 3
 
   - command:
-      - env
       - ./build/scripts/find-lint.sh
     label: "\U0001F9F9 Lint / :go: 1.15"
     agents:
