@@ -36,3 +36,7 @@ steps:
       - docker#v3.7.0:
           image: "golang:1.15"
           mount-buildkite-agent: false
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
