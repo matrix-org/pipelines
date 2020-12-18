@@ -1,0 +1,39 @@
+steps:
+  - command:
+      - go build -tags="*" ./internal/...
+    label: "\U0001F528 Build Complement / :go: 1.13"
+    plugins:
+      - docker#v3.7.0:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
+
+  - command:
+      - go build -tags="*" ./internal/...
+    label: "\U0001F528 Build Complement / :go: 1.15"
+    plugins:
+      - docker#v3.7.0:
+          image: "golang:1.15"
+          mount-buildkite-agent: false
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
+
+  - command:
+      - ./build/scripts/find-lint.sh
+    label: "\U0001F9F9 Lint / :go: 1.15"
+    agents:
+      # Use a larger instance as linting takes a lot of memory
+      queue: "xlarge"
+    plugins:
+      - docker#v3.7.0:
+          image: "golang:1.15"
+          mount-buildkite-agent: false
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
