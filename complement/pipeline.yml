@@ -18,7 +18,7 @@ steps:
     label: "\U0001F528 Build Complement / :go: 1.15"
     plugins:
       - docker#v3.7.0:
-          image: "golang1.15"
+          image: "golang:1.15"
           mount-buildkite-agent: false
     retry:
       automatic:
