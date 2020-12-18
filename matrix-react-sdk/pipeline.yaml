@@ -78,7 +78,7 @@ steps:
       # e2e tests otherwise take +-8min
       queue: "xlarge"
     command:
-      - "echo '+++ Test'"
+      # `end-to-end-tests.sh` contains `echo` commands to mark sections
       - "./scripts/ci/end-to-end-tests.sh"
     plugins:
       - docker#v3.0.1:
