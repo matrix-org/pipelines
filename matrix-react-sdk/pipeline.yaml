@@ -1,17 +1,13 @@
 steps:
   - label: ":eslint: JS Lint"
     command:
-      # We fetch the develop js-sdk to get our latest eslint rules
-      - "echo '--- Install js-sdk'"
-      - "./scripts/ci/install-deps.sh --ignore-scripts"
+      - "echo '--- Install'"
+      - "yarn install --ignore-scripts"
       - "echo '+++ Lint'"
       - "yarn lint:js"
     plugins:
       - docker#v3.0.1:
           image: "node:12"
-          # This allows the test script to see what branch it's testing and check
-          # out the equivalent dependency branches, if they exist
-          propagate-environment: true
           mount-buildkite-agent: false
 
   - label: ":eslint: Types Lint"
@@ -51,7 +47,7 @@ steps:
       # the 'build' job.
       - "./scripts/ci/install-deps.sh --ignore-scripts"
       - "yarn run reskindex"
-      - "echo '+++ Running Tests'"
+      - "echo '+++ Test'"
       - "yarn test"
     plugins:
       - docker#v3.0.1:
@@ -66,8 +62,8 @@ steps:
       # We fetch the develop js-sdk to get matching types etc.
       - "echo '--- Install js-sdk'"
       - "./scripts/ci/install-deps.sh --ignore-scripts"
-      - "echo '+++ Install & Build'"
-      - "yarn install"
+      - "echo '+++ Build'"
+      - "yarn build"
     plugins:
       - docker#v3.0.1:
           image: "node:12"
@@ -82,9 +78,7 @@ steps:
       # e2e tests otherwise take +-8min
       queue: "xlarge"
     command:
-      - "echo '--- Install js-sdk'"
-      - "./scripts/ci/install-deps.sh --ignore-scripts"
-      - "echo '+++ Running Tests'"
+      # `end-to-end-tests.sh` contains `echo` commands to mark sections
       - "./scripts/ci/end-to-end-tests.sh"
     plugins:
       - docker#v3.0.1:
@@ -108,7 +102,7 @@ steps:
       # webpack loves to gorge itself on resources.
       queue: "medium"
     command:
-      - "echo '+++ Running Tests'"
+      - "echo '+++ Test'"
       - "./scripts/ci/app-tests.sh"
     plugins:
       - docker#v3.0.1:
@@ -121,9 +115,9 @@ steps:
 
   - label: ":globe_with_meridians: i18n"
     command:
-      - "echo '--- Fetching Dependencies'"
+      - "echo '--- Install'"
       - "yarn install --ignore-scripts"
-      - "echo '+++ Testing i18n output'"
+      - "echo '+++ Test'"
       - "yarn diff-i18n"
     plugins:
       - docker#v3.0.1:
