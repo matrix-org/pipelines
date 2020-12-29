@@ -69,7 +69,7 @@ steps:
 
   - command:
       # Build the Dendrite for Complement docker image
-      - "cd /src && docker build -t complement-dendrite -f dockerfiles/Dendrite.Dockerfile ."
+      - "docker build -t complement-dendrite -f dockerfiles/Dendrite.Dockerfile ."
       # Run the tests!
       - "COMPLEMENT_BASE_IMAGE=complement-dendrite go test -v -tags "msc2836" ./tests"
     label: "\U0001F9EA Complement / Dendrite Monolith / :go: 1.15"
