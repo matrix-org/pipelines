@@ -42,13 +42,8 @@ steps:
           limit: 3
 
   - command:
-      # Download the latest checkout of Synapse develop
-      - "wget -N https://github.com/matrix-org/synapse/archive/develop.tar.gz -O synapse.tar.gz && tar -xzf synapse.tar.gz && cd synapse"
-      # Build the Synapse production docker image
-      - docker build -t matrixdotorg/synapse -f docker/Dockerfile .
-      # Now hop over to complement's checkout and build the Complement-specific Synapse docker image,
-      # which inherits from the production Synapse Dockerfile
-      - "cd /src && docker build -t complement-synapse -f dockerfiles/Synapse.Dockerfile ."
+      # Build the Synapse for Complement docker image, which inherits from the latest Synapse release image on Dockerhub
+      - "docker build -t complement-synapse -f dockerfiles/Synapse.Dockerfile ."
       # Run the tests!
       - "COMPLEMENT_BASE_IMAGE=complement-synapse go test -v -tags "synapse_blacklist,msc2403" ./tests"
     label: "\U0001F9EA Complement / Synapse Monolith / :go: 1.15"
