@@ -60,7 +60,7 @@ steps:
            - "CI=true"
           publish: [ "8448:8448" ]
           # Complement uses Docker so pass through the docker socket. This means Complement shares
-          # the hosts Docker.
+          # the host's Docker.
           volumes:
             - "/var/run/docker.sock:/var/run/docker.sock"
     retry:
@@ -87,7 +87,7 @@ steps:
            - "CI=true"
           publish: [ "8448:8448" ]
           # Complement uses Docker so pass through the docker socket. This means Complement shares
-          # the hosts Docker.
+          # the host's Docker.
           volumes:
             - "/var/run/docker.sock:/var/run/docker.sock"
     retry:
