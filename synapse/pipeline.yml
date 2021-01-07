@@ -10,6 +10,13 @@ x-yaml-aliases:
       apt-get update && apt-get install -y xmlsec1
       python -m pip install tox
 
+  retry: &retry_setup
+    automatic:
+      - exit_status: -1
+        limit: 2
+      - exit_status: 2
+        limit: 2    
+    
 env:
   COVERALLS_REPO_TOKEN: wsJWOby6j0uCYFiCes3r0XauxO27mx8lD
 
@@ -117,12 +124,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: ":python: 3.5 / SQLite"
     command:
@@ -140,12 +142,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: ":python: 3.6 / SQLite"
     command:
@@ -163,12 +160,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: ":python: 3.7 / SQLite"
     command:
@@ -186,13 +178,24 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
+  - label: ":python: 3.8 / noextras / SQLite"
+    command:
+      - *trial_setup
+      - "tox -e py38-noextras,combine"
+    env:
+      TRIAL_FLAGS: "-j 2"
+    plugins:
+      - docker#v3.7.0:
+          image: "python:3.8"
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
+      - artifacts#v1.3.0:
+          upload: [ "_trial_temp/*/*.log" ]
+    retry: *retry_setup
+        
   - label: ":python: 3.5 / :postgres: 9.5"
     agents:
       queue: "medium"
@@ -216,12 +219,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: ":python: 3.7 / :postgres: 11"
     agents:
@@ -246,12 +244,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: ":python: 3.8 / :postgres: 12"
     agents:
@@ -276,12 +269,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   ################################################################################
   #
@@ -313,12 +301,7 @@ steps:
           style: "error"
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Monolith"
     agents:
@@ -346,12 +329,7 @@ steps:
           style: "error"
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Workers"
     agents:
@@ -383,12 +361,7 @@ steps:
           style: "error"
  #     - matrix-org/coveralls#v1.0:
  #         parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
 
   - label: "SyTest - :python: 3.8 / :postgres: 12 / Monolith"
@@ -417,12 +390,7 @@ steps:
           style: "error"
 #      - matrix-org/coveralls#v1.0:
 #          parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers"
     agents:
@@ -454,12 +422,7 @@ steps:
           style: "error"
  #     - matrix-org/coveralls#v1.0:
  #         parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers / :redis: Redis"
     agents:
@@ -492,12 +455,7 @@ steps:
           style: "error"
  #     - matrix-org/coveralls#v1.0:
  #         parallel: "true"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 2
-          limit: 2
+    retry: *retry_setup
 
   ################################################################################
   #
