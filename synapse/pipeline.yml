@@ -136,15 +136,15 @@ steps:
 
   # -- Special Case: Newest Python w/o Optional Deps
 
-  - label: ":python: 3.8 / noextras / SQLite"
+  - label: ":python: 3.9 / noextras / SQLite"
     command:
       - *trial_setup
-      - "tox -e py38-noextras,combine"
+      - "tox -e py39-noextras,combine"
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
       - docker#v3.7.0:
-          image: "python:3.8"
+          image: "python:3.9"
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
@@ -195,6 +195,38 @@ steps:
     plugins:
       - docker#v3.7.0:
           image: "python:3.7"
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
+      - artifacts#v1.3.0:
+          upload: [ "_trial_temp/*/*.log" ]
+    retry: *retry_setup
+
+  - label: ":python: 3.8 / SQLite"
+    command:
+      - *trial_setup
+      - "tox -e py38,combine"
+    env:
+      TRIAL_FLAGS: "-j 2"
+    plugins:
+      - docker#v3.7.0:
+          image: "python:3.8"
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
+      - artifacts#v1.3.0:
+          upload: [ "_trial_temp/*/*.log" ]
+    retry: *retry_setup
+
+  - label: ":python: 3.9 / SQLite"
+    command:
+      - *trial_setup
+      - "tox -e py39,combine"
+    env:
+      TRIAL_FLAGS: "-j 2"
+    plugins:
+      - docker#v3.7.0:
+          image: "python:3.9"
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
