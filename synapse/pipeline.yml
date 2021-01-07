@@ -119,7 +119,7 @@ steps:
 
   # -- Special Case: Oldest Python w/ Oldest Deps
 
-  - label: ":python: 3.5 / SQLite / Old Deps"
+  - label: ":python: 3.5 (Old Deps)"
     command:
       - ".buildkite/scripts/test_old_deps.sh"
     env:
@@ -136,7 +136,7 @@ steps:
 
   # -- Special Case: Newest Python w/o Optional Deps
 
-  - label: ":python: 3.9 / noextras / SQLite"
+  - label: ":python: 3.9 (No Extras)"
     command:
       - *trial_setup
       - "tox -e py39-noextras,combine"
@@ -154,7 +154,7 @@ steps:
 
   # -- All Supported Python Versions (SQLite)
 
-  - label: ":python: 3.5 / SQLite"
+  - label: ":python: 3.5"
     command:
       - *trial_setup
       - "tox -e py35,combine"
@@ -170,7 +170,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
-  - label: ":python: 3.6 / SQLite"
+  - label: ":python: 3.6"
     command:
       - *trial_setup
       - "tox -e py36,combine"
@@ -186,7 +186,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
-  - label: ":python: 3.7 / SQLite"
+  - label: ":python: 3.7"
     command:
       - *trial_setup
       - "tox -e py37,combine"
@@ -202,7 +202,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
-  - label: ":python: 3.8 / SQLite"
+  - label: ":python: 3.8"
     command:
       - *trial_setup
       - "tox -e py38,combine"
@@ -218,7 +218,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
-  - label: ":python: 3.9 / SQLite"
+  - label: ":python: 3.9"
     command:
       - *trial_setup
       - "tox -e py39,combine"
@@ -236,7 +236,7 @@ steps:
 
   #  -- Oldest and Newest Supported Python and Postgres Pairings
 
-  - label: ":python: 3.5 / :postgres: 9.5"
+  - label: ":python: 3.5 :postgres: 9.5"
     agents:
       queue: "medium"
     env:
@@ -259,7 +259,7 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
-  - label: ":python: 3.9 / :postgres: 13"
+  - label: ":python: 3.9 :postgres: 13"
     agents:
       queue: "medium"
     env:
@@ -311,7 +311,7 @@ steps:
   #
   ################################################################################
 
-  - label: "SyTest - :python: 3.5 / SQLite / Monolith"
+  - label: "SyTest Monolith :sqlite: :debian: 9"
     agents:
       queue: "medium"
     command:
@@ -335,7 +335,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Monolith"
+  - label: "SyTest Monolith :postgres: :debian 9:"
     agents:
       queue: "medium"
     env:
@@ -361,7 +361,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest - :python: 3.8 / :postgres: 12 / Monolith"
+  - label: "SyTest Monolith :postgres: :debian: 11"
     agents:
       queue: "medium"
     env:
@@ -387,7 +387,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Workers"
+  - label: "SyTest Workers :postgres: :debian: 9"
     agents:
       queue: "xlarge"
     env:
@@ -417,7 +417,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers"
+  - label: "SyTest Workers :postgres: :debian: 10"
     agents:
       queue: "xlarge"
     env:
@@ -447,7 +447,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers / :redis: Redis"
+  - label: "SyTest Workers :redis: :postgres: :debian: 10
     agents:
       # this one seems to need a lot of memory.
       queue: "xlarge"
