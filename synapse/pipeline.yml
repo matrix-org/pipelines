@@ -105,7 +105,15 @@ steps:
 
   ################################################################################
   #
-  # `trial` tests
+  # Twisted `trial` tests
+  #
+  # Our Intent is to test:
+  #   - All supported Python versions (using SQLite) with current dependencies
+  #   - The oldest and newest supported pairings of Python and PostgreSQL
+  #
+  # We also test two special cases:
+  #   - The newest supported Python, without any optional dependencies
+  #   - The oldest supported Python, with its oldest supported dependency versions
   #
   ################################################################################
 
