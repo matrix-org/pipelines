@@ -117,6 +117,8 @@ steps:
   #
   ################################################################################
 
+  # -- Special Case: Oldest Python w/ Oldest Deps
+
   - label: ":python: 3.5 / SQLite / Old Deps"
     command:
       - ".buildkite/scripts/test_old_deps.sh"
@@ -131,6 +133,26 @@ steps:
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
+
+  # -- Special Case: Newest Python w/o Optional Deps
+
+  - label: ":python: 3.8 / noextras / SQLite"
+    command:
+      - *trial_setup
+      - "tox -e py38-noextras,combine"
+    env:
+      TRIAL_FLAGS: "-j 2"
+    plugins:
+      - docker#v3.7.0:
+          image: "python:3.8"
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
+      - artifacts#v1.3.0:
+          upload: [ "_trial_temp/*/*.log" ]
+    retry: *retry_setup
+
+  # -- All Supported Python Versions (SQLite)
 
   - label: ":python: 3.5 / SQLite"
     command:
@@ -180,22 +202,8 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
-  - label: ":python: 3.8 / noextras / SQLite"
-    command:
-      - *trial_setup
-      - "tox -e py38-noextras,combine"
-    env:
-      TRIAL_FLAGS: "-j 2"
-    plugins:
-      - docker#v3.7.0:
-          image: "python:3.8"
-          workdir: "/src"
-          mount-buildkite-agent: false
-          propagate-environment: true
-      - artifacts#v1.3.0:
-          upload: [ "_trial_temp/*/*.log" ]
-    retry: *retry_setup
-        
+  #  -- Oldest and Newest Supported Python and Postgres Pairings
+
   - label: ":python: 3.5 / :postgres: 9.5"
     agents:
       queue: "medium"
