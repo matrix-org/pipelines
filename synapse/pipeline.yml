@@ -259,39 +259,16 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
-  - label: ":python: 3.7 / :postgres: 11"
+  - label: ":python: 3.9 / :postgres: 13"
     agents:
       queue: "medium"
     env:
       TRIAL_FLAGS: "-j 8"
-      PYTHON_VERSION: "3.7"
-      POSTGRES_VERSION: "11"
+      PYTHON_VERSION: "3.9"
+      POSTGRES_VERSION: "13"
     command:
       - *trial_setup
-      - "python -m tox -e py37-postgres,combine"
-    plugins:
-      - matrix-org/download#v1.1.0:
-          urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v3.7.0:
-          run: testenv
-          config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
-      - artifacts#v1.3.0:
-          upload: [ "_trial_temp/*/*.log" ]
-    retry: *retry_setup
-
-  - label: ":python: 3.8 / :postgres: 12"
-    agents:
-      queue: "medium"
-    env:
-      TRIAL_FLAGS: "-j 8"
-      PYTHON_VERSION: "3.8"
-      POSTGRES_VERSION: "12"
-    command:
-      - *trial_setup
-      - "python -m tox -e py38-postgres,combine"
+      - "python -m tox -e py39-postgres,combine"
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
