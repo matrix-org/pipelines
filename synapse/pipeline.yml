@@ -460,6 +460,8 @@ steps:
   #
   # synapse_port_db
   #
+  # Tests the oldest and newest supported pairings of Python and PostgreSQL
+  #
   ################################################################################
 
   - label: "synapse_port_db / :python: 3.5 / :postgres: 9.5"
@@ -482,12 +484,12 @@ steps:
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 
-  - label: "synapse_port_db / :python: 3.7 / :postgres: 11"
+  - label: "synapse_port_db / :python: 3.9 / :postgres: 13"
     agents:
       queue: "medium"
     env:
-      PYTHON_VERSION: "3.7"
-      POSTGRES_VERSION: "11"
+      PYTHON_VERSION: "3.9"
+      POSTGRES_VERSION: "13"
     command:
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
