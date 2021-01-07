@@ -130,8 +130,6 @@ steps:
           propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: ":python: 3.5 / SQLite"
@@ -148,8 +146,6 @@ steps:
           propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: ":python: 3.6 / SQLite"
@@ -166,8 +162,6 @@ steps:
           propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: ":python: 3.7 / SQLite"
@@ -184,8 +178,6 @@ steps:
           propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: ":python: 3.8 / noextras / SQLite"
@@ -225,8 +217,6 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: ":python: 3.7 / :postgres: 11"
@@ -250,8 +240,6 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: ":python: 3.8 / :postgres: 12"
@@ -275,8 +263,6 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   ################################################################################
@@ -307,8 +293,6 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Monolith"
@@ -335,8 +319,6 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Workers"
@@ -367,8 +349,6 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
- #     - matrix-org/coveralls#v1.0:
- #         parallel: "true"
     retry: *retry_setup
 
 
@@ -396,8 +376,6 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers"
@@ -428,8 +406,6 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
- #     - matrix-org/coveralls#v1.0:
- #         parallel: "true"
     retry: *retry_setup
 
   - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers / :redis: Redis"
@@ -461,8 +437,6 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
- #     - matrix-org/coveralls#v1.0:
- #         parallel: "true"
     retry: *retry_setup
 
   ################################################################################
@@ -490,8 +464,6 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
 
   - label: "synapse_port_db / :python: 3.7 / :postgres: 11"
     agents:
@@ -512,8 +484,6 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
 
 #  - wait: ~
 #    continue_on_failure: true
