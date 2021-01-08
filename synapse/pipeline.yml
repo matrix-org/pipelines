@@ -105,11 +105,21 @@ steps:
 
   ################################################################################
   #
-  # `trial` tests
+  # Twisted `trial` tests
+  #
+  # Our Intent is to test:
+  #   - All supported Python versions (using SQLite) with current dependencies
+  #   - The oldest and newest supported pairings of Python and PostgreSQL
+  #
+  # We also test two special cases:
+  #   - The newest supported Python, without any optional dependencies
+  #   - The oldest supported Python, with its oldest supported dependency versions
   #
   ################################################################################
 
-  - label: ":python: 3.5 / SQLite / Old Deps"
+  # -- Special Case: Oldest Python w/ Oldest Deps
+
+  - label: ":python: 3.5 (Old Deps)"
     command:
       - ".buildkite/scripts/test_old_deps.sh"
     env:
@@ -122,11 +132,29 @@ steps:
           propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
-  - label: ":python: 3.5 / SQLite"
+  # -- Special Case: Newest Python w/o Optional Deps
+
+  - label: ":python: 3.9 (No Extras)"
+    command:
+      - *trial_setup
+      - "tox -e py39-noextras,combine"
+    env:
+      TRIAL_FLAGS: "-j 2"
+    plugins:
+      - docker#v3.7.0:
+          image: "python:3.9"
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
+      - artifacts#v1.3.0:
+          upload: [ "_trial_temp/*/*.log" ]
+    retry: *retry_setup
+
+  # -- All Supported Python Versions (SQLite)
+
+  - label: ":python: 3.5"
     command:
       - *trial_setup
       - "tox -e py35,combine"
@@ -140,11 +168,9 @@ steps:
           propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
-  - label: ":python: 3.6 / SQLite"
+  - label: ":python: 3.6"
     command:
       - *trial_setup
       - "tox -e py36,combine"
@@ -158,11 +184,9 @@ steps:
           propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
-  - label: ":python: 3.7 / SQLite"
+  - label: ":python: 3.7"
     command:
       - *trial_setup
       - "tox -e py37,combine"
@@ -176,14 +200,12 @@ steps:
           propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
-  - label: ":python: 3.8 / noextras / SQLite"
+  - label: ":python: 3.8"
     command:
       - *trial_setup
-      - "tox -e py38-noextras,combine"
+      - "tox -e py38,combine"
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
@@ -195,8 +217,26 @@ steps:
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
-        
-  - label: ":python: 3.5 / :postgres: 9.5"
+
+  - label: ":python: 3.9"
+    command:
+      - *trial_setup
+      - "tox -e py39,combine"
+    env:
+      TRIAL_FLAGS: "-j 2"
+    plugins:
+      - docker#v3.7.0:
+          image: "python:3.9"
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
+      - artifacts#v1.3.0:
+          upload: [ "_trial_temp/*/*.log" ]
+    retry: *retry_setup
+
+  #  -- Oldest and Newest Supported Python and Postgres Pairings
+
+  - label: ":python: 3.5 :postgres: 9.5"
     agents:
       queue: "medium"
     env:
@@ -217,20 +257,18 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
-  - label: ":python: 3.7 / :postgres: 11"
+  - label: ":python: 3.9 :postgres: 13"
     agents:
       queue: "medium"
     env:
       TRIAL_FLAGS: "-j 8"
-      PYTHON_VERSION: "3.7"
-      POSTGRES_VERSION: "11"
+      PYTHON_VERSION: "3.9"
+      POSTGRES_VERSION: "13"
     command:
       - *trial_setup
-      - "python -m tox -e py37-postgres,combine"
+      - "python -m tox -e py39-postgres,combine"
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
@@ -242,42 +280,41 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
-    retry: *retry_setup
-
-  - label: ":python: 3.8 / :postgres: 12"
-    agents:
-      queue: "medium"
-    env:
-      TRIAL_FLAGS: "-j 8"
-      PYTHON_VERSION: "3.8"
-      POSTGRES_VERSION: "12"
-    command:
-      - *trial_setup
-      - "python -m tox -e py38-postgres,combine"
-    plugins:
-      - matrix-org/download#v1.1.0:
-          urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v3.7.0:
-          run: testenv
-          config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
-      - artifacts#v1.3.0:
-          upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
   ################################################################################
   #
   # Sytest
   #
+  # Our tests have three dimensions:
+  #   1. Topology (Monolith, Workers, Workers w/ Redis)
+  #   2. Database (SQLite, PostgreSQL)
+  #   3. Python Version
+  #
+  # Tests can run against either a single or multiple PostgreSQL databases.
+  # This is configured by setting `MULTI_POSTGRES=1` in the environment.
+  #
+  # We mostly care about testing each topology.
+  # To vary the Python and Postgres versions, we use Docker images which are based
+  # on an assortment of Debian releases.
+  #   - "py35" is Debian  9 Stretch (Python 3.5, Postgres 9.6)
+  #   - "py37" is Debian 10 Buster (Python 3.7, Postgres 11)
+  #   - "py38" is Debian 11 Bullseye (Python 3.9, Postgres 13)
+  #
+  # Our intent is to test:
+  #   - Monolith:
+  #       - Older Distro + SQLite
+  #       - Older Python + Older PostgreSQL
+  #       - Newer Python + Newer PostgreSQL
+  #   - Workers:
+  #       - Older Python + Older PostgreSQL (MULTI_POSTGRES)
+  #       - Newer Python + Newer PostgreSQL (MULTI_POSTGRES)
+  #   - Workers w/ Redis:
+  #       - Newer Python + Newer PostgreSQL
+  #
   ################################################################################
 
-  - label: "SyTest - :python: 3.5 / SQLite / Monolith"
+  - label: "SyTest Monolith :sqlite: :debian: 9"
     agents:
       queue: "medium"
     command:
@@ -299,11 +336,9 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
-  - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Monolith"
+  - label: "SyTest Monolith :postgres: :debian: 9"
     agents:
       queue: "medium"
     env:
@@ -327,11 +362,35 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
     retry: *retry_setup
 
-  - label: "SyTest - :python: 3.5 / :postgres: 9.6 / Workers"
+  - label: "SyTest Monolith :postgres: :debian: 11"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+    command:
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash /bootstrap.sh synapse"
+    plugins:
+      - docker#v3.7.0:
+          image: "matrixdotorg/sytest-synapse:py38"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: "/bin/sh"
+          init: false
+          shell: ["-x", "-c"]
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.3.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    retry: *retry_setup
+
+  - label: "SyTest Workers :postgres: :debian: 9"
     agents:
       queue: "xlarge"
     env:
@@ -359,40 +418,9 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
- #     - matrix-org/coveralls#v1.0:
- #         parallel: "true"
     retry: *retry_setup
 
-
-  - label: "SyTest - :python: 3.8 / :postgres: 12 / Monolith"
-    agents:
-      queue: "medium"
-    env:
-      POSTGRES: "1"
-    command:
-      - "bash .buildkite/merge_base_branch.sh"
-      - "bash /bootstrap.sh synapse"
-    plugins:
-      - docker#v3.7.0:
-          image: "matrixdotorg/sytest-synapse:py38"
-          propagate-environment: true
-          always-pull: true
-          workdir: "/src"
-          entrypoint: "/bin/sh"
-          init: false
-          shell: ["-x", "-c"]
-          mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
-      - artifacts#v1.3.0:
-          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
-      - matrix-org/annotate:
-          path: "logs/annotate.md"
-          style: "error"
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
-    retry: *retry_setup
-
-  - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers"
+  - label: "SyTest Workers :postgres: :debian: 10"
     agents:
       queue: "xlarge"
     env:
@@ -420,11 +448,9 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
- #     - matrix-org/coveralls#v1.0:
- #         parallel: "true"
     retry: *retry_setup
 
-  - label: "SyTest - :python: 3.7 / :postgres: 11 / Workers / :redis: Redis"
+  - label: "SyTest Workers :redis: :postgres: :debian: 10
     agents:
       # this one seems to need a lot of memory.
       queue: "xlarge"
@@ -453,13 +479,13 @@ steps:
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
- #     - matrix-org/coveralls#v1.0:
- #         parallel: "true"
     retry: *retry_setup
 
   ################################################################################
   #
   # synapse_port_db
+  #
+  # Tests the oldest and newest supported pairings of Python and PostgreSQL
   #
   ################################################################################
 
@@ -482,15 +508,13 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
 
-  - label: "synapse_port_db / :python: 3.7 / :postgres: 11"
+  - label: "synapse_port_db / :python: 3.9 / :postgres: 13"
     agents:
       queue: "medium"
     env:
-      PYTHON_VERSION: "3.7"
-      POSTGRES_VERSION: "11"
+      PYTHON_VERSION: "3.9"
+      POSTGRES_VERSION: "13"
     command:
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
@@ -504,8 +528,6 @@ steps:
             - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
-#      - matrix-org/coveralls#v1.0:
-#          parallel: "true"
 
 #  - wait: ~
 #    continue_on_failure: true
