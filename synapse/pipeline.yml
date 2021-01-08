@@ -450,7 +450,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Workers :redis: :postgres: :debian: 10
+  - label: "SyTest Workers :redis: :postgres: :debian: 10"
     agents:
       # this one seems to need a lot of memory.
       queue: "xlarge"
