@@ -294,9 +294,9 @@ steps:
   # We mostly care about testing each topology.
   # To vary the Python and Postgres versions, we use Docker images which are based
   # on an assortment of Debian releases.
-  #   - "py35" is Debian Stretch (Python 3.5, Postgres 9.6)
-  #   - "py37" is Debian Buster (Python 3.7, Postgres 11)
-  #   - "py38" is Debian Bullseye (Python 3.9, Postgres 13)
+  #   - "py35" is Debian  9 Stretch (Python 3.5, Postgres 9.6)
+  #   - "py37" is Debian 10 Buster (Python 3.7, Postgres 11)
+  #   - "py38" is Debian 11 Bullseye (Python 3.9, Postgres 13)
   #
   # Our intent is to test:
   #   - Monolith:
