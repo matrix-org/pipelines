@@ -335,7 +335,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Monolith :postgres: :debian 9:"
+  - label: "SyTest Monolith :postgres: :debian: 9"
     agents:
       queue: "medium"
     env:
