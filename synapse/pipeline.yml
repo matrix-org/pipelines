@@ -314,7 +314,7 @@ steps:
   #
   ################################################################################
 
-  - label: "SyTest Monolith :sqlite: :debian: 9"
+  - label: "SyTest Monolith :sqlite::debian: 9"
     agents:
       queue: "medium"
     command:
@@ -338,7 +338,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Monolith :postgres: :debian: 9"
+  - label: "SyTest Monolith :postgres::debian: 9"
     agents:
       queue: "medium"
     env:
@@ -364,7 +364,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Monolith :postgres: :debian: 11"
+  - label: "SyTest Monolith :postgres::debian: 11"
     agents:
       queue: "medium"
     env:
@@ -390,7 +390,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Workers :postgres: :debian: 9"
+  - label: "SyTest Workers :postgres::debian: 9"
     agents:
       queue: "xlarge"
     env:
@@ -420,7 +420,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Workers :postgres: :debian: 10"
+  - label: "SyTest Workers :postgres::debian: 10"
     agents:
       queue: "xlarge"
     env:
@@ -450,7 +450,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Workers :redis: :postgres: :debian: 10"
+  - label: "SyTest Workers :redis::postgres::debian: 10"
     agents:
       # this one seems to need a lot of memory.
       queue: "xlarge"
@@ -489,7 +489,7 @@ steps:
   #
   ################################################################################
 
-  - label: "synapse_port_db / :python: 3.5 / :postgres: 9.5"
+  - label: "Port DB :python: 3.5 :postgres: 9.5"
     agents:
       queue: "medium"
     env:
@@ -509,7 +509,7 @@ steps:
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
 
-  - label: "synapse_port_db / :python: 3.9 / :postgres: 13"
+  - label: "Port DB :python: 3.9 :postgres: 13"
     agents:
       queue: "medium"
     env:
