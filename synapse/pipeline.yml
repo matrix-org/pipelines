@@ -288,8 +288,11 @@ steps:
   #
   # Our tests have three dimensions:
   #   1. Topology (Monolith, Workers, Workers w/ Redis)
-  #   2. Database (SQLite or PostgreSQL)
+  #   2. Database (SQLite, PostgreSQL)
   #   3. Python Version
+  #
+  # Tests can run against either a single or multiple PostgreSQL databases.
+  # This is configured by setting `MULTI_POSTGRES=1` in the environment.
   #
   # We mostly care about testing each topology.
   # To vary the Python and Postgres versions, we use Docker images which are based
@@ -304,8 +307,8 @@ steps:
   #       - Older Python + Older PostgreSQL
   #       - Newer Python + Newer PostgreSQL
   #   - Workers:
-  #       - Older Python + Older PostgreSQL
-  #       - Newer Python + Newer PostgreSQL
+  #       - Older Python + Older PostgreSQL (MULTI_POSTGRES)
+  #       - Newer Python + Newer PostgreSQL (MULTI_POSTGRES)
   #   - Workers w/ Redis:
   #       - Newer Python + Newer PostgreSQL
   #
