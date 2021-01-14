@@ -123,17 +123,19 @@ steps:
           image: "openjdk"
           mount-buildkite-agent: false
 
-  # Check that indonesians files are identical.
-  # Due to Android issue, the resource folder must be values-in/, and Weblate export data into values-id/.
-  # If this step fails, it means that Weblate has updated the file in value-id/ so to fix it, copy the file to values-in/
-  - label: "Indonesian"
+  # Check that some language files are identical.
+  # Due to Android issue, some of the resource folders, used at runtime, do not have the same name than those used by Weblate export
+  # - Indonesian:
+  # must be values-in/, and Weblate export data into values-id/
+  # In case of diff, copy values-id/strings.xml to values-in/strings.xml
+  # - Hebrew:
+  # must be values-iw/, and Weblate export data into values-he/
+  # In case of diff, copy values-he/strings.xml to values-iw/strings.xml
+  #
+  # Note that this step will fail for the first diff encountered, we may improve this in the future.
+  - label: "Weblate export check"
     command:
       - "diff ./vector/src/main/res/values-id/strings.xml ./vector/src/main/res/values-in/strings.xml"
-
-  # Same thing for Hebrew
-  # If this step fails, it means that Weblate has updated the file in value-he/ so to fix it, copy the file to values-iw/
-  - label: "Hebrew"
-    command:
       - "diff ./vector/src/main/res/values-he/strings.xml ./vector/src/main/res/values-iw/strings.xml"
 
   # run the εxodus static analyser
