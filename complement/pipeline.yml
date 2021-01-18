@@ -1,3 +1,8 @@
+# WARNING: do not enable builds of third-party PRs on this pipeline. The pipeline is configured to
+# give access to the Docker socket to the Complement test binaries, so a malicious fork of
+# Complement could start a Docker container which extracts the Buildkite agent token and hence
+# compromises this and other Buildkite agents.
+
 steps:
   - command:
       - go build -tags="*" ./internal/...
