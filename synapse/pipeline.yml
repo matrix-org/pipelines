@@ -545,7 +545,7 @@ steps:
       # Build a docker image from the checked out Synapse source
       - "docker build -t matrixdotorg/synapse:latest -f docker/Dockerfile ."
       # We use the complement:latest image to provide Complement's dependencies, but want
-      # to actually run against the latest version of Complement, so download it here.
+      # to actually run against the master branch of Complement, so download it here.
       - "wget https://github.com/matrix-org/complement/archive/master.tar.gz"
       - "tar -xzf master.tar.gz"
       # Build a second docker image on top of the above image. This one sets up Synapse with a generated config file,
@@ -554,7 +554,7 @@ steps:
       # Finally, compile and run the tests.
       - "cd complement-master"
       - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist ./tests"
-    label: "\U0001F9EA Complement"
+    label: "\U0001F9EA Complement | Synapse Monolith"
     agents:
       queue: "medium"
     plugins:
@@ -565,6 +565,49 @@ steps:
           # Complement needs to know if it is running under CI
           environment:
            - "CI=true"
+          publish: [ "8448:8448" ]
+          # Complement uses Docker so pass through the docker socket. This means Complement shares
+          # the hosts Docker.
+          volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+
+  - command:
+      # Build a docker image from the checked out Synapse source
+      - "docker build -t matrixdotorg/synapse:latest -f docker/Dockerfile ."
+      # Build a second docker image on top of the above image. This one sets up Synapse workers
+      # as well as everything else it needs to run a federating setup
+      - "docker build -t matrixdotorg/synapse:workers -f docker/Dockerfile-workers ."
+      # We use the complement:latest image to provide Complement's dependencies, but want
+      # to actually run against the master branch of Complement, so download it here.
+      - "wget https://github.com/matrix-org/complement/archive/master.tar.gz"
+      - "tar -xzf master.tar.gz"
+      # Build an image for running the above worker setup in Complement. This involves
+      # disabling rate-limiting, using Complement's CA etc.
+      - "docker build -t complement-synapse -f complement-master/dockerfiles/SynapseWorkers.Dockerfile complement-master/dockerfiles"
+      # Finally, compile and run the tests.
+      - "cd complement-master"
+      - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist ./tests"
+    label: "\U0001F9EA Complement | Synapse Workers"
+    agents:
+      # Running every worker takes a beefy system
+      queue: "xlarge"
+    plugins:
+      - docker#v3.7.0:
+          # The dockerfile for this image is at https://github.com/matrix-org/complement/blob/master/dockerfiles/ComplementCIBuildkite.Dockerfile.
+          image: "matrixdotorg/complement:latest"
+          mount-buildkite-agent: false
+          environment:
+            # Complement needs to know if it is running under CI
+            - "CI=true"
+            # Enable debug logging
+            - "COMPLEMENT_DEBUG=1"
+            # Enabled Complement's certificate authority for authentication of
+            # federation requests
+            - "COMPLEMENT_CA=true"
+            # Starting up all the processes in this container can take a little while.
+            # The default is 200. Let's wait a bit longer to decrease the chance of a
+            # startup timeout
+            - "COMPLEMENT_VERSION_CHECK_ITERATIONS=500"
           publish: [ "8448:8448" ]
           # Complement uses Docker so pass through the docker socket. This means Complement shares
           # the hosts Docker.
