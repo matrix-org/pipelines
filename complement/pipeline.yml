@@ -74,6 +74,53 @@ steps:
           limit: 3
 
   - command:
+      # Build the Synapse Workers docker image, which is located at:
+      # https://github.com/matrix-org/synapse/blob/master/docker/Docker-workers
+      # Note that this image is based on matrixdotorg/synapse:latest, which we're just
+      # pulling from docker hub
+      - wget https://github.com/matrix-org/synapse/archive/master.tar.gz
+      - tar -xzf master.tar.gz
+      - docker build -t matrixdotorg/synapse:workers -f synapse-master/docker/Dockerfile-workers synapse-master/
+      # Build the accompanying Synapse workers Complement docker container. This specifically
+      # sets up a Synapse worker setup for Complement, and is located at:
+      # https://github.com/matrix-org/complement/blob/master/dockerfiles/SynapseWorkers.Dockerfile.
+      - docker build -t complement-synapse -f dockerfiles/SynapseWorkers.Dockerfile dockerfiles/
+      # Run the tests!
+      - COMPLEMENT_BASE_IMAGE=complement-synapse go test -v -tags synapse_blacklist ./tests
+    label: "\U0001F9EA Complement / Synapse Workers / :go: 1.15"
+    agents:
+      # Running every worker takes a beefy system
+      queue: "xlarge"
+    plugins:
+      - docker#v3.7.0:
+          # The dockerfile for this image is at https://github.com/matrix-org/complement/blob/master/dockerfiles/ComplementCIBuildkite.Dockerfile.
+          image: "matrixdotorg/complement:latest"
+          mount-buildkite-agent: false
+          # Complement needs to know if it is running under CI
+          environment:
+            # Complement needs to know if it is running under CI
+            - "CI=true"
+            # Enable debug logging
+            - "COMPLEMENT_DEBUG=1"
+            # Enabled Complement's certificate authority for authentication of
+            # federation requests
+            - "COMPLEMENT_CA=true"
+            # Starting up all the processes in this container can take a little while.
+            # The default is 200. Let's wait a bit longer to decrease the chance of a
+            # startup timeout
+            - "COMPLEMENT_VERSION_CHECK_ITERATIONS=500"
+          publish: [ "8448:8448" ]
+          # Complement uses Docker so pass through the docker socket. This means Complement shares
+          # the host's Docker.
+          volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
+
+
+  - command:
       # Build the Dendrite for Complement docker image, which is located at:
       # https://github.com/matrix-org/complement/blob/master/dockerfiles/Dendrite.Dockerfile.
       - docker build -t complement-dendrite -f dockerfiles/Dendrite.Dockerfile .
