@@ -1,0 +1,21 @@
+steps:
+  - command:
+      - "env"
+      - "go test ./..."
+    label: "\U0001F9EA Unit tests / :go: 1.13"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
+
+  - command:
+      - "env"
+      # https://github.com/golangci/golangci-lint#memory-usage-of-golangci-lint
+      - "golangci-lint run"
+    label: "\U0001F9F9 Lint / :go: 1.13"
+    agents:
+      queue: "xlarge"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.13"
+          mount-buildkite-agent: false
