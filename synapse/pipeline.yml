@@ -15,8 +15,8 @@ x-yaml-aliases:
       - exit_status: -1
         limit: 2
       - exit_status: 2
-        limit: 2    
-    
+        limit: 2
+
 env:
   COVERALLS_REPO_TOKEN: wsJWOby6j0uCYFiCes3r0XauxO27mx8lD
 
@@ -121,7 +121,8 @@ steps:
 
   - label: ":python: 3.5 (Old Deps)"
     command:
-      - ".buildkite/scripts/test_old_deps.sh"
+      - ".buildkite/scripts/setup_old_deps.sh"
+      - "tox -e py35-old,combine"
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
@@ -236,25 +237,19 @@ steps:
 
   #  -- Oldest and Newest Supported Python and Postgres Pairings
 
-  - label: ":python: 3.5 :postgres: 9.5"
-    agents:
-      queue: "medium"
+  - label: ":python: 3.5 :postgres: 9.5 (Old Deps)"
+    command:
+      - ".buildkite/scripts/setup_old_deps.sh"
+      - "apt-get install -y postgresql-9.5"
+      - "tox -e py35-old-postgres,combine"
     env:
       TRIAL_FLAGS: "-j 8"
-      PYTHON_VERSION: "3.5"
-      POSTGRES_VERSION: "9.5"
-    command:
-      - *trial_setup
-      - "python -m tox -e py35-postgres,combine"
     plugins:
-      - matrix-org/download#v1.1.0:
-          urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
-      - docker-compose#v3.7.0:
-          run: testenv
-          config:
-            - /tmp/download-${BUILDKITE_BUILD_ID}/docker-compose.yaml
+      - docker#v3.7.0:
+          image: "ubuntu:xenial"  # We use xenial to get an old postgres and python
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
       - artifacts#v1.3.0:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
