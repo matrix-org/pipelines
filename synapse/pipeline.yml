@@ -21,8 +21,6 @@ x-yaml-aliases:
           - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest"
           # Complement needs to know if it is running under CI
           - "CI=true"
-          # Enable debug logging
-          - "COMPLEMENT_DEBUG=1"
         publish: [ "8448:8448" ]
         # Complement uses Docker so pass through the docker socket. This means Complement shares
         # the hosts Docker.
