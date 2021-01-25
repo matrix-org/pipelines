@@ -10,6 +10,7 @@ steps:
 
   - command:
       - "go version"
+      - "go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.35.2"
       - "golangci-lint run"
     label: "\U0001F9F9 Lint / :go: 1.13"
     agents:
