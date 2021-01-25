@@ -611,8 +611,8 @@ steps:
             - "CI=true"
             # Enable debug logging
             - "COMPLEMENT_DEBUG=1"
-            # Enabled Complement's certificate authority for authentication of
-            # federation requests
+            # Enable Complement's certificate authority for authentication of federation
+            # requests
             - "COMPLEMENT_CA=true"
             # Starting up all the processes in this container can take a little while.
             # The default is 200. Let's wait a bit longer to decrease the chance of a
