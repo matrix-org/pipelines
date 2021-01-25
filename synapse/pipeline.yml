@@ -542,6 +542,11 @@ steps:
   ################################################################################
 
   - command:
+      # Build the necessary docker images and start Complement.
+      # Note: We can't place the below steps in a Synapse repo script as this code is
+      # given access to the host docker socket. We don't want to allow untrusted code
+      # to be executed with those privileges.
+
       # Build a docker image from the checked out Synapse source
       - "docker build -t matrixdotorg/synapse:latest -f docker/Dockerfile ."
       # We use the complement:latest image to provide Complement's dependencies, but want
@@ -572,6 +577,11 @@ steps:
             - "/var/run/docker.sock:/var/run/docker.sock"
 
   - command:
+      # Build the necessary docker images and start Complement.
+      # Note: We can't place the below steps in a Synapse repo script as this code is
+      # given access to the host docker socket. We don't want to allow untrusted code
+      # to be executed with those privileges.
+
       # Build a docker image from the checked out Synapse source
       - "docker build -t matrixdotorg/synapse:latest -f docker/Dockerfile ."
       # Build a second docker image on top of the above image. This one sets up Synapse workers
