@@ -51,7 +51,7 @@ steps:
       # https://github.com/matrix-org/complement/blob/master/dockerfiles/Synapse.Dockerfile.
       - docker build -t complement-synapse -f dockerfiles/Synapse.Dockerfile dockerfiles/
       # Run the tests!
-      - COMPLEMENT_BASE_IMAGE=complement-synapse go test -v -tags "synapse_blacklist" ./tests
+      - go test -v -tags "synapse_blacklist" ./tests
     label: "\U0001F9EA Complement / Synapse Monolith / :go: 1.15"
     agents:
       queue: "medium"
@@ -62,7 +62,10 @@ steps:
           mount-buildkite-agent: false
           # Complement needs to know if it is running under CI
           environment:
-           - "CI=true"
+            # Specify the docker image to run tests against
+            - "COMPLEMENT_BASE_IMAGE=complement-synapse"
+            # Complement needs to know if it is running under CI
+            - "CI=true"
           publish: [ "8448:8448" ]
           # Complement uses Docker so pass through the docker socket. This means Complement shares
           # the host's Docker.
@@ -86,7 +89,7 @@ steps:
       # https://github.com/matrix-org/complement/blob/master/dockerfiles/SynapseWorkers.Dockerfile.
       - docker build -t complement-synapse -f dockerfiles/SynapseWorkers.Dockerfile dockerfiles/
       # Run the tests!
-      - COMPLEMENT_BASE_IMAGE=complement-synapse go test -v -tags synapse_blacklist ./tests
+      - go test -v -tags synapse_blacklist ./tests
     label: "\U0001F9EA Complement / Synapse Workers / :go: 1.15"
     agents:
       # Running every worker takes a beefy system
@@ -96,8 +99,9 @@ steps:
           # The dockerfile for this image is at https://github.com/matrix-org/complement/blob/master/dockerfiles/ComplementCIBuildkite.Dockerfile.
           image: "matrixdotorg/complement:latest"
           mount-buildkite-agent: false
-          # Complement needs to know if it is running under CI
           environment:
+            # Specify the docker image to run tests against
+            - "COMPLEMENT_BASE_IMAGE=complement-synapse"
             # Complement needs to know if it is running under CI
             - "CI=true"
             # Enable debug logging
