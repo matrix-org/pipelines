@@ -5,5 +5,5 @@ steps:
       - "yarn lint"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
+          image: "node:14-buster"
           mount-buildkite-agent: false
