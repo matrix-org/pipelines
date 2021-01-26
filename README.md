@@ -6,7 +6,7 @@ Buildkite Pipelines for Matrix.org Projects.
 See the intructions at
 https://gitlab.matrix.org/new-vector/internal/-/wikis/BuildKite#testing-a-pipeline-locally.
 
-This is an internal page. If you are not allowed to view this page, know that
+The above is an internal page. If you are not allowed to view this page, know that
 the instructions effectively boil down to:
 
 1. Install [buildkite-agent](https://github.com/buildkite/agent) and [buildkite-cli](https://github.com/buildkite/cli).
