@@ -282,6 +282,29 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
+  # -- Experimentally test against PyPy
+  #    Only runs when the build message includes the string "pypy"
+  #    This step is allowed to fail
+
+  - label: ":python: PyPy3.6"
+    if: "build.message =~ /pypy/i"
+    soft_fail: true
+    command:
+      - *trial_setup
+      - "tox -e pypy36,combine"
+    env:
+      TRIAL_FLAGS: "-j 2"
+    plugins:
+      - docker#v3.7.0:
+          image: "pypy:3.6"
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
+      - artifacts#v1.3.0:
+          upload: [ "_trial_temp/*/*.log" ]
+    retry: *retry_setup
+
+
   ################################################################################
   #
   # Sytest
