@@ -50,6 +50,7 @@ steps:
           mount-buildkite-agent: false
 
   - label: ":newspaper: Newsfile"
+    if: "build.pull_request.id != null" # Only run this check on pull requests
     command:
       - "python -m pip install tox"
       - "scripts-dev/check-newsfragment"
