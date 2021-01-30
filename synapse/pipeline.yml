@@ -287,7 +287,6 @@ steps:
   #    This step is allowed to fail
 
   - label: ":python: PyPy3.6"
-    if: "build.message =~ /pypy/i"
     soft_fail: true
     command:
       - *trial_setup
