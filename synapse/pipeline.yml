@@ -289,7 +289,10 @@ steps:
   - label: ":python: PyPy3.6"
     soft_fail: true
     command:
-      - *trial_setup
+      # No *trial_setup due to docker-library/pypy#52
+      - "apt-get update && apt-get install -y xmlsec1"
+      - "pypy -m pip install tox"
+
       - "tox -e pypy36,combine"
     env:
       TRIAL_FLAGS: "-j 2"
