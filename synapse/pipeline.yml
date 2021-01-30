@@ -54,7 +54,6 @@ steps:
     command:
       - "python -m pip install tox"
       - "scripts-dev/check-newsfragment"
-    branches: "!master !develop !release-*"
     plugins:
       - docker#v3.7.0:
           image: "python:3.6"
