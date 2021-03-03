@@ -4,37 +4,11 @@
 # compromises this and other Buildkite agents.
 
 steps:
+  # Build and lint
   - command:
-      - apt-get update && apt-get install -y libolm-dev
-      - go build -tags="*" ./internal/...
-    label: "\U0001F528 Build Complement / :go: 1.13"
-    plugins:
-      - docker#v3.7.0:
-          image: "golang:1.13"
-          mount-buildkite-agent: false
-    retry:
-      automatic:
-        - exit_status: 128
-          limit: 3
-
-  - command:
-      - apt-get update && apt-get install -y libolm-dev
-      - go build -tags="*" ./internal/...
-    label: "\U0001F528 Build Complement / :go: 1.15"
-    plugins:
-      - docker#v3.7.0:
-          image: "golang:1.15"
-          mount-buildkite-agent: false
-    retry:
-      automatic:
-        - exit_status: 128
-          limit: 3
-
-  - wait
-
-  # Linting can take a while. Run it after the wait to not block the test suite runs
-  - command:
-      - ./build/scripts/find-lint.sh
+      - echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/complement.list
+      - apt-get update && apt-get install -y libolm3 libolm-dev/buster-backports
+      - ./build/scripts/build-and-lint.sh
     label: "\U0001F9F9 Lint / :go: 1.15"
     agents:
       # Use a larger instance as linting takes a lot of memory
