@@ -5,6 +5,7 @@
 
 steps:
   - command:
+      - apt-get update && apt-get install -y libolm-dev
       - go build -tags="*" ./internal/...
     label: "\U0001F528 Build Complement / :go: 1.13"
     plugins:
@@ -17,6 +18,7 @@ steps:
           limit: 3
 
   - command:
+      - apt-get update && apt-get install -y libolm-dev
       - go build -tags="*" ./internal/...
     label: "\U0001F528 Build Complement / :go: 1.15"
     plugins:
