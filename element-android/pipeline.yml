@@ -133,10 +133,10 @@ steps:
   # In case of diff, copy values-he/strings.xml to values-iw/strings.xml
   #
   # Note that this step will fail for the first diff encountered, we may improve this in the future.
-  - label: "Weblate export check"
-    command:
-      - "diff ./vector/src/main/res/values-id/strings.xml ./vector/src/main/res/values-in/strings.xml"
-      - "diff ./vector/src/main/res/values-he/strings.xml ./vector/src/main/res/values-iw/strings.xml"
+  # - label: "Weblate export check"
+  #   command:
+  #     - "diff ./vector/src/main/res/values-id/strings.xml ./vector/src/main/res/values-in/strings.xml"
+  #     - "diff ./vector/src/main/res/values-he/strings.xml ./vector/src/main/res/values-iw/strings.xml"
 
   # run the εxodus static analyser
   - label: "εxodus"
