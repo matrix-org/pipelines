@@ -29,6 +29,7 @@ steps:
     command:
       - "echo '--- Install'"
       - "yarn install --ignore-scripts"
+      - "echo '+++ Lint'"
       - "yarn lint:style"
     plugins:
       - docker#v3.0.1:
