@@ -4,6 +4,7 @@ steps:
       - "echo '--- Fetching Dependencies'"
       - "./scripts/fetch-develop.deps.sh --depth 1"
       - "yarn install"
+      - "echo '+++ Lint'"
       - "yarn lint:js"
     plugins:
       - docker#v3.0.1:
@@ -13,22 +14,27 @@ steps:
           propagate-environment: true
           mount-buildkite-agent: false
 
-# This layer doesn't have a TypeScript linter. This comment is to remind TravisR to fix that.
-#  - label: ":eslint: TS Lint"
-#    command:
-#      - "echo '--- Install js-sdk'"
-#      - "./scripts/ci/install-deps.sh"
-#      - "yarn lint:ts"
-#    plugins:
-#      - docker#v3.0.1:
-#          image: "node:14-buster"
-
   - label: ":eslint: Types Lint"
     command:
       - "echo '--- Fetching Dependencies'"
       - "./scripts/fetch-develop.deps.sh --depth 1"
       - "yarn install"
       - "echo '+++ Checking types'"
+      - "yarn lint:types"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:14-buster"
+          # This allows the test script to see what branch it's testing and check
+          # out the equivalent dependency branches, if they exist
+          propagate-environment: true
+          mount-buildkite-agent: false
+
+  - label: ":stylelint: Style Lint"
+    command:
+      - "echo '--- Fetching Dependencies'"
+      - "./scripts/fetch-develop.deps.sh --depth 1"
+      - "yarn install"
+      - "echo '+++ Lint'"
       - "yarn lint:types"
     plugins:
       - docker#v3.0.1:
