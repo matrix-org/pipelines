@@ -119,7 +119,7 @@ steps:
 
   # -- Special Case: Oldest Python w/ Oldest Deps
 
-  - label: ":python: 3.5 (Old Deps)"
+  - label: ":python: 3.6 (Old Deps)"
     command:
       - ".buildkite/scripts/test_old_deps.sh"
     env:
