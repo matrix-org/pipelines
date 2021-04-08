@@ -310,7 +310,7 @@ steps:
   # on an assortment of Linux distributions.
   #   - "bionic" (Ubuntu 18.04) has Python 3.6 and Postgres 10
   #   - "buster" (Debian 10) has Python 3.7 and Postgres 11
-  #   - "bullseye" (Debian 11) (currently) has Python 3.9 and Postgres 13
+  #   - "testing" (Debian 11) (currently) has Python 3.9 and Postgres 13
   #
   # TODO: this leaves us without sytests for Postgres 9.6. How much do we care
   #    about that?
@@ -378,7 +378,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Monolith :postgres::debian: 11"
+  - label: "SyTest Monolith :postgres::debian: testing"
     agents:
       queue: "medium"
     env:
@@ -388,7 +388,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.7.0:
-          image: "matrixdotorg/sytest-synapse:bullseye"
+          image: "matrixdotorg/sytest-synapse:testing"
           propagate-environment: true
           always-pull: true
           workdir: "/src"
