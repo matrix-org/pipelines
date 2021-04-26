@@ -27,6 +27,9 @@ x-yaml-aliases:
         volumes:
           - "/var/run/docker.sock:/var/run/docker.sock"
 
+    # The common command for running Complement tests against Synapse
+    - &complement_run_tests_command "go test -v -tags synapse_blacklist,msc2946,msc3083 ./tests"
+
   retry: &retry_setup
     automatic:
       - exit_status: -1
@@ -590,10 +593,12 @@ steps:
       # Build a second docker image on top of the above image. This one sets up Synapse with a generated config file,
       # signing and SSL keys so Synapse can run and federate
       - "docker build -t complement-synapse -f complement-master/dockerfiles/Synapse.Dockerfile complement-master/dockerfiles"
+      - "export COMPLEMENT_BASE_IMAGE=complement-synapse"
 
       # Finally, compile and run the tests.
       - "cd complement-master"
-      - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist,msc2946,msc3083 ./tests"
+      - *complement_run_tests_command
+
     label: "\U0001F9EA Complement | Synapse Monolith"
     agents:
       queue: "medium"
@@ -619,11 +624,12 @@ steps:
       - "tar -xzf master.tar.gz"
       # Build an image for running the above worker setup in Complement. This involves
       # disabling rate-limiting, using Complement's CA etc.
-      - "docker build -t complement-synapse -f complement-master/dockerfiles/SynapseWorkers.Dockerfile complement-master/dockerfiles"
+      - "docker build -t complement-synapse-workers -f complement-master/dockerfiles/SynapseWorkers.Dockerfile complement-master/dockerfiles"
+      - "export COMPLEMENT_BASE_IMAGE=complement-synapse-workers"
 
       # Finally, compile and run the tests.
       - "cd complement-master"
-      - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist,msc2946,msc3083 ./tests"
+      - *complement_run_tests_command
     label: "\U0001F9EA Complement | Synapse Workers"
     agents:
       # Running every worker takes a beefy system
