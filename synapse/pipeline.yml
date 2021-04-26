@@ -32,8 +32,8 @@ x-yaml-aliases:
       - exit_status: -1
         limit: 2
       - exit_status: 2
-        limit: 2    
-    
+        limit: 2
+
 env:
   COVERALLS_REPO_TOKEN: wsJWOby6j0uCYFiCes3r0XauxO27mx8lD
 
@@ -67,10 +67,10 @@ steps:
           mount-buildkite-agent: false
 
   - label: ":newspaper: Newsfile"
+    if: "build.pull_request.id != null" # Only run this check on pull requests
     command:
       - "python -m pip install tox"
       - "scripts-dev/check-newsfragment"
-    branches: "!master !develop !release-*"
     plugins:
       - docker#v3.7.0:
           image: "python:3.6"
@@ -136,14 +136,15 @@ steps:
 
   # -- Special Case: Oldest Python w/ Oldest Deps
 
-  - label: ":python: 3.5 (Old Deps)"
+  - label: ":python: 3.6 (Old Deps)"
     command:
       - ".buildkite/scripts/test_old_deps.sh"
     env:
       TRIAL_FLAGS: "-j 2"
     plugins:
       - docker#v3.7.0:
-          image: "ubuntu:xenial"  # We use xenial to get an old sqlite and python
+          # We use bionic to get an old python (3.6.5) and sqlite (3.22)
+          image: "ubuntu:bionic"
           workdir: "/src"
           mount-buildkite-agent: false
           propagate-environment: true
@@ -170,22 +171,6 @@ steps:
     retry: *retry_setup
 
   # -- All Supported Python Versions (SQLite)
-
-  - label: ":python: 3.5"
-    command:
-      - *trial_setup
-      - "tox -e py35,combine"
-    env:
-      TRIAL_FLAGS: "-j 2"
-    plugins:
-      - docker#v3.7.0:
-          image: "python:3.5"
-          workdir: "/src"
-          mount-buildkite-agent: false
-          propagate-environment: true
-      - artifacts#v1.3.0:
-          upload: [ "_trial_temp/*/*.log" ]
-    retry: *retry_setup
 
   - label: ":python: 3.6"
     command:
@@ -253,16 +238,16 @@ steps:
 
   #  -- Oldest and Newest Supported Python and Postgres Pairings
 
-  - label: ":python: 3.5 :postgres: 9.5"
+  - label: ":python: 3.6 :postgres: 9.6"
     agents:
       queue: "medium"
     env:
       TRIAL_FLAGS: "-j 8"
-      PYTHON_VERSION: "3.5"
-      POSTGRES_VERSION: "9.5"
+      PYTHON_VERSION: "3.6"
+      POSTGRES_VERSION: "9.6"
     command:
       - *trial_setup
-      - "python -m tox -e py35-postgres,combine"
+      - "python -m tox -e py36-postgres,combine"
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
@@ -299,6 +284,32 @@ steps:
           upload: [ "_trial_temp/*/*.log" ]
     retry: *retry_setup
 
+  # -- Experimentally test against PyPy
+  #    Only runs when the build message includes the string "pypy"
+  #    This step is allowed to fail
+
+  - label: ":python: PyPy3.6"
+    if: "build.message =~ /pypy/i || build.branch =~ /pypy/i"
+    soft_fail: true
+    command:
+      # No *trial_setup due to docker-library/pypy#52
+      - "apt-get update && apt-get install -y xmlsec1"
+      - "pypy -m pip install tox"
+
+      - "tox -e pypy36,combine"
+    env:
+      TRIAL_FLAGS: "-j 2"
+    plugins:
+      - docker#v3.7.0:
+          image: "pypy:3.6"
+          workdir: "/src"
+          mount-buildkite-agent: false
+          propagate-environment: true
+      - artifacts#v1.3.0:
+          upload: [ "_trial_temp/*/*.log" ]
+    retry: *retry_setup
+
+
   ################################################################################
   #
   # Sytest
@@ -313,10 +324,13 @@ steps:
   #
   # We mostly care about testing each topology.
   # To vary the Python and Postgres versions, we use Docker images which are based
-  # on an assortment of Debian releases.
-  #   - "py35" is Debian  9 Stretch (Python 3.5, Postgres 9.6)
-  #   - "py37" is Debian 10 Buster (Python 3.7, Postgres 11)
-  #   - "py38" is Debian 11 Bullseye (Python 3.9, Postgres 13)
+  # on an assortment of Linux distributions.
+  #   - "bionic" (Ubuntu 18.04) has Python 3.6 and Postgres 10
+  #   - "buster" (Debian 10) has Python 3.7 and Postgres 11
+  #   - "testing" (Debian 11) (currently) has Python 3.9 and Postgres 13
+  #
+  # TODO: this leaves us without sytests for Postgres 9.6. How much do we care
+  #    about that?
   #
   # Our intent is to test:
   #   - Monolith:
@@ -331,7 +345,7 @@ steps:
   #
   ################################################################################
 
-  - label: "SyTest Monolith :sqlite::debian: 9"
+  - label: "SyTest Monolith :sqlite::ubuntu: 18.04"
     agents:
       queue: "medium"
     command:
@@ -339,7 +353,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.7.0:
-          image: "matrixdotorg/sytest-synapse:py35"
+          image: "matrixdotorg/sytest-synapse:bionic"
           propagate-environment: true
           always-pull: true
           workdir: "/src"
@@ -355,33 +369,7 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Monolith :postgres::debian: 9"
-    agents:
-      queue: "medium"
-    env:
-      POSTGRES: "1"
-    command:
-      - "bash .buildkite/merge_base_branch.sh"
-      - "bash /bootstrap.sh synapse"
-    plugins:
-      - docker#v3.7.0:
-          image: "matrixdotorg/sytest-synapse:py35"
-          propagate-environment: true
-          always-pull: true
-          workdir: "/src"
-          entrypoint: "/bin/sh"
-          init: false
-          shell: ["-x", "-c"]
-          mount-buildkite-agent: false
-          volumes: ["./logs:/logs"]
-      - artifacts#v1.3.0:
-          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
-      - matrix-org/annotate:
-          path: "logs/annotate.md"
-          style: "error"
-    retry: *retry_setup
-
-  - label: "SyTest Monolith :postgres::debian: 11"
+  - label: "SyTest Monolith :postgres::ubuntu: 18.04"
     agents:
       queue: "medium"
     env:
@@ -391,7 +379,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.7.0:
-          image: "matrixdotorg/sytest-synapse:py38"
+          image: "matrixdotorg/sytest-synapse:bionic"
           propagate-environment: true
           always-pull: true
           workdir: "/src"
@@ -407,7 +395,33 @@ steps:
           style: "error"
     retry: *retry_setup
 
-  - label: "SyTest Workers :postgres::debian: 9"
+  - label: "SyTest Monolith :postgres::debian: testing"
+    agents:
+      queue: "medium"
+    env:
+      POSTGRES: "1"
+    command:
+      - "bash .buildkite/merge_base_branch.sh"
+      - "bash /bootstrap.sh synapse"
+    plugins:
+      - docker#v3.7.0:
+          image: "matrixdotorg/sytest-synapse:testing"
+          propagate-environment: true
+          always-pull: true
+          workdir: "/src"
+          entrypoint: "/bin/sh"
+          init: false
+          shell: ["-x", "-c"]
+          mount-buildkite-agent: false
+          volumes: ["./logs:/logs"]
+      - artifacts#v1.3.0:
+          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+      - matrix-org/annotate:
+          path: "logs/annotate.md"
+          style: "error"
+    retry: *retry_setup
+
+  - label: "SyTest Workers :postgres::ubuntu: 18.04"
     agents:
       queue: "xlarge"
     env:
@@ -421,7 +435,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.7.0:
-          image: "matrixdotorg/sytest-synapse:py35"
+          image: "matrixdotorg/sytest-synapse:bionic"
           propagate-environment: true
           always-pull: true
           workdir: "/src"
@@ -451,7 +465,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.7.0:
-          image: "matrixdotorg/sytest-synapse:py37"
+          image: "matrixdotorg/sytest-synapse:buster"
           propagate-environment: true
           always-pull: true
           workdir: "/src"
@@ -482,7 +496,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.7.0:
-          image: "matrixdotorg/sytest-synapse:py37"
+          image: "matrixdotorg/sytest-synapse:buster"
           propagate-environment: true
           always-pull: true
           workdir: "/src"
@@ -506,12 +520,12 @@ steps:
   #
   ################################################################################
 
-  - label: "Port DB :python: 3.5 :postgres: 9.5"
+  - label: "Port DB :python: 3.6 :postgres: 9.6"
     agents:
       queue: "medium"
     env:
-      PYTHON_VERSION: "3.5"
-      POSTGRES_VERSION: "9.5"
+      PYTHON_VERSION: "3.6"
+      POSTGRES_VERSION: "9.6"
     command:
       - "bash .buildkite/scripts/test_synapse_port_db.sh"
     plugins:
@@ -558,6 +572,8 @@ steps:
   #
   ################################################################################
 
+
+
   - command:
       # Build the necessary docker images and start Complement.
       # Note: We can't place the below steps in a Synapse repo script as this code is
@@ -577,7 +593,7 @@ steps:
 
       # Finally, compile and run the tests.
       - "cd complement-master"
-      - "go test -v -tags synapse_blacklist ./tests"
+      - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist,msc2946,msc3083 ./tests"
     label: "\U0001F9EA Complement | Synapse Monolith"
     agents:
       queue: "medium"
@@ -607,7 +623,7 @@ steps:
 
       # Finally, compile and run the tests.
       - "cd complement-master"
-      - "go test -v -tags synapse_blacklist ./tests"
+      - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist,msc2946,msc3083 ./tests"
     label: "\U0001F9EA Complement | Synapse Workers"
     agents:
       # Running every worker takes a beefy system

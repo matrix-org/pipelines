@@ -7,7 +7,7 @@ steps:
       - "yarn lint"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
+          image: "node:14-buster"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
