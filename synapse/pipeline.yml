@@ -584,7 +584,7 @@ steps:
       # to be executed with those privileges.
 
       # Build a docker image from the checked out Synapse source
-      - "docker build -t matrixdotorg/synapse:latest -f docker/Dockerfile ."
+      - "docker build -t matrixdotorg/synapse -f docker/Dockerfile ."
 
       # We use the complement:latest image to provide Complement's dependencies, but want
       # to actually run against the master branch of Complement, so download it here.
@@ -613,10 +613,10 @@ steps:
       # to be executed with those privileges.
 
       # Build a docker image from the checked out Synapse source
-      - "docker build -t matrixdotorg/synapse:latest -f docker/Dockerfile ."
+      - "docker build -t matrixdotorg/synapse -f docker/Dockerfile ."
       # Build a second docker image on top of the above image. This one sets up Synapse workers
       # as well as everything else it needs to run a federating setup
-      - "docker build -t matrixdotorg/synapse:workers -f docker/Dockerfile-workers ."
+      - "docker build -t matrixdotorg/synapse-workers -f docker/Dockerfile-workers ."
 
       # We use the complement:latest image to provide Complement's dependencies, but want
       # to actually run against the master branch of Complement, so download it here.
