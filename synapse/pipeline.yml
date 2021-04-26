@@ -575,8 +575,6 @@ steps:
   #
   ################################################################################
 
-
-
   - command:
       # Build the necessary docker images and start Complement.
       # Note: We can't place the below steps in a Synapse repo script as this code is
