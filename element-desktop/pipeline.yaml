@@ -5,6 +5,12 @@ steps:
       - "echo '--- Install js-sdk'"
       - "./scripts/ci/install-deps.sh --ignore-scripts"
       - "yarn lint"
+  - label: ":globe_with_meridians: i18n"
+    command:
+      - "echo '--- Fetching Dependencies'"
+      - "yarn install"
+      - "echo '+++ Testing i18n output'"
+      - "yarn diff-i18n"
     plugins:
       - docker#v3.0.1:
           image: "node:14-buster"
