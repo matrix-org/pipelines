@@ -43,7 +43,7 @@ steps:
     artifact_paths:
       - "*.apk"
       - "vector/build/reports/*.*"
-    branches: "!master"
+    branches: "!main"
     plugins:
       - docker#v3.1.0:
           image: "runmymind/docker-android-sdk"
@@ -62,7 +62,7 @@ steps:
     artifact_paths:
       - "*.apk"
       - "vector/build/reports/*.*"
-    branches: "!master"
+    branches: "!main"
     plugins:
       - docker#v3.1.0:
           image: "runmymind/docker-android-sdk"
@@ -78,7 +78,7 @@ steps:
       - "./gradlew clean :matrix-sdk-android:lintRelease --stacktrace"
     artifact_paths:
       - "matrix-sdk-android/build/reports/*.*"
-    branches: "!master"
+    branches: "!main"
     plugins:
       - docker#v3.1.0:
           image: "runmymind/docker-android-sdk"
@@ -96,7 +96,7 @@ steps:
     key: "gplay_release"
     artifact_paths:
       - "*.apk"
-    branches: "master"
+    branches: "main"
     plugins:
       - docker#v3.1.0:
           image: "runmymind/docker-android-sdk"
