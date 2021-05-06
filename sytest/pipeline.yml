@@ -185,7 +185,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "Dendrite - :go: 1.13 / :postgres: 9.6"
+  - label: "Dendrite - :go: 1.14 / :postgres: 9.6"
     agents:
       queue: "medium"
     env:
@@ -223,7 +223,7 @@ steps:
         - exit_status: 2
           limit: 2
     
-  - label: "Dendrite - :go: 1.13 / :postgres: 9.6 / full HTTP APIs"
+  - label: "Dendrite - :go: 1.14 / :postgres: 9.6 / full HTTP APIs"
     agents:
       queue: "medium"
     env:
@@ -262,7 +262,7 @@ steps:
         - exit_status: 2
           limit: 2
     
-  - label: "Dendrite - :go: 1.13 / :sqlite: 3"
+  - label: "Dendrite - :go: 1.14 / :sqlite: 3"
     agents:
       queue: "medium"
     command:
@@ -298,7 +298,7 @@ steps:
         - exit_status: 2
           limit: 2
     
-  - label: "Dendrite - :go: 1.13 / :sqlite: 3 / full HTTP APIs"
+  - label: "Dendrite - :go: 1.14 / :sqlite: 3 / full HTTP APIs"
     agents:
       queue: "medium"
     env:
