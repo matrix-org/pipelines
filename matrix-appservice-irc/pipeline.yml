@@ -25,6 +25,15 @@ steps:
       - docker#v3.0.1:
           image: "node:14"
           mount-buildkite-agent: false
+          
+  - label: ":jasmine: Tests Node 16"
+    command:
+      - "yarn"
+      - "yarn test"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:16"
+          mount-buildkite-agent: false
 
   - label: ":nodejs: 14 :postgres: 11 :jasmine: Postgres Test"
     command:
