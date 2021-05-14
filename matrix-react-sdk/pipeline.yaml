@@ -96,6 +96,7 @@ steps:
     artifact_paths:
       - "test/end-to-end-tests/logs/**/*"
       - "test/end-to-end-tests/synapse/installations/consent/homeserver.log"
+      - "test/end-to-end-tests/performance-entries.json"
 
   - label: ":wrench: Element Tests"
     agents:
