@@ -37,7 +37,7 @@ steps:
       # build on the burn-after-use ephemeral queue
       queue: "ephemeral-xlarge"
     commands:
-      - "./gradlew clean lintGplayRelease assembleGplayDebug --stacktrace"
+      - "./gradlew clean assembleGplayDebug lintGplayRelease --stacktrace"
       - "mv vector/build/outputs/apk/gplay/debug/*.apk ."
     key: "gplay_debug"
     artifact_paths:
@@ -57,7 +57,7 @@ steps:
       # build on the burn-after-use ephemeral queue
       queue: "ephemeral-xlarge"
     commands:
-      - "./gradlew clean lintFdroidRelease assembleFdroidDebug --stacktrace"
+      - "./gradlew clean assembleFdroidDebug lintFdroidRelease --stacktrace"
       - "mv vector/build/outputs/apk/fdroid/debug/*.apk ."
     artifact_paths:
       - "*.apk"
