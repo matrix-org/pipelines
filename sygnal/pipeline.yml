@@ -1,7 +1,7 @@
 steps:
   - command:
       - "python -m pip install towncrier"
-      - "python -m towncrier.check"
+      - "python -m towncrier.check --compare-with='origin/main'"
     label: "Check Newsfile"
     plugins:
       - docker#v3.0.1:
