@@ -37,11 +37,27 @@ steps:
       # build on the burn-after-use ephemeral queue
       queue: "ephemeral-xlarge"
     commands:
-      - "./gradlew clean assembleGplayDebug lintGplayRelease --stacktrace"
+      - "./gradlew clean assembleGplayDebug --stacktrace"
       - "mv vector/build/outputs/apk/gplay/debug/*.apk ."
     key: "gplay_debug"
     artifact_paths:
       - "*.apk"
+    branches: "!main"
+    plugins:
+      - docker#v3.1.0:
+          image: "runmymind/docker-android-sdk"
+          propagate-environment: true
+          mount-buildkite-agent: false
+
+  - label: ":android: GPlay lint"
+    agents:
+      # We use a xlarge sized instance instead of the normal small ones because
+      # gradle build can be memory hungry
+      # build on the burn-after-use ephemeral queue
+      queue: "ephemeral-xlarge"
+    commands:
+      - "./gradlew clean lintGplayRelease --stacktrace"
+    artifact_paths:
       - "vector/build/reports/*.*"
     branches: "!main"
     plugins:
@@ -57,10 +73,26 @@ steps:
       # build on the burn-after-use ephemeral queue
       queue: "ephemeral-xlarge"
     commands:
-      - "./gradlew clean assembleFdroidDebug lintFdroidRelease --stacktrace"
+      - "./gradlew clean assembleFdroidDebug --stacktrace"
       - "mv vector/build/outputs/apk/fdroid/debug/*.apk ."
     artifact_paths:
       - "*.apk"
+    branches: "!main"
+    plugins:
+      - docker#v3.1.0:
+          image: "runmymind/docker-android-sdk"
+          propagate-environment: true
+          mount-buildkite-agent: false
+
+  - label: ":android: FDroid lint"
+    agents:
+      # We use a xlarge sized instance instead of the normal small ones because
+      # gradle build can be memory hungry
+      # build on the burn-after-use ephemeral queue
+      queue: "ephemeral-xlarge"
+    commands:
+      - "./gradlew clean lintFdroidRelease --stacktrace"
+    artifact_paths:
       - "vector/build/reports/*.*"
     branches: "!main"
     plugins:
