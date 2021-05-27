@@ -16,10 +16,10 @@ steps:
       - "pip install -e ."
       - "echo '+++ Run unit tests'"
       - "trial tests"
-    label: ":partyparrot: Unit tests / :python: 2.7"
+    label: ":partyparrot: Unit tests / :python: 3.6"
     plugins:
       - docker#v3.0.1:
-          image: "python:2.7"
+          image: "python:3.6"
           mount-buildkite-agent: false
     artifact_paths:
       - "_trial_temp/test.log"
@@ -31,11 +31,11 @@ steps:
       - "pip install git+https://github.com/matrix-org/matrix-is-tester.git"
       - "echo '+++ Run Tests'"
       - "trial matrix_is_tester"
-    label: ":pytest: matrix_is_tester / :python: 2.7"
+    label: ":pytest: matrix_is_tester / :python: 3.6"
     timeout_in_minutes: 5
     plugins:
       - docker#v3.0.1:
-          image: "python:2.7"
+          image: "python:3.6"
           mount-buildkite-agent: false
     artifact_paths:
       - "matrix_is_test/sydent.stderr"
@@ -46,10 +46,10 @@ steps:
       - "pip install -e ."
       - "echo '+++ Run unit tests'"
       - "trial tests"
-    label: ":partyparrot: Unit tests / :python: 3.5"
+    label: ":partyparrot: Unit tests / :python: 3.9"
     plugins:
       - docker#v3.0.1:
-          image: "python:3.5"
+          image: "python:3.9"
           mount-buildkite-agent: false
     artifact_paths:
       - "_trial_temp/test.log"
@@ -61,41 +61,11 @@ steps:
       - "pip install git+https://github.com/matrix-org/matrix-is-tester.git"
       - "echo '+++ Run Tests'"
       - "trial matrix_is_tester"
-    label: ":pytest: matrix_is_tester / :python: 3.5"
+    label: ":pytest: matrix_is_tester / :python: 3.9"
     timeout_in_minutes: 5
     plugins:
       - docker#v3.0.1:
-          image: "python:3.5"
-          mount-buildkite-agent: false
-    artifact_paths:
-      - "matrix_is_test/sydent.stderr"
-      - "_trial_temp/test.log"
-
-  - command:
-      - "echo '--- Install dependencies'"
-      - "pip install -e ."
-      - "echo '+++ Run unit tests'"
-      - "trial tests"
-    label: ":partyparrot: Unit tests / :python: 3.8"
-    plugins:
-      - docker#v3.0.1:
-          image: "python:3.8"
-          mount-buildkite-agent: false
-    artifact_paths:
-      - "_trial_temp/test.log"
-
-  - command:
-      - "echo '--- Install dependencies'"
-      - "pip install -e ."
-      - "echo '--- Install matrix_is_tester'"
-      - "pip install git+https://github.com/matrix-org/matrix-is-tester.git"
-      - "echo '+++ Run Tests'"
-      - "trial matrix_is_tester"
-    label: ":pytest: matrix_is_tester / :python: 3.8"
-    timeout_in_minutes: 5
-    plugins:
-      - docker#v3.0.1:
-          image: "python:3.8"
+          image: "python:3.9"
           mount-buildkite-agent: false
     artifact_paths:
       - "matrix_is_test/sydent.stderr"
