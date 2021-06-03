@@ -1,5 +1,5 @@
 steps:
-  - label: "Synapse - :python: 3.5 / SQLite / Monolith"
+  - label: "Synapse - :python: 3.6 / SQLite / Monolith"
     agents:
       queue: "medium"
     command:
@@ -9,7 +9,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
-          image: "matrixdotorg/sytest-synapse:py35"
+          image: "matrixdotorg/sytest-synapse:bionic"
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
@@ -35,7 +35,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "Synapse - :python: 3.5 / :postgres: 9.6 / Monolith"
+  - label: "Synapse - :python: 3.6 / :postgres: 10 / Monolith"
     agents:
       queue: "medium"
     env:
@@ -47,7 +47,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
-          image: "matrixdotorg/sytest-synapse:py35"
+          image: "matrixdotorg/sytest-synapse:bionic"
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
@@ -71,7 +71,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "Synapse - :python: 3.5 / :postgres: 9.6 / Workers"
+  - label: "Synapse - :python: 3.6 / :postgres: 10 / Workers"
     agents:
       queue: "xlarge"
     env:
@@ -86,7 +86,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
-          image: "matrixdotorg/sytest-synapse:py35"
+          image: "matrixdotorg/sytest-synapse:bionic"
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
@@ -110,7 +110,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "Synapse - :python: 3.7 / :postgres: 11 / Monolith"
+  - label: "Synapse - :python: 3.9 / :postgres: 13 / Monolith"
     agents:
       queue: "medium"
     env:
@@ -122,7 +122,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
-          image: "matrixdotorg/sytest-synapse:py37"
+          image: "matrixdotorg/sytest-synapse:testing"
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
@@ -146,7 +146,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "Synapse - :python: 3.7 / :postgres: 11 / Workers"
+  - label: "Synapse - :python: 3.9 / :postgres: 13 / Workers"
     agents:
       queue: "xlarge"
     env:
@@ -161,7 +161,7 @@ steps:
       - "bash /bootstrap.sh synapse"
     plugins:
       - docker#v3.0.1:
-          image: "matrixdotorg/sytest-synapse:py37"
+          image: "matrixdotorg/sytest-synapse:testing"
           propagate-environment: true
           always-pull: true
           workdir: "/sytest"
@@ -185,7 +185,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "Dendrite - :go: 1.14 / :postgres: 9.6"
+  - label: "Dendrite - :postgres:"
     agents:
       queue: "medium"
     env:
@@ -223,7 +223,7 @@ steps:
         - exit_status: 2
           limit: 2
     
-  - label: "Dendrite - :go: 1.14 / :postgres: 9.6 / full HTTP APIs"
+  - label: "Dendrite - :postgres: full HTTP APIs"
     agents:
       queue: "medium"
     env:
@@ -262,7 +262,7 @@ steps:
         - exit_status: 2
           limit: 2
     
-  - label: "Dendrite - :go: 1.14 / :sqlite: 3"
+  - label: "Dendrite - :sqlite:"
     agents:
       queue: "medium"
     command:
@@ -298,7 +298,7 @@ steps:
         - exit_status: 2
           limit: 2
     
-  - label: "Dendrite - :go: 1.14 / :sqlite: 3 / full HTTP APIs"
+  - label: "Dendrite - :sqlite: / full HTTP APIs"
     agents:
       queue: "medium"
     env:
