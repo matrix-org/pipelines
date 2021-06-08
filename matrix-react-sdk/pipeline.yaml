@@ -72,32 +72,6 @@ steps:
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
           mount-buildkite-agent: false
-
-  - label: ":chains: End-to-End Tests"
-    agents:
-      # We use a xlarge sized instance instead of the normal small ones because
-      # e2e tests otherwise take +-8min
-      queue: "xlarge"
-    command:
-      # `end-to-end-tests.sh` contains `echo` commands to mark sections
-      - "./scripts/ci/end-to-end-tests.sh"
-    plugins:
-      - docker#v3.0.1:
-          image: "vectorim/element-web-ci-e2etests-env:latest"
-          # This allows the test script to see what branch it's testing and check
-          # out the equivalent dependency branches, if they exist
-          propagate-environment: true
-          workdir: "/workdir/matrix-react-sdk"
-          mount-buildkite-agent: false
-    retry:
-      automatic:
-        - exit_status: 1 # retry end-to-end tests once as Puppeteer sometimes fails
-          limit: 1
-    artifact_paths:
-      - "test/end-to-end-tests/logs/**/*"
-      - "test/end-to-end-tests/synapse/installations/consent/homeserver.log"
-      - "test/end-to-end-tests/performance-entries.json"
-
   - label: ":wrench: Element Tests"
     agents:
       # We use a medium sized instance instead of the normal small ones because
