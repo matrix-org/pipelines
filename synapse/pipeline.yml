@@ -558,15 +558,15 @@ steps:
   - command:
       # Build a docker image from the checked out Synapse source
       - "docker build -t matrixdotorg/synapse:latest -f docker/Dockerfile ."
-      # We use the complement:latest image to provide Complement's dependencies, but want
-      # to actually run against the latest version of Complement, so download it here.
-      - "wget https://github.com/matrix-org/complement/archive/master.tar.gz"
-      - "tar -xzf master.tar.gz"
+      # We want to run against complement from the same named branch or the
+      # latest version of Complement, so download it here.
+      - "mkdir -p /complement"
+      - "(wget -O - https://github.com/matrix-org/complement/archive/$BUILDKITE_BRANCH.tar.gz || wget -O - https://github.com/matrix-org/complement/archive/master.tar.gz) | tar -xz --strip-components=1 -C /complement"
       # Build a second docker image on top of the above image. This one sets up Synapse with a generated config file,
       # signing and SSL keys so Synapse can run and federate
-      - "docker build -t complement-synapse -f complement-master/dockerfiles/Synapse.Dockerfile complement-master/dockerfiles"
+      - "docker build -t complement-synapse -f /complement/dockerfiles/Synapse.Dockerfile /complement/dockerfiles"
       # Finally, compile and run the tests.
-      - "cd complement-master"
+      - "cd /complement"
       - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist,msc2946,msc3083 ./tests"
     label: "\U0001F9EA Complement"
     agents:
