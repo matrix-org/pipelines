@@ -567,7 +567,7 @@ steps:
       - "docker build -t complement-synapse -f /complement/dockerfiles/Synapse.Dockerfile /complement/dockerfiles"
       # Finally, compile and run the tests.
       - "cd /complement"
-      - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist,msc2946,msc3083 ./tests"
+      - "COMPLEMENT_BASE_IMAGE=complement-synapse:latest go test -v -tags synapse_blacklist,msc2403,msc2946,msc3083 ./tests"
     label: "\U0001F9EA Complement"
     agents:
       queue: "medium"
