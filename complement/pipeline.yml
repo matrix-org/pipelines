@@ -32,7 +32,7 @@ steps:
       # signing and SSL keys so Synapse can run and federate
       - docker build -t complement-synapse -f dockerfiles/Synapse.Dockerfile dockerfiles/
       # Run the tests!
-      - COMPLEMENT_BASE_IMAGE=complement-synapse go test -v -tags "synapse_blacklist,msc2946,msc3083" ./tests
+      - COMPLEMENT_BASE_IMAGE=complement-synapse go test -v -tags "synapse_blacklist,msc2403,msc2946,msc3083" ./tests
     label: "\U0001F9EA Complement / Synapse Monolith / :go: 1.15"
     agents:
       queue: "medium"
