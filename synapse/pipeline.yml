@@ -234,8 +234,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/HEAD/synapse/docker-compose.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/HEAD/synapse/docker-compose-env
       - docker-compose#v3.7.0:
           run: testenv
           config:
@@ -257,8 +257,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/HEAD/synapse/docker-compose.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/HEAD/synapse/docker-compose-env
       - docker-compose#v3.7.0:
           run: testenv
           config:
@@ -514,8 +514,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/HEAD/synapse/docker-compose.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/HEAD/synapse/docker-compose-env
       - docker-compose#v3.7.0:
           run: testenv
           config:
@@ -534,8 +534,8 @@ steps:
     plugins:
       - matrix-org/download#v1.1.0:
           urls:
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose.yaml
-            - https://raw.githubusercontent.com/matrix-org/pipelines/master/synapse/docker-compose-env
+            - https://raw.githubusercontent.com/matrix-org/pipelines/HEAD/synapse/docker-compose.yaml
+            - https://raw.githubusercontent.com/matrix-org/pipelines/HEAD/synapse/docker-compose-env
       - docker-compose#v3.7.0:
           run: testenv
           config:
@@ -561,7 +561,7 @@ steps:
       # We want to run against complement from the same named branch or the
       # latest version of Complement, so download it here.
       - "mkdir -p /complement"
-      - "(wget -O - https://github.com/matrix-org/complement/archive/$BUILDKITE_BRANCH.tar.gz || wget -O - https://github.com/matrix-org/complement/archive/master.tar.gz) | tar -xz --strip-components=1 -C /complement"
+      - "(wget -O - https://github.com/matrix-org/complement/archive/$BUILDKITE_BRANCH.tar.gz || wget -O - https://github.com/matrix-org/complement/archive/HEAD.tar.gz) | tar -xz --strip-components=1 -C /complement"
       # Build a second docker image on top of the above image. This one sets up Synapse with a generated config file,
       # signing and SSL keys so Synapse can run and federate
       - "docker build -t complement-synapse -f /complement/dockerfiles/Synapse.Dockerfile /complement/dockerfiles"
@@ -573,7 +573,7 @@ steps:
       queue: "medium"
     plugins:
       - docker#v3.7.0:
-          # The dockerfile for this image is at https://github.com/matrix-org/complement/blob/master/dockerfiles/ComplementCIBuildkite.Dockerfile.
+          # The dockerfile for this image is at https://github.com/matrix-org/complement/blob/HEAD/dockerfiles/ComplementCIBuildkite.Dockerfile.
           image: "matrixdotorg/complement:latest"
           mount-buildkite-agent: false
           # Complement needs to know if it is running under CI
