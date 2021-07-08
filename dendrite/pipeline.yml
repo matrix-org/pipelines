@@ -37,6 +37,22 @@ steps:
           mount-buildkite-agent: false
 
   - command:
+      - "go build ./cmd/dendrite-upgrade-tests"
+      - "./dendrite-upgrade-tests --head . --docker-host host.docker.internal"
+    label: "\U0001F39A Upgrades"
+    agents:
+      queue: "medium"
+    plugins:
+      - docker#v3.5.0:
+          # Use the same base docker image as complement as dendrite-upgrade-tests also needs Go and Docker.
+          image: "matrixdotorg/complement:latest"
+          mount-buildkite-agent: false
+          # The upgrade test uses Docker so pass through the docker socket. This means it shares
+          # the hosts Docker.
+          volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+
+  - command:
       - docker build -t complement-dendrite -f build/scripts/Complement.Dockerfile .
       - "wget -N https://github.com/matrix-org/complement/archive/master.tar.gz && tar -xzf master.tar.gz"
       - "cd complement-master && COMPLEMENT_BASE_IMAGE=complement-dendrite:latest go test -v -tags=\"dendrite_blacklist\" ./tests"
