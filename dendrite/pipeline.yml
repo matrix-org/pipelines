@@ -38,7 +38,7 @@ steps:
 
   - command:
       - "go build ./cmd/dendrite-upgrade-tests"
-      - "./dendrite-upgrade-tests --head . --docker-host host.docker.internal"
+      - "./dendrite-upgrade-tests --head . --docker-host 172.17.0.1"
     label: "\U0001F39A Upgrades"
     agents:
       queue: "medium"
