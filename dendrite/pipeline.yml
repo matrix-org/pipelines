@@ -26,7 +26,7 @@ steps:
   - command:
       - "env"
       # https://github.com/golangci/golangci-lint#memory-usage-of-golangci-lint
-      - "./build/scripts/find-lint.sh"
+      - "COMPLEMENT_LINT_CONCURRENCY=2 GOGC=50 ./build/scripts/find-lint.sh"
     label: "\U0001F9F9 Lint / :go: 1.15"
     agents:
       # Use a larger instance as linting takes a looot of memory
