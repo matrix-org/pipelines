@@ -35,7 +35,7 @@ steps:
       - "./scripts/fetch-develop.deps.sh --depth 1"
       - "yarn install"
       - "echo '+++ Lint'"
-      - "yarn lint:types"
+      - "yarn lint:style"
     plugins:
       - docker#v3.0.1:
           image: "node:14-buster"
