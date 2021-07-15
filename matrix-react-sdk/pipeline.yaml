@@ -17,6 +17,10 @@ steps:
       - "./scripts/ci/install-deps.sh --ignore-scripts"
       - "echo '+++ Lint'"
       - "yarn lint:types"
+      - "echo '--- Switch js-sdk to release mode'"
+      - "./scripts/ci/js-sdk-to-release.sh"
+      - "echo '+++ Lint (release mode)'"
+      - "yarn lint:types"
     plugins:
       - docker#v3.0.1:
           image: "node:14-buster"
