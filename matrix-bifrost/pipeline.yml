@@ -5,22 +5,22 @@ steps:
       - "yarn lint"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
+          image: "node:16"
 
-  - label: ":nodejs: 10 :mocha: Unit/Integration Test"
+  - label: ":nodejs: 14 :mocha: Unit/Integration Test"
     command:
       - "yarn install"
       - "yarn build"
       - "yarn test"
     plugins:
       - docker#v3.0.1:
-          image: "node:10"
+          image: "node:14"
 
-  - label: ":nodejs: 12 :mocha: Unit/Integration Test"
+  - label: ":nodejs: 16 :mocha: Unit/Integration Test"
     command:
       - "yarn install"
       - "yarn build"
       - "yarn test"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
+          image: "node:16"
