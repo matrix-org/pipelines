@@ -1,7 +1,7 @@
 steps:
   - label: ":eslint: Lint"
     command:
-      - "npm install"
+      - "npm ci"
       - "npm run lint"
     plugins:
       - docker#v3.0.1:
@@ -10,7 +10,7 @@ steps:
 
   - label: ":nodejs: 12 :mocha: Unit/Integration Test"
     command:
-      - "npm install"
+      - "npm ci"
       - "npm run build"
       - "npm run test"
     plugins:
@@ -20,7 +20,7 @@ steps:
 
   - label: ":nodejs: 14 :mocha: Unit/Integration Test"
     command:
-      - "npm install"
+      - "npm ci"
       - "npm run build"
       - "npm run test"
     plugins:
@@ -30,7 +30,7 @@ steps:
 
   - label: ":nodejs: 14 :postgres: 11 :mocha: Postgres Test"
     command:
-      - "npm install"
+      - "npm ci"
       - "npm run build"
       - "npm run test:postgres"
     plugins:
