@@ -12,19 +12,19 @@ steps:
     command: ".buildkite/lint.sh"
     plugins:
       - docker#v3.0.1:
-          image: "golang:1.13"
+          image: "golang:1.15"
           mount-buildkite-agent: false
           
-  - label: ":hammer: Build / :go: 1.11"
+  - label: ":hammer: Build / :go: 1.15"
     command: ".buildkite/build-and-test.sh"
     plugins:
       - docker#v3.0.1:
-          image: "golang:1.11"
+          image: "golang:1.15"
           mount-buildkite-agent: false
           
-  - label: ":hammer: Build / :go: 1.13"
+  - label: ":hammer: Build / :go: 1.16"
     command: ".buildkite/build-and-test.sh"
     plugins:
       - docker#v3.0.1:
-          image: "golang:1.13"
+          image: "golang:1.16"
           mount-buildkite-agent: false
