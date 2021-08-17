@@ -22,11 +22,3 @@ steps:
     plugins:
       - docker#v3.0.1:
           image: "node:12"
-
-  - label: ":nodejs: 10 Build"
-    command:
-      - "yarn install"
-      - "yarn build"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:10"
