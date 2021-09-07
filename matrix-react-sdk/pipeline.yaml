@@ -18,7 +18,11 @@ steps:
       - "echo '+++ Lint'"
       - "yarn lint:types"
       - "echo '--- Switch js-sdk to release mode'"
-      - "./scripts/ci/js-sdk-to-release.sh"
+      - "./scripts/ci/js-sdk-to-release.js"
+      - "pushd node_modules/matrix-js-sdk"
+      - "yarn run build:compile"
+      - "yarn run build:types"
+      - "popd"
       - "echo '+++ Lint (release mode)'"
       - "yarn lint:types"
     plugins:
