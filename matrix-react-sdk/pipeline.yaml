@@ -10,25 +10,6 @@ steps:
           image: "node:14-buster"
           mount-buildkite-agent: false
 
-  - label: ":eslint: Types Lint"
-    command:
-      # We fetch the develop js-sdk to get matching types etc.
-      - "echo '--- Install js-sdk'"
-      - "./scripts/ci/install-deps.sh --ignore-scripts"
-      - "echo '+++ Lint'"
-      - "yarn lint:types"
-      - "echo '--- Switch js-sdk to release mode'"
-      - "./scripts/ci/js-sdk-to-release.sh"
-      - "echo '+++ Lint (release mode)'"
-      - "yarn lint:types"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:14-buster"
-          # This allows the test script to see what branch it's testing and check
-          # out the equivalent dependency branches, if they exist
-          propagate-environment: true
-          mount-buildkite-agent: false
-
   - label: ":stylelint: Style Lint"
     command:
       - "echo '--- Install'"
