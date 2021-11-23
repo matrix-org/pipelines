@@ -79,8 +79,9 @@ steps:
       queue: "medium"
     env:
       POSTGRES: "1"
+      SYTEST_BRANCH: "$BUILDKITE_BRANCH"
     command:
-      - "SYTEST_BRANCH=$BUILDKITE_BRANCH bash /bootstrap.sh dendrite"
+      - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-dendrite"
@@ -111,8 +112,9 @@ steps:
     env:
       POSTGRES: "1"
       API: "1"
+      SYTEST_BRANCH: "$BUILDKITE_BRANCH"
     command:
-      - "SYTEST_BRANCH=$BUILDKITE_BRANCH bash /bootstrap.sh dendrite"
+      - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-dendrite"
@@ -140,8 +142,10 @@ steps:
   - label: "SyTest - :go: 1.15 / :sqlite: 3"
     agents:
       queue: "medium"
+    env:
+      SYTEST_BRANCH: "$BUILDKITE_BRANCH"
     command:
-      - "SYTEST_BRANCH=$BUILDKITE_BRANCH bash /bootstrap.sh dendrite"
+      - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-dendrite"
@@ -171,8 +175,9 @@ steps:
       queue: "medium"
     env:
       API: "1"
+      SYTEST_BRANCH: "$BUILDKITE_BRANCH"
     command:
-      - "SYTEST_BRANCH=$BUILDKITE_BRANCH bash /bootstrap.sh dendrite"
+      - "bash /bootstrap.sh dendrite"
     plugins:
       - docker#v3.0.1:
           image: "matrixdotorg/sytest-dendrite"
