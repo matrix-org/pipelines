@@ -73,7 +73,6 @@ steps:
           # the hosts Docker.
           volumes:
             - "/var/run/docker.sock:/var/run/docker.sock"
- 
   - label: "SyTest - :go: 1.15 / :postgres: 9.6"
     agents:
       queue: "medium"
