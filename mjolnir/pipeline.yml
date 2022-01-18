@@ -5,7 +5,7 @@ steps:
       - "yarn lint"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
+          image: "node:14"
           
   - label: ":mocha: Tests"
     command:
@@ -13,12 +13,12 @@ steps:
       - "yarn test"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
+          image: "node:14"
 
-  - label: ":nodejs: 12 Build"
+  - label: ":nodejs: 14 Build"
     command:
       - "yarn install"
       - "yarn build"
     plugins:
       - docker#v3.0.1:
-          image: "node:12"
+          image: "node:14"
