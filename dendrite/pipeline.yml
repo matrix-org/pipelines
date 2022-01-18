@@ -11,7 +11,25 @@ steps:
       automatic:
         - exit_status: 128
           limit: 3
-          
+  
+  - label: "\U0001F528 Build Windows / :go: 1.15"
+    env:
+      GOOS: "windows" 
+      GOARCH: "amd64"
+      CC: "/usr/bin/x86_64-w64-mingw32-gcc"
+    command:
+      - "apt update && apt install -y gcc-mingw-w64-x86-64" # install required gcc
+      - "env"
+      - "bash build.sh"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.15"
+          mount-buildkite-agent: false
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
+
   - command:
       - "env"
       - "go test ./..."
