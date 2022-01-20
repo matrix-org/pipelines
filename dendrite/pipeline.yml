@@ -25,6 +25,7 @@ steps:
       - docker#v3.0.1:
           image: "golang:1.15"
           mount-buildkite-agent: false
+          propagate-environment: true
     retry:
       automatic:
         - exit_status: 128
