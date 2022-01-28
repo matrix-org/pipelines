@@ -1,20 +1,39 @@
 steps:
-  - command:
+  - label: "\U0001F528 Build Linux 64-bit / :go: 1.16"
+    command:
       - "env"
-      - "bash build.sh"
-    label: "\U0001F528 Build / :go: 1.15"
+      - "GOARCH=amd64 bash build.sh"
+    env:
+      GOOS: "linux"
+      GOARCH: "amd64"
     plugins:
       - docker#v3.0.1:
-          image: "golang:1.15"
+          image: "golang:1.16"
           mount-buildkite-agent: false
     retry:
       automatic:
         - exit_status: 128
           limit: 3
-  
-  - label: "\U0001F528 Build Windows / :go: 1.15"
+
+  - label: "\U0001F528 Build Linux 32-bit / :go: 1.16"
+    command:
+      - "env"
+      - "bash build.sh"
     env:
-      GOOS: "windows" 
+      GOOS: "linux"
+      GOARCH: "386"
+    plugins:
+      - docker#v3.0.1:
+          image: "golang:1.16"
+          mount-buildkite-agent: false
+    retry:
+      automatic:
+        - exit_status: 128
+          limit: 3
+
+  - label: "\U0001F528 Build Windows 64-bit / :go: 1.16"
+    env:
+      GOOS: "windows"
       GOARCH: "amd64"
       CC: "/usr/bin/x86_64-w64-mingw32-gcc"
     command:
@@ -23,7 +42,7 @@ steps:
       - "bash build.sh"
     plugins:
       - docker#v3.0.1:
-          image: "golang:1.15"
+          image: "golang:1.16"
           mount-buildkite-agent: false
           propagate-environment: true
     retry:
@@ -34,10 +53,10 @@ steps:
   - command:
       - "env"
       - "go test ./..."
-    label: "\U0001F9EA Unit tests / :go: 1.15"
+    label: "\U0001F9EA Unit tests / :go: 1.16"
     plugins:
       - docker#v3.0.1:
-          image: "golang:1.15"
+          image: "golang:1.16"
           mount-buildkite-agent: false
 
   - wait
@@ -46,13 +65,13 @@ steps:
       - "env"
       # https://github.com/golangci/golangci-lint#memory-usage-of-golangci-lint
       - "COMPLEMENT_LINT_CONCURRENCY=2 GOGC=50 ./build/scripts/find-lint.sh"
-    label: "\U0001F9F9 Lint / :go: 1.15"
+    label: "\U0001F9F9 Lint / :go: 1.16"
     agents:
       # Use a larger instance as linting takes a looot of memory
       queue: "xlarge"
     plugins:
       - docker#v3.0.1:
-          image: "golang:1.15"
+          image: "golang:1.16"
           mount-buildkite-agent: false
 
   - command:
@@ -71,7 +90,7 @@ steps:
           volumes:
             - "/var/run/docker.sock:/var/run/docker.sock"
 
-  - label: "SyTest - :go: 1.15 / :postgres: 9.6"
+  - label: "SyTest - :go: 1.16 / :postgres: 9.6"
     agents:
       queue: "medium"
     env:
@@ -85,14 +104,14 @@ steps:
           propagate-environment: true
           always-pull: true
           workdir: "/src"
-          entrypoint: '/bin/sh'
+          entrypoint: "/bin/sh"
           shell: ["-x", "-c"]
           init: false
           debug: true
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
-          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+          upload: ["logs/**/*.log", "logs/**/*.log.*", "logs/results.tap"]
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
@@ -102,8 +121,8 @@ steps:
           limit: 2
         - exit_status: 2
           limit: 2
-  
-  - label: "SyTest - :go: 1.15 / :postgres: 9.6 / full HTTP APIs"
+
+  - label: "SyTest - :go: 1.16 / :postgres: 9.6 / full HTTP APIs"
     agents:
       queue: "medium"
     env:
@@ -118,14 +137,14 @@ steps:
           propagate-environment: true
           always-pull: true
           workdir: "/src"
-          entrypoint: '/bin/sh'
+          entrypoint: "/bin/sh"
           shell: ["-x", "-c"]
           init: false
           debug: true
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
-          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+          upload: ["logs/**/*.log", "logs/**/*.log.*", "logs/results.tap"]
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
@@ -136,7 +155,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "SyTest - :go: 1.15 / :sqlite: 3"
+  - label: "SyTest - :go: 1.16 / :sqlite: 3"
     agents:
       queue: "medium"
     env:
@@ -149,14 +168,14 @@ steps:
           propagate-environment: true
           always-pull: true
           workdir: "/src"
-          entrypoint: '/bin/sh'
+          entrypoint: "/bin/sh"
           shell: ["-x", "-c"]
           init: false
           debug: true
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
-          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+          upload: ["logs/**/*.log", "logs/**/*.log.*", "logs/results.tap"]
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
@@ -167,7 +186,7 @@ steps:
         - exit_status: 2
           limit: 2
 
-  - label: "SyTest - :go: 1.15 / :sqlite: 3 / full HTTP APIs"
+  - label: "SyTest - :go: 1.16 / :sqlite: 3 / full HTTP APIs"
     agents:
       queue: "medium"
     env:
@@ -181,14 +200,14 @@ steps:
           propagate-environment: true
           always-pull: true
           workdir: "/src"
-          entrypoint: '/bin/sh'
+          entrypoint: "/bin/sh"
           shell: ["-x", "-c"]
           init: false
           debug: true
           mount-buildkite-agent: false
           volumes: ["./logs:/logs"]
       - artifacts#v1.2.0:
-          upload: [ "logs/**/*.log", "logs/**/*.log.*", "logs/results.tap" ]
+          upload: ["logs/**/*.log", "logs/**/*.log.*", "logs/results.tap"]
       - matrix-org/annotate:
           path: "logs/annotate.md"
           style: "error"
