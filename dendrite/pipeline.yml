@@ -2,7 +2,7 @@ steps:
   - label: "\U0001F528 Build Linux 64-bit / :go: 1.16"
     command:
       - "env"
-      - "GOARCH=amd64 bash build.sh"
+      - "bash build.sh"
     env:
       GOOS: "linux"
       GOARCH: "amd64"
