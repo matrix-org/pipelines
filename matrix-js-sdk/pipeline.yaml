@@ -40,6 +40,24 @@ steps:
           image: "node:14-buster"
           mount-buildkite-agent: false
 
+  - label: ":jest: Generate test coverage"
+    agents:
+      queue: "medium"
+    command:
+      - "yarn install"
+      - "yarn build"
+      - "yarn coverage"
+    plugins:
+      - docker#v3.0.1:
+          image: "node:14-buster"
+          mount-buildkite-agent: false
+
+  - label: ":jest: Upload test coverage"
+    uses: codecov/codecov-action@v2
+    with:
+      directory: ./coverage/
+      verbose: true
+
   - label: ":page_with_curl: Docs"
     command:
       - "yarn install"
