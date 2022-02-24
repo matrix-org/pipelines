@@ -53,10 +53,10 @@ steps:
           mount-buildkite-agent: false
 
   - label: ":jest: Upload test coverage"
-    uses: codecov/codecov-action@v2
-    with:
-      directory: ./coverage/
-      verbose: true
+    plugins:
+      - joscha/codecov#v2.1.6:
+          args:
+            - '-v'
 
   - label: ":page_with_curl: Docs"
     command:
