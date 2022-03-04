@@ -70,7 +70,7 @@ steps:
 
     commands:
       - "mv vector-gplay-universal-*.apk app.apk"
-      - "docker run -v $(pwd)/app.apk:/app.apk --rm -i exodusprivacy/exodus-standalone -j > exodus.json"
+      - "docker run -v $(pwd)/app.apk:/app.apk --rm -i exodusprivacy/exodus-standalone:latest -j /apk.app > exodus.json"
       - "jq -e '.trackers == []' exodus.json > /dev/null || { echo 'static analysis identified user tracking library' ; false; }"
     depends_on: 
       - gplay_debug
