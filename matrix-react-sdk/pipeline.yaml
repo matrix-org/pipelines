@@ -1,23 +1,4 @@
 steps:
-  - label: ":wrench: Element Tests"
-    agents:
-      # We use a medium sized instance instead of the normal small ones because
-      # webpack loves to gorge itself on resources.
-      queue: "medium"
-    command:
-      - "echo '+++ Test'"
-      - "./scripts/ci/app-tests.sh"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:14-buster"
-          # This allows the test script to see what branch it's testing and check
-          # out the equivalent dependency branches, if they exist
-          propagate-environment: true
-          workdir: "/workdir/matrix-react-sdk"
-          mount-buildkite-agent: false
-
-  - wait
-
   - label: ":horse: Trigger element-web"
     trigger: "element-web"
     branches: "develop"
