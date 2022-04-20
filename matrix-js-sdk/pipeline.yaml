@@ -1,15 +1,4 @@
 steps:
-  - label: ":hammer_and_wrench: Build"
-    command:
-      - "yarn install"
-      - "yarn build"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:14-buster"
-          mount-buildkite-agent: false
-
-  - wait
-
   - label: ":horse: Trigger matrix-react-sdk"
     trigger: "matrix-react-sdk"
     branches: "develop"
