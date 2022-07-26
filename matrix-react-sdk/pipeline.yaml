@@ -43,6 +43,10 @@ steps:
           mount-buildkite-agent: false
 
   - label: ":hammer_and_wrench: Build"
+    agents:
+      # We use a medium sized instance instead of the normal small ones because
+      # webpack loves to gorge itself on resources.
+      queue: "medium"
     command:
       # We fetch the develop js-sdk to get matching types etc.
       - "echo '--- Install js-sdk'"
