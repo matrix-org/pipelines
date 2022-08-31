@@ -12,7 +12,7 @@ steps:
       queue: "ephemeral-xlarge"
     commands:
       - "./gradlew clean assembleGplayDebug --stacktrace"
-      - "mv vector/build/outputs/apk/gplay/debug/*.apk ."
+      - "mv vector-app/build/outputs/apk/gplay/debug/*.apk ."
     key: "gplay_debug"
     artifact_paths:
       - "*.apk"
@@ -31,7 +31,7 @@ steps:
       queue: "ephemeral-xlarge"
     commands:
       - "./gradlew clean assembleFdroidDebug --stacktrace"
-      - "mv vector/build/outputs/apk/fdroid/debug/*.apk ."
+      - "mv vector-app/build/outputs/apk/fdroid/debug/*.apk ."
     artifact_paths:
       - "*.apk"
     branches: "!main"
@@ -48,7 +48,7 @@ steps:
       queue: "xlarge"
     commands:
       - "./gradlew clean assembleGplayRelease --stacktrace"
-      - "mv vector/build/outputs/apk/gplay/release/*.apk ."
+      - "mv vector-app/build/outputs/apk/gplay/release/*.apk ."
     key: "gplay_release"
     artifact_paths:
       - "*.apk"
