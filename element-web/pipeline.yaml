@@ -8,7 +8,7 @@ steps:
       - "yarn lint:js"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -25,7 +25,7 @@ steps:
       - "yarn lint:types"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -40,7 +40,7 @@ steps:
       - "yarn lint:style"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -60,7 +60,7 @@ steps:
     artifact_paths: "webpack-stats.json"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -80,7 +80,7 @@ steps:
       - "yarn test"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -95,7 +95,7 @@ steps:
       - "yarn diff-i18n"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           # This allows the test script to see what branch it's testing and check
           # out the equivalent dependency branches, if they exist
           propagate-environment: true
@@ -118,5 +118,5 @@ steps:
     artifact_paths: "dist/*.tar.gz"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           mount-buildkite-agent: false

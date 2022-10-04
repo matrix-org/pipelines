@@ -5,7 +5,7 @@ steps:
       - "yarn lint:js"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           mount-buildkite-agent: false
 
   - label: ":typescript: Types Lint"
@@ -14,7 +14,7 @@ steps:
       - "yarn lint:types"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           mount-buildkite-agent: false
 
   - label: ":hammer_and_wrench: Build"
@@ -23,7 +23,7 @@ steps:
       - "yarn build"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           mount-buildkite-agent: false
 
   - label: ":jest: Tests"
@@ -37,7 +37,7 @@ steps:
       - "yarn test"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           mount-buildkite-agent: false
 
   - label: ":page_with_curl: Docs"
@@ -46,7 +46,7 @@ steps:
       - "yarn gendoc"
     plugins:
       - docker#v3.0.1:
-          image: "node:14-buster"
+          image: "node:16-buster"
           mount-buildkite-agent: false
 
   - wait
