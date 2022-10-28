@@ -1,9 +1,0 @@
-steps:
-  - label: ":eslint: JS Lint"
-    command:
-      - "yarn install"
-      - "yarn lint"
-    plugins:
-      - docker#v3.0.1:
-          image: "node:14-buster"
-          mount-buildkite-agent: false
