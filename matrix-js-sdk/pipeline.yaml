@@ -1,8 +1,0 @@
-steps:
-  - label: ":horse: Trigger matrix-react-sdk"
-    trigger: "matrix-react-sdk"
-    branches: "develop"
-    build:
-        branch: "develop"
-        message: "[js-sdk] ${BUILDKITE_MESSAGE}"
-    async: true
