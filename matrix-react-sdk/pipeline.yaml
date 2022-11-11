@@ -1,8 +1,0 @@
-steps:
-  - label: ":horse: Trigger element-web"
-    trigger: "element-web"
-    branches: "develop"
-    build:
-        branch: "develop"
-        message: "[react-sdk] ${BUILDKITE_MESSAGE}"
-    async: true
